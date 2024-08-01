@@ -4,7 +4,7 @@
 ### ⚠️ A premium account is required in order to use this client
 
 ### Donations
-https://fund.saturnclient.dev/
+https://fund.saturn.kim/
 
 # Featuring:
 - FLAC & MP3 320 support
@@ -16,8 +16,8 @@ https://fund.saturnclient.dev/
 ### You can download Saturn right away although it is highly advised to build it yourself, customized to your own liking.
 
 # Links
-- website: https://saturnclient.dev
-- discord: https://saturnclient.dev/discord
+- website: https://saturn.kim/
+- discord: https://saturn.kim/discord
 - telegram: https://t.me/SaturnReleases
 
 # Download from Releases or Telegram
