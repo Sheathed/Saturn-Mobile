@@ -182,7 +182,7 @@ const language_id_id = {
     'Go up': 'Naik',
     'Permission denied': 'Akses dilarang',
     'Language': 'Bahasa',
-    'Language changed, please restart ReFreezer to apply!':
+    'Language changed, please restart Saturn to apply!':
         'Bahasa diganti, Mulai ulang aplikasi untuk menerapkannya!',
     'Importing...': 'Mengimpor...',
     'Radio': 'Radio',

@@ -31,6 +31,8 @@ class Settings {
   late bool ignoreInterruptions;
   @JsonKey(defaultValue: false)
   late bool enableEqualizer;
+  @JsonKey(defaultValue: false)
+  late bool eastereggsDisabled;
 
   //Account
   String? arl;
@@ -141,6 +143,10 @@ class Settings {
   String? lastFMUsername;
   @JsonKey(defaultValue: null)
   String? lastFMPassword;
+  @JsonKey(defaultValue: null)
+  String? lastFMAPIKey;
+  @JsonKey(defaultValue: null)
+  String? lastFMAPISecret;
 
   //Spotify
   @JsonKey(defaultValue: null)
@@ -151,6 +157,39 @@ class Settings {
   SpotifyCredentialsSave? spotifyCredentials;
 
   Settings({this.downloadPath, this.arl});
+
+  // List of rainbow colors
+  static const List<Color> _rainbowColors = [
+    Color(0xFFF44336), Color(0xFFE91E63), Color(0xFF9C27B0), 
+    Color(0xFF673AB7), Color(0xFF3F51B5), Color(0xFF2196F3), 
+    Color(0xFF03A9F4), Color(0xFF00BCD4), Color(0xFF009688), 
+    Color(0xFF4CAF50), Color(0xFF8BC34A), Color(0xFFCDDC39), 
+    Color(0xFFFFEB3B), Color(0xFFFFC107), Color(0xFFFF9800), 
+    Color(0xFFFF5722), Color(0xFF795548), Color(0xFF607D8B), 
+    Color(0xFF9E9E9E),
+  ];
+
+  late Timer _rainbowColorTimer = Timer(Duration.zero, () {});
+  int _currentColorIndex = 0;
+
+  // Method to start cycling rainbow colors
+  void startRainbowColorUpdates() {
+    if (_rainbowColorTimer.isActive) {
+      _rainbowColorTimer.cancel();
+    }
+    _rainbowColorTimer = Timer.periodic(Duration(milliseconds: 300), (timer) {
+      primaryColor = _rainbowColors[_currentColorIndex];
+      _currentColorIndex = (_currentColorIndex + 1) % _rainbowColors.length;
+      updateTheme(); // Make sure this method updates the app theme with the new primary color
+    });
+  }
+
+  // Method to stop cycling rainbow colors
+  void stopRainbowColorUpdates() {
+    if (_rainbowColorTimer.isActive) {
+      _rainbowColorTimer.cancel();
+    }
+  }
 
   ThemeData get themeData {
     //System theme

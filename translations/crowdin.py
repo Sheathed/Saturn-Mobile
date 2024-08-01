@@ -39,7 +39,7 @@ def generate_dart():
     out = {}
     with zipfile.ZipFile("translations.zip") as zip:
         for file in zip.namelist():
-            if "refreezer.json" in file:
+            if "saturn.json" in file:
                 data = zip.open(file).read()
                 lang = file.split("/")[0]
                 out[lang_crowdin[lang]] = json.loads(data)

@@ -182,7 +182,7 @@ const language_ru_ru = {
     'Go up': 'На уровень вверх',
     'Permission denied': 'Доступ запрещен',
     'Language': 'Язык',
-    'Language changed, please restart ReFreezer to apply!':
+    'Language changed, please restart Saturn to apply!':
         'Язык изменен, перезапустите приложения для применения',
     'Importing...': 'Импорт...',
     'Radio': 'Радио',

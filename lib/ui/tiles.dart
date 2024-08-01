@@ -501,13 +501,14 @@ class ChannelTile extends StatelessWidget {
                 child: Stack(
               children: [
                 if (channel.backgroundImage != null)
-                  CachedImage(
-                    url: channel.backgroundImage
-                            ?.customUrl('134', '264', quality: '100') ??
-                        '',
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5), // Adjust the radius as needed
+                  child: CachedImage(
+                    url: channel.backgroundImage?.customUrl('134', '264', quality: '100') ?? '',
                     width: 150,
                     height: 75,
                   ),
+                ),
                 if (channel.logoImage != null)
                   CachedImage(
                     url: channel.logoImage?.thumbUrl ?? '',
@@ -544,7 +545,9 @@ class ShowCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return SizedBox(
+    height: 180.0,
+    child: InkWell(
       onTap: onTap,
       onLongPress: onHold,
       child: Column(
@@ -571,6 +574,7 @@ class ShowCard extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }

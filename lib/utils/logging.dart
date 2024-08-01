@@ -38,7 +38,7 @@ class LogQueueManager {
 
 Future<void> initializeLogging() async {
   final String path =
-      p.join((await getExternalStorageDirectory())!.path, 'refreezer.log');
+      p.join((await getExternalStorageDirectory())!.path, 'saturn.log');
   final File logFile = File(path);
 
   if (!await logFile.exists()) {

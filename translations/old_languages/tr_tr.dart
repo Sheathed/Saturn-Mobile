@@ -185,7 +185,7 @@ const language_tr_tr = {
     'Go up': 'Yukarı git',
     'Permission denied': 'İzin reddedildi',
     'Language': 'Dil',
-    'Language changed, please restart ReFreezer to apply!':
+    'Language changed, please restart Saturn to apply!':
         'Dil değişti,değişiklik için Freezeri yeniden başlatın!',
     'Importing...': 'İçe aktarılıyor...',
     'Radio': 'Radyo',

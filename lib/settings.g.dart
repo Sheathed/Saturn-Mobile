@@ -13,6 +13,7 @@ Settings _$SettingsFromJson(Map<String, dynamic> json) => Settings(
       ..language = json['language'] as String?
       ..ignoreInterruptions = json['ignoreInterruptions'] as bool? ?? false
       ..enableEqualizer = json['enableEqualizer'] as bool? ?? false
+      ..eastereggsDisabled = json['eastereggsDisabled'] as bool? ?? false
       ..wifiQuality =
           $enumDecodeNullable(_$AudioQualityEnumMap, json['wifiQuality']) ??
               AudioQuality.MP3_320
@@ -80,6 +81,8 @@ Settings _$SettingsFromJson(Map<String, dynamic> json) => Settings(
       ..proxyAddress = json['proxyAddress'] as String?
       ..lastFMUsername = json['lastFMUsername'] as String?
       ..lastFMPassword = json['lastFMPassword'] as String?
+      ..lastFMAPIKey = json['lastFMAPIKey'] as String?
+      ..lastFMAPISecret = json['lastFMAPISecret'] as String?
       ..spotifyClientId = json['spotifyClientId'] as String?
       ..spotifyClientSecret = json['spotifyClientSecret'] as String?
       ..spotifyCredentials = json['spotifyCredentials'] == null
@@ -91,6 +94,7 @@ Map<String, dynamic> _$SettingsToJson(Settings instance) => <String, dynamic>{
       'language': instance.language,
       'ignoreInterruptions': instance.ignoreInterruptions,
       'enableEqualizer': instance.enableEqualizer,
+      'eastereggsDisabled': instance.eastereggsDisabled,
       'arl': instance.arl,
       'wifiQuality': _$AudioQualityEnumMap[instance.wifiQuality]!,
       'mobileQuality': _$AudioQualityEnumMap[instance.mobileQuality]!,
@@ -127,6 +131,8 @@ Map<String, dynamic> _$SettingsToJson(Settings instance) => <String, dynamic>{
       'proxyAddress': instance.proxyAddress,
       'lastFMUsername': instance.lastFMUsername,
       'lastFMPassword': instance.lastFMPassword,
+      'lastFMAPIKey': instance.lastFMAPIKey,
+      'lastFMAPISecret': instance.lastFMAPISecret,
       'spotifyClientId': instance.spotifyClientId,
       'spotifyClientSecret': instance.spotifyClientSecret,
       'spotifyCredentials': instance.spotifyCredentials,

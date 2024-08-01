@@ -1,3 +1,4 @@
+// version.dart
 /* Copyright (c) 2021, Matthew Barbour.
 All rights reserved.
 https://github.com/dartninja/version
@@ -7,7 +8,7 @@ modification, are permitted provided that the following conditions are met:
     * Redistributions of source code must retain the above copyright
       notice, this list of conditions and the following disclaimer.
     * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
+      notice, this list of these conditions and the following disclaimer in the
       documentation and/or other materials provided with the distribution.
     * Neither the name of the <organization> nor the
       names of its contributors may be used to endorse or promote products
@@ -29,7 +30,8 @@ library version;
 
 /// Provides immutable storage and comparison of semantic version numbers.
 class Version implements Comparable<Version> {
-  static final RegExp _versionRegex = RegExp(r'^([\d.]+)(-([0-9A-Za-z\-.]+))?(\+([0-9A-Za-z\-.]+))?$');
+  static final RegExp _versionRegex = RegExp(
+      r'^(\d+)\.(\d+)\.(\d+)(-(\d+|[0-9A-Za-z\-\.]+))?(\+([0-9A-Za-z\-\.]+))?$');
   static final RegExp _buildRegex = RegExp(r'^[0-9A-Za-z\-.]+$');
   static final RegExp _preReleaseRegex = RegExp(r'^[0-9A-Za-z\-]+$');
 
@@ -45,36 +47,36 @@ class Version implements Comparable<Version> {
   /// Build information relevant to the version. Does not contribute to sorting.
   final String build;
 
+  /// Pre-release information segments.
   final List<String> _preRelease;
 
-  /// Indicates that the version is a pre-release. Returns true if preRelease has any segments, otherwise false
+  /// Indicates that the version is a pre-release. Returns true if preRelease has any segments, otherwise false.
   bool get isPreRelease => _preRelease.isNotEmpty;
 
   /// Creates a new instance of [Version].
-  ///
-  /// [major], [minor], and [patch] are all required, all must be greater than 0 and not null, and at least one must be greater than 0.
-  /// [preRelease] is optional, but if specified must be a [List] of [String] and must not be null. Each element in the list represents one of the period-separated segments of the pre-release information, and may only contain [0-9A-Za-z-].
-  /// [build] is optional, but if specified must be a [String]. must contain only [0-9A-Za-z-.], and must not be null.
-  /// Throws a [FormatException] if the [String] content does not follow the character constraints defined above.
-  /// Throes an [ArgumentError] if any of the other conditions are violated.
-  Version(this.major, this.minor, this.patch, {List<String> preRelease = const <String>[], this.build = ''})
-      : _preRelease = preRelease {
+  Version(
+    this.major,
+    this.minor,
+    this.patch, {
+    List<String> preRelease = const <String>[],
+    this.build = '',
+  }) : _preRelease = preRelease {
     for (int i = 0; i < _preRelease.length; i++) {
-      if (_preRelease[i].toString().trim().isEmpty) {
-        throw ArgumentError('preRelease segments must not be empty');
+      if (_preRelease[i].trim().isEmpty) {
+        throw ArgumentError('Pre-release segments must not be empty.');
       }
       // Just in case
       _preRelease[i] = _preRelease[i].toString();
       if (!_preReleaseRegex.hasMatch(_preRelease[i])) {
-        throw const FormatException('preRelease segments must only contain [0-9A-Za-z-]');
+        throw const FormatException('Pre-release segments must only contain [0-9A-Za-z-].');
       }
     }
     if (build.isNotEmpty && !_buildRegex.hasMatch(build)) {
-      throw const FormatException('build must only contain [0-9A-Za-z-.]');
+      throw const FormatException('Build must only contain [0-9A-Za-z-.].');
     }
 
     if (major < 0 || minor < 0 || patch < 0) {
-      throw ArgumentError('Version numbers must be greater than 0');
+      throw ArgumentError('Version numbers must be non-negative.');
     }
   }
 
@@ -110,24 +112,15 @@ class Version implements Comparable<Version> {
   }
 
   /// Creates a new [Version] with the [major] version number incremented.
-  ///
-  /// Also resets the [minor] and [patch] numbers to 0, and clears the [build] and [preRelease] information.
   Version incrementMajor() => Version(major + 1, 0, 0);
 
   /// Creates a new [Version] with the [minor] version number incremented.
-  ///
-  /// Also resets the [patch] number to 0, and clears the [build] and [preRelease] information.
   Version incrementMinor() => Version(major, minor + 1, 0);
 
   /// Creates a new [Version] with the [patch] version number incremented.
-  ///
-  /// Also clears the [build] and [preRelease] information.
   Version incrementPatch() => Version(major, minor, patch + 1);
 
   /// Creates a new [Version] with the right-most numeric [preRelease] segment incremented.
-  /// If no numeric segment is found, one will be added with the value "1".
-  ///
-  /// If this [Version] is not a pre-release version, an Exception will be thrown.
   Version incrementPreRelease() {
     if (!isPreRelease) {
       throw Exception('Cannot increment pre-release on a non-pre-release [Version]');
@@ -152,13 +145,6 @@ class Version implements Comparable<Version> {
     return Version(major, minor, patch, preRelease: newPreRelease);
   }
 
-  /// Returns a [String] representation of the [Version].
-  ///
-  /// Uses the format "$major.$minor.$patch".
-  /// If [preRelease] has segments available they are appended as "-segmentOne.segmentTwo", with each segment separated by a period.
-  /// If [build] is specified, it is appended as "+build.info" where "build.info" is whatever value [build] is set to.
-  /// If all [preRelease] and [build] are specified, then both are appended, [preRelease] first and [build] second.
-  /// An example of such output would be "1.0.0-preRelease.segment+build.info".
   @override
   String toString() {
     final StringBuffer output = StringBuffer('$major.$minor.$patch');
@@ -172,11 +158,12 @@ class Version implements Comparable<Version> {
   }
 
   /// Creates a [Version] instance from a string.
-  ///
-  /// The string must conform to the specification at http://semver.org/
-  /// Throws [FormatException] if the string is empty or does not conform to the spec.
   static Version parse(String versionString) {
-    if (versionString.trim().isEmpty) {
+    versionString = versionString.trim();
+    if (versionString.startsWith('v')) {
+      versionString = versionString.substring(1);
+    }
+    if (versionString.isEmpty) {
       throw const FormatException('Cannot parse empty string into version');
     }
     if (!_versionRegex.hasMatch(versionString)) {
@@ -202,7 +189,22 @@ class Version implements Comparable<Version> {
     }
     final String build = m.group(5) ?? '';
 
-    return Version(major, minor ?? 0, patch ?? 0, build: build, preRelease: preReleaseList);
+    return Version(major, minor ?? 0, patch ?? 0, preRelease: preReleaseList, build: build);
+  }
+
+  static Version? tryParse(String source) {
+    try {
+      return Version.parse(source);
+    } on FormatException {
+      return null;
+    }
+  }
+
+  static bool _isNumeric(String? s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
   }
 
   static int _compare(Version? a, Version? b) {
@@ -267,24 +269,5 @@ class Version implements Comparable<Version> {
       }
     }
     return 0;
-  }
-
-  /// Creates a [Version] instance from a string.
-  ///
-  /// The string must conform to the specification at http://semver.org/
-  /// Returns null if the string is empty or does not conform to the spec.
-  static Version? tryParse(String source) {
-    try {
-      return Version.parse(source);
-    } on FormatException {
-      return null;
-    }
-  }
-
-  static bool _isNumeric(String? s) {
-    if (s == null) {
-      return false;
-    }
-    return double.tryParse(s) != null;
   }
 }

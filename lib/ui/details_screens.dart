@@ -68,7 +68,7 @@ class _AlbumDetailsState extends State<AlbumDetails> {
         body: _error
             ? const ErrorScreen()
             : _loading
-                ? const Center(child: CircularProgressIndicator())
+                ? Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,))
                 : ListView(
                     children: <Widget>[
                       //Album art, title, artists
@@ -354,7 +354,7 @@ class _ArtistDetailsState extends State<ArtistDetails> {
         body: _error
             ? const ErrorScreen()
             : _loading
-                ? const Center(child: CircularProgressIndicator())
+                ? Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,))
                 : ListView(
                     children: <Widget>[
                       Container(height: 4.0),
@@ -628,11 +628,11 @@ class _DiscographyScreenState extends State<DiscographyScreen> {
 
   Widget get _loadingWidget {
     if (_loading) {
-      return const Padding(
+      return Padding(
         padding: EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [CircularProgressIndicator()],
+          children: [CircularProgressIndicator(color: Theme.of(context).primaryColor,)],
         ),
       );
     }
@@ -1087,11 +1087,11 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
             });
           }),
           if (_loading)
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[CircularProgressIndicator()],
+                children: <Widget>[CircularProgressIndicator(color: Theme.of(context).primaryColor,)],
               ),
             ),
           if (_error) const ErrorScreen()
@@ -1252,11 +1252,11 @@ class _ShowScreenState extends State<ShowScreen> {
 
           //Loading
           if (_loading)
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [CircularProgressIndicator()],
+                children: [CircularProgressIndicator(color: Theme.of(context).primaryColor,)],
               ),
             ),
 

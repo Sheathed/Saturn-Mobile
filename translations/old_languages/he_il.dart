@@ -182,8 +182,8 @@ const language_he_il = {
     'Go up': 'עלה למעלה',
     'Permission denied': 'הרשאה נדחתה',
     'Language': 'שפה',
-    'Language changed, please restart ReFreezer to apply!':
-        'שפה שונתה, בבקשה הפעל מחדש את ReFreezer כדי להחיל!',
+    'Language changed, please restart Saturn to apply!':
+        'שפה שונתה, בבקשה הפעל מחדש את Saturn כדי להחיל!',
     'Importing...': 'מייבא...',
     'Radio': 'רדיו',
     'Flow': 'Flow',

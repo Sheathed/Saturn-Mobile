@@ -187,8 +187,8 @@ const language_el_gr = {
     'Go up': 'Πήγαινε πάνω',
     'Permission denied': 'Η άδεια απορρίφθηκε',
     'Language': 'Γλώσσα',
-    'Language changed, please restart ReFreezer to apply!':
-        'Η γλώσσα άλλαξε, κάντε επανεκκίνηση του ReFreezer για εφαρμογή!',
+    'Language changed, please restart Saturn to apply!':
+        'Η γλώσσα άλλαξε, κάντε επανεκκίνηση του Saturn για εφαρμογή!',
     'Importing...': 'Εισαγωγή...',
     'Radio': 'Ραδιόφωνο',
     'Flow': 'Flow',

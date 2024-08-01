@@ -8,6 +8,7 @@ import 'package:logging/logging.dart';
 import '../api/definitions.dart';
 import '../api/spotify.dart';
 import '../settings.dart';
+import '../main.dart';
 
 DeezerAPI deezerAPI = DeezerAPI();
 
@@ -499,6 +500,17 @@ class DeezerAPI {
       'track',
       'user'
     ];
+
+  // CHECK FOR FREE USERS
+  // Call API to get user data
+  Map usrdata = await callGwApi('deezer.getUserData', params: {});
+  // Extract OFFER_NAME from user data
+  String offerName = usrdata['results'] != null ? usrdata['results']['OFFER_NAME'] : null;
+
+  if (offerName == 'Deezer Free') {
+    await logOut();
+  }
+
     Map data = await callGwApi('page.get',
         gatewayInput: jsonEncode({
           'PAGE': 'home',

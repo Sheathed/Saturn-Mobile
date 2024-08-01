@@ -712,6 +712,9 @@ class _SleepTimerDialogState extends State<SleepTimerDialog> {
       ),
       actions: [
         TextButton(
+                  style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
           child: Text('Dismiss'.i18n),
           onPressed: () {
             Navigator.of(context).pop();
@@ -719,6 +722,9 @@ class _SleepTimerDialogState extends State<SleepTimerDialog> {
         ),
         if (cache.sleepTimer != null)
           TextButton(
+                    style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
             child: Text('Cancel current timer'.i18n),
             onPressed: () {
               cache.sleepTimer!.cancel();
@@ -728,6 +734,9 @@ class _SleepTimerDialogState extends State<SleepTimerDialog> {
             },
           ),
         TextButton(
+                  style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
           child: Text('Save'.i18n),
           onPressed: () {
             Duration duration = Duration(hours: hours, minutes: minutes);
@@ -783,10 +792,10 @@ class _SelectPlaylistDialogState extends State<SelectPlaylistDialog> {
             );
           }
           if (snapshot.connectionState != ConnectionState.done) {
-            return const SizedBox(
+            return SizedBox(
               height: 100,
               child: Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
               ),
             );
           }
@@ -865,14 +874,24 @@ class _CreatePlaylistDialogState extends State<CreatePlaylistDialog> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           TextField(
-            decoration: InputDecoration(labelText: 'Title'.i18n),
+            cursorColor: Theme.of(context).primaryColor,
+            decoration: InputDecoration(labelText: 'Title'.i18n,
+              focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).primaryColor), // Color of the underline when focused
+            ),
+            ),
             controller: _titleController ?? TextEditingController(),
             onChanged: (String s) => _title = s,
           ),
           TextField(
+            cursorColor: Theme.of(context).primaryColor,
             onChanged: (String s) => _description = s,
             controller: _descController ?? TextEditingController(),
-            decoration: InputDecoration(labelText: 'Description'.i18n),
+            decoration: InputDecoration(labelText: 'Description'.i18n,
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).primaryColor), // Color of the underline when focused
+            ),
+            ),
           ),
           Container(
             height: 4.0,
@@ -897,10 +916,16 @@ class _CreatePlaylistDialogState extends State<CreatePlaylistDialog> {
       ),
       actions: <Widget>[
         TextButton(
+                  style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
           child: Text('Cancel'.i18n),
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
+                  style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
           child: Text(edit ? 'Update'.i18n : 'Create'.i18n),
           onPressed: () async {
             if (edit) {

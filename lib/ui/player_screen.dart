@@ -20,7 +20,6 @@ import '../api/cache.dart';
 import '../api/deezer.dart';
 import '../api/definitions.dart';
 import '../api/download.dart';
-import '../fonts/refreezer_icons.dart';
 import '../service/audio_service.dart';
 import '../settings.dart';
 import '../translations.i18n.dart';
@@ -157,8 +156,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
                         //When disconnected
                         if (audioHandler.mediaItem.value == null) {
                           //playerHelper.startService();
-                          return const Center(
-                            child: CircularProgressIndicator(),
+                          return Center(
+                            child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
                           );
                         }
 
@@ -293,8 +292,7 @@ class _PlayerScreenHorizontalState extends State<PlayerScreenHorizontal> {
                       children: <Widget>[
                         IconButton(
                           icon: Icon(
-                            //Icons.subtitles,
-                            ReFreezerIcons.lyrics_mic,
+                            Icons.subtitles,
                             size: ScreenUtil().setWidth(12),
                             semanticLabel: 'Lyrics'.i18n,
                           ),
@@ -438,8 +436,7 @@ class _PlayerScreenVerticalState extends State<PlayerScreenVertical> {
             children: <Widget>[
               /*IconButton(
                 icon: Icon(
-                  //Icons.lyrics,
-                  ReFreezerIcons.lyrics_mic,
+                  Icons.lyrics,
                   size: ScreenUtil().setWidth(20),
                   semanticLabel: 'Lyrics'.i18n,
                 ),
@@ -546,6 +543,9 @@ class _QualityInfoWidgetState extends State<QualityInfoWidget> {
   Widget build(BuildContext context) {
     if (value != '') {
       return TextButton(
+        style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
         child: Text(value),
         onPressed: () {
           Navigator.of(context).push(
@@ -586,8 +586,7 @@ class LyricsIconButton extends StatelessWidget {
           : 0.7, // Full opacity for enabled, reduced for disabled
       child: IconButton(
         icon: Icon(
-          //Icons.lyrics,
-          ReFreezerIcons.lyrics_mic,
+          Icons.lyrics,
           size: ScreenUtil().setWidth(width),
           semanticLabel: 'Lyrics'.i18n,
         ),
@@ -617,9 +616,8 @@ class PlayerMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(
-        //Icons.more_vert,
-        Icons.menu,
-        size: ScreenUtil().setWidth(12),
+        Icons.more_vert,
+        size: ScreenUtil().setWidth(20),
         semanticLabel: 'Options'.i18n,
       ),
       onPressed: () {
@@ -710,13 +708,13 @@ class _PlaybackControlsState extends State<PlaybackControls> {
         Track.fromMediaItem(audioHandler.mediaItem.value!))) {
       return Icon(
         Icons.favorite,
-        size: widget.iconSize * 0.44,
+        size: widget.iconSize * 0.64,
         semanticLabel: 'Unlove'.i18n,
       );
     }
     return Icon(
       Icons.favorite_border,
-      size: widget.iconSize * 0.44,
+      size: widget.iconSize * 0.64,
       semanticLabel: 'Love'.i18n,
     );
   }
@@ -732,7 +730,7 @@ class _PlaybackControlsState extends State<PlaybackControls> {
           IconButton(
               icon: Icon(
                 Icons.sentiment_very_dissatisfied,
-                size: widget.iconSize * 0.44,
+                size: widget.iconSize * 0.64,
                 semanticLabel: 'Dislike'.i18n,
               ),
               onPressed: () async {
@@ -961,8 +959,7 @@ class PlayerScreenTopRow extends StatelessWidget {
         IconButton(
           key: iconButtonKey,
           icon: Icon(
-            //Icons.menu,
-            Icons.queue_music,
+            Icons.menu,
             semanticLabel: 'Queue'.i18n,
           ),
           iconSize: iconSize ?? ScreenUtil().setSp(52),

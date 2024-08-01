@@ -9,6 +9,13 @@ android/local.properties
 scrobblenaut/.idea
 scrobblenaut/.dart_tool
 
+external_path/*
+equalizer_flutter/*
+marquee/*
+scrobblenaut/*
+move_to_background/*
+custom_navigator/*
+
 .gradle/
 android/.gradle
 android/.idea

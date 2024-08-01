@@ -19,7 +19,7 @@ class _ApplicationLogViewerState extends State<ApplicationLogViewer> {
 
   //Load log from file
   Future _load() async {
-    String path = p.join((await getExternalStorageDirectory())!.path, 'refreezer.log');
+    String path = p.join((await getExternalStorageDirectory())!.path, 'saturn.log');
     File file = File(path);
     if (await file.exists()) {
       String d = await file.readAsString();

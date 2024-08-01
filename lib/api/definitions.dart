@@ -548,6 +548,46 @@ class ImageDetails {
 }
 
 @JsonSerializable()
+class FlowImage {
+  String? fullUrl;
+  String? thumbUrl;
+  String? type;
+  String? imageHash;
+
+  FlowImage({this.fullUrl, this.thumbUrl, this.type, this.imageHash});
+
+  //Get full/thumb with fallback
+  String? get full => fullUrl ?? thumbUrl;
+  String? get thumb => thumbUrl ?? fullUrl;
+
+  //Get custom sized image
+  String customUrl(String height, String width, {String quality = '80'}) {
+    return 'https://e-cdns-images.dzcdn.net/images/$type/$imageHash/${height}x$width-000000-$quality-0-0.png';
+  }
+
+  //JSON
+  factory FlowImage.fromPrivateString(String imageHash,
+          {String type = 'cover'}) =>
+      FlowImage(
+          type: type,
+          imageHash: imageHash,
+          fullUrl:
+              'https://e-cdns-images.dzcdn.net/images/$type/$imageHash/1000x1000-000000-80-0-0.png',
+          thumbUrl:
+              'https://e-cdns-images.dzcdn.net/images/$type/$imageHash/140x140-000000-80-0-0.png');
+  factory FlowImage.fromPrivateJson(Map<dynamic, dynamic> json) =>
+      FlowImage.fromPrivateString(json['MD5'] ?? json['md5'],
+          type: json['TYPE'] ?? json['type']);
+  //ImageDetails.fromPrivateString((json['MD5']?.split('-')?.first) ?? json['md5'],
+  //type: json['TYPE'] ?? json['type']);
+
+  factory FlowImage.fromJson(Map<String, dynamic> json) =>
+      _$FlowImageFromJson(json);
+  Map<String, dynamic> toJson() => _$FlowImageToJson(this);
+}
+
+
+@JsonSerializable()
 class LogoDetails {
   String? fullUrl;
   String? thumbUrl;
@@ -1058,14 +1098,14 @@ class DeezerFlow {
   String? id;
   String? target;
   String? title;
-  ImageDetails? cover;
+  FlowImage? cover;
 
   DeezerFlow({this.id, this.title, this.target, this.cover});
 
   factory DeezerFlow.fromPrivateJson(Map<dynamic, dynamic> json) => DeezerFlow(
       id: json['id'],
       title: json['title'],
-      cover: ImageDetails.fromPrivateJson(json['pictures'][0]),
+      cover: FlowImage.fromPrivateJson(json['pictures'][0]),
       target: json['target'].replaceFirst('/', ''));
 
   //JSON

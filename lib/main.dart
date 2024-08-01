@@ -12,7 +12,6 @@ import 'package:logging/logging.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:quick_actions/quick_actions.dart';
-import 'package:refreezer/ui/restartable.dart';
 //import 'package:restart_app/restart_app.dart';
 
 import 'api/cache.dart';
@@ -27,10 +26,11 @@ import 'ui/home_screen.dart';
 import 'ui/library.dart';
 import 'ui/login_screen.dart';
 import 'ui/player_bar.dart';
-import 'ui/updater.dart';
+//import 'ui/updater.dart';
 import 'ui/search.dart';
 import 'utils/logging.dart';
 import 'utils/navigator_keys.dart';
+import 'ui/restartable.dart';
 
 late Function updateTheme;
 late Function logOut;
@@ -46,24 +46,24 @@ void main() async {
 
   await prepareRun();
 
-  runApp(const Restartable(child: ReFreezerApp()));
+  runApp(const Restartable(child: SaturnApp()));
 }
 
 Future<void> prepareRun() async {
   await initializeLogging();
-  Logger.root.info('Starting ReFreezer App...');
+  Logger.root.info('Starting Saturn App...');
   settings = await Settings().loadSettings();
   cache = await Cache.load();
 }
 
-class ReFreezerApp extends StatefulWidget {
-  const ReFreezerApp({super.key});
+class SaturnApp extends StatefulWidget {
+  const SaturnApp({super.key});
 
   @override
-  _ReFreezerAppState createState() => _ReFreezerAppState();
+  _SaturnAppState createState() => _SaturnAppState();
 }
 
-class _ReFreezerAppState extends State<ReFreezerApp> {
+class _SaturnAppState extends State<SaturnApp> {
   @override
   void initState() {
     //Make update theme global
@@ -97,7 +97,7 @@ class _ReFreezerAppState extends State<ReFreezerApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ReFreezer',
+      title: 'Saturn',
       shortcuts: <ShortcutActivator, Intent>{
         ...WidgetsApp.defaultShortcuts,
         LogicalKeySet(LogicalKeyboardKey.select):
@@ -243,9 +243,11 @@ class _MainScreenState extends State<MainScreen>
     _prepareQuickActions();
 
     //Check for updates on background
-    Future.delayed(const Duration(seconds: 5), () {
-      ReFreezerLatest.checkUpdate();
+    /* No automatic updates yet
+    Future.delayed(Duration(seconds: 5), () {
+      FreezerVersions.checkUpdate();
     });
+    */
 
     //Restore saved queue
     _loadSavedQueue();
@@ -482,9 +484,9 @@ class _MainScreenState extends State<MainScreen>
               ));
         } else {
           // While audio_service is initializing
-          return const Scaffold(
+          return Scaffold(
             body: Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
             ),
           );
         }

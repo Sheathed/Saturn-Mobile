@@ -141,6 +141,9 @@ class _ZoomableImageState extends State<ZoomableImage> {
   Widget build(BuildContext context) {
     ctx = context;
     return TextButton(
+              style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
         child: Semantics(
           label: 'Album art'.i18n,
           child: CachedImage(

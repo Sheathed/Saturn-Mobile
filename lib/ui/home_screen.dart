@@ -88,7 +88,7 @@ class FreezerTitle extends StatelessWidget {
             children: <Widget>[
               Image.asset('assets/icon.png', width: 64, height: 64),
               const Text(
-                'ReFreezer',
+                'Saturn',
                 style: TextStyle(fontSize: 56, fontWeight: FontWeight.w900),
               )
             ],
@@ -190,10 +190,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
   @override
   Widget build(BuildContext context) {
     if (_homePage == null) {
-      return const Center(
+      return Center(
           child: Padding(
         padding: EdgeInsets.all(8.0),
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
       ));
     }
     if (_error) return const ErrorScreen();
@@ -241,6 +241,7 @@ class HomepageRowSection extends StatelessWidget {
               if (j == (section.items?.length ?? 0)) {
                 if (section.hasMore ?? false) {
                   return TextButton(
+                    
                     child: Text(
                       'Show more'.i18n,
                       textAlign: TextAlign.center,

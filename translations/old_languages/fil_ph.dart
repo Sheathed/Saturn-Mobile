@@ -185,7 +185,7 @@ const language_fil_ph = {
     'Go up': 'Pumunta paitaas',
     'Permission denied': 'Hindi pinapayagan',
     'Language': 'Wika',
-    'Language changed, please restart ReFreezer to apply!':
+    'Language changed, please restart Saturn to apply!':
         'Pinalitan ang wika, paki-restart ang Deezer para mai-apply!',
     'Importing...': 'Ini-import...',
     'Radio': 'Radyo',

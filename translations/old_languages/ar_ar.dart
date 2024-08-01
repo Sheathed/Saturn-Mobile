@@ -182,7 +182,7 @@ const language_ar_ar = {
     'Go up': 'اذهب للأعلى',
     'Permission denied': 'طلب الاذن مرفوض',
     'Language': 'اللغة',
-    'Language changed, please restart ReFreezer to apply!':
+    'Language changed, please restart Saturn to apply!':
         'تم تغيير اللغة، الرجاء إعادة تشغيل فريزر لتطبيق!',
     'Importing...': 'جار الاستيراد...',
     'Radio': 'راديو',

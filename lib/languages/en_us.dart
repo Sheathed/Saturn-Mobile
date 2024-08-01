@@ -175,8 +175,8 @@ const language_en_us = {
     'Go up': 'Go up',
     'Permission denied': 'Permission denied',
     'Language': 'Language',
-    'Language changed, please restart ReFreezer to apply!':
-        'Language changed, please restart ReFreezer to apply!',
+    'Language changed, please restart Saturn to apply!':
+        'Language changed, please restart Saturn to apply!',
     'Importing...': 'Importing...',
     'Radio': 'Radio',
     'Flow': 'Flow',
@@ -285,7 +285,7 @@ const language_en_us = {
     'New update available!': 'New update available!',
     'Current version: ': 'Current version: ',
     'Unsupported platform!': 'Unsupported platform!',
-    'ReFreezer Updates': 'ReFreezer Updates',
+    'Saturn Updates': 'Saturn Updates',
     'Update to latest version in the settings.':
         'Update to latest version in the settings.',
     'Release date': 'Release date',
@@ -331,8 +331,8 @@ const language_en_us = {
     "This app isn't made for supporting many fonts, it can break layouts and overflow. Use at your own risk!":
         "This app isn't made for supporting many fonts, it can break layouts and overflow. Use at your own risk!",
     'Enable equalizer': 'Enable equalizer',
-    'Might enable some equalizer apps to work. Requires restart of ReFreezer':
-        'Might enable some equalizer apps to work. Requires restart of ReFreezer',
+    'Might enable some equalizer apps to work. Requires restart of Saturn':
+        'Might enable some equalizer apps to work. Requires restart of Saturn',
     'Visualizer': 'Visualizer',
     'Show visualizers on lyrics page. WARNING: Requires microphone permission!':
         'Show visualizers on lyrics page. WARNING: Requires microphone permission!',
@@ -353,8 +353,8 @@ const language_en_us = {
     'Album art': 'Album art',
 
     //0.6.10
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN',
     'Deezer is unavailable': 'Deezer is unavailable',
     'Continue': 'Continue',
     'Email Login': 'Email Login',
@@ -436,13 +436,10 @@ const language_en_us = {
         'You should rather support your favorite artists, instead of this app!',
     'No really, go support your favorite artists instead ;)':
         'No really, go support your favorite artists instead ;)',
-    'Storage permission is required to download content.\nPlease open settings and grant storage permission to ReFreezer.':
-        'Storage permission is required to download content.\nPlease open settings and grant storage permission to ReFreezer.',
+    'Storage permission is required to download content.\nPlease open settings and grant storage permission to Saturn.':
+        'Storage permission is required to download content.\nPlease open settings and grant storage permission to Saturn.',
     'Open system settings': 'Open system settings',
     'Application Log': 'Application Log',
     'Are you sure you want to log out?': 'Are you sure you want to log out?',
-
-    // 0.7.13
-    'Download failed!': 'Download failed!',
   }
 };

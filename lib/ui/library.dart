@@ -11,7 +11,6 @@ import '../api/cache.dart';
 import '../api/deezer.dart';
 import '../api/definitions.dart';
 import '../api/download.dart';
-import '../api/importer.dart';
 import '../service/audio_service.dart';
 import '../settings.dart';
 import '../translations.i18n.dart';
@@ -19,7 +18,6 @@ import '../ui/details_screens.dart';
 import '../ui/downloads_screen.dart';
 import '../ui/elements.dart';
 import '../ui/error.dart';
-import '../ui/importer_screen.dart';
 import '../ui/tiles.dart';
 import 'menu.dart';
 import 'settings_screen.dart';
@@ -146,71 +144,22 @@ class LibraryScreen extends StatelessWidget {
             },
           ),
           const FreezerDivider(),
-          ListTile(
-            title: Text('Import'.i18n),
-            leading: const LeadingIcon(Icons.import_export,
-                color: Color(0xff2ba766)),
-            subtitle: Text('Import playlists from Spotify'.i18n),
-            onTap: () {
-              //Show progress
-              if (importer.done || importer.busy) {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ImporterStatusScreen()));
-                return;
-              }
-
-              //Pick importer dialog
-              showDialog(
-                  context: context,
-                  builder: (context) => SimpleDialog(
-                        title: Text('Importer'.i18n),
-                        children: [
-                          ListTile(
-                            leading: const Icon(FontAwesome5.spotify),
-                            title: Text('Spotify v1'.i18n),
-                            subtitle: Text(
-                                'Import Spotify playlists up to 100 tracks without any login.'
-                                    .i18n),
-                            enabled:
-                                false, // Spotify reworked embedded playlist. Source format is changed and data no longer contains ISRC.
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      const SpotifyImporterV1()));
-                            },
-                          ),
-                          ListTile(
-                            leading: const Icon(FontAwesome5.spotify),
-                            title: Text('Spotify v2'.i18n),
-                            subtitle: Text(
-                                'Import any Spotify playlist, import from own Spotify library. Requires free account.'
-                                    .i18n),
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      const SpotifyImporterV2()));
-                            },
-                          )
-                        ],
-                      ));
-            },
-          ),
           ExpansionTile(
             title: Text('Statistics'.i18n),
             leading: const LeadingIcon(Icons.insert_chart, color: Colors.grey),
+            textColor: Theme.of(context).primaryColor,
+            iconColor: Theme.of(context).primaryColor,
             children: <Widget>[
               FutureBuilder(
                 future: downloadManager.getStats(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) return const ErrorScreen();
                   if (!snapshot.hasData) {
-                    return const Padding(
+                    return Padding(
                       padding: EdgeInsets.symmetric(vertical: 4.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[CircularProgressIndicator()],
+                        children: <Widget>[CircularProgressIndicator(color: Theme.of(context).primaryColor,)],
                       ),
                     );
                   }
@@ -578,12 +527,12 @@ class _LibraryTracksState extends State<LibraryTracks> {
                   );
                 }),
                 if (_loading)
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 8.0),
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
                       )
                     ],
                   ),
@@ -759,9 +708,9 @@ class _LibraryAlbumsState extends State<LibraryAlbums> {
                 height: 8.0,
               ),
               if (!settings.offlineMode && _albums == null)
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[CircularProgressIndicator()],
+                  children: <Widget>[CircularProgressIndicator(color: Theme.of(context).primaryColor,)],
                 ),
               if (_albums != null)
                 ...List.generate(_albums?.length ?? 0, (int i) {
@@ -974,11 +923,11 @@ class _LibraryArtistsState extends State<LibraryArtists> {
             controller: _scrollController,
             children: <Widget>[
               if (_loading)
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [CircularProgressIndicator()],
+                    children: [CircularProgressIndicator(color: Theme.of(context).primaryColor,)],
                   ),
                 ),
               if (_error) const Center(child: ErrorScreen()),
@@ -1153,6 +1102,7 @@ class _LibraryPlaylistsState extends State<LibraryPlaylists> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
+                  cursorColor: Theme.of(context).primaryColor,
                     onChanged: (String s) => setState(() => _filter = s),
                     decoration: InputDecoration(
                       labelText: 'Search'.i18n,
@@ -1162,6 +1112,7 @@ class _LibraryPlaylistsState extends State<LibraryPlaylists> {
                           borderSide: BorderSide(color: Colors.grey)),
                       enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey)),
+                      floatingLabelStyle: TextStyle(color: Theme.of(context).primaryColor),
                     )),
               ),
               ListTile(
@@ -1183,10 +1134,10 @@ class _LibraryPlaylistsState extends State<LibraryPlaylists> {
               const FreezerDivider(),
 
               if (!settings.offlineMode && _playlists == null)
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    CircularProgressIndicator(),
+                    CircularProgressIndicator(color: Theme.of(context).primaryColor,),
                   ],
                 ),
 

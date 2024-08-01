@@ -18,15 +18,14 @@ import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:refreezer/ui/log_screen.dart';
+//import 'package:permission_handler/permission_handler.dart';
+import 'package:saturn/ui/log_screen.dart';
 import 'package:scrobblenaut/scrobblenaut.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../api/cache.dart';
 import '../api/deezer.dart';
 import '../main.dart';
-import '../utils/env.dart';
 import '../utils/navigator_keys.dart';
 import '../service/audio_service.dart';
 import '../settings.dart';
@@ -118,10 +117,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   return AlertDialog(
                                     title: Text('Language'.i18n),
                                     content: Text(
-                                        'Language changed, please restart ReFreezer to apply!'
+                                        'Language changed, please restart Saturn to apply!'
                                             .i18n),
                                     actions: [
                                       TextButton(
+                                                style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
                                         child: const Text('OK'),
                                         onPressed: () {
                                           // Close the AlertDialog
@@ -143,6 +145,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             leading: const LeadingIcon(Icons.update, color: Color(0xff2ba766)),
             onTap: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const UpdaterScreen())),
+            enabled: true,
           ),
           ListTile(
             title: Text('About'.i18n),
@@ -280,13 +283,14 @@ class _AppearanceSettingsState extends State<AppearanceSettings> {
             leading: const Icon(Icons.equalizer),
             trailing: Switch(
               value: settings.lyricsVisualizer,
-              onChanged: (bool v) async {
-                if (await Permission.microphone.request().isGranted) {
-                  setState(() => settings.lyricsVisualizer = v);
-                  await settings.save();
-                  return;
-                }
-              },
+              onChanged: null,
+              // onChanged: (bool v) async {
+              //   if (await Permission.microphone.request().isGranted) {
+              //     setState(() => settings.lyricsVisualizer = v);
+              //     await settings.save();
+              //     return;
+              //   }
+              // },
             ),
             enabled: false,
           ),
@@ -406,6 +410,9 @@ class _FontSelectorState extends State<FontSelector> {
                       .i18n),
               actions: [
                 TextButton(
+                          style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
                   onPressed: () async {
                     setState(() => settings.font = font);
                     await settings.save();
@@ -417,6 +424,9 @@ class _FontSelectorState extends State<FontSelector> {
                   child: Text('Apply'.i18n),
                 ),
                 TextButton(
+                          style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
                   onPressed: () {
                     Navigator.of(context).pop();
                     widget.callback();
@@ -435,6 +445,7 @@ class _FontSelectorState extends State<FontSelector> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
           child: TextField(
+            cursorColor: Theme.of(context).primaryColor,
             decoration: InputDecoration(hintText: 'Search'.i18n),
             onChanged: (q) => setState(() => query = q),
           ),
@@ -812,6 +823,13 @@ class _FilenameTemplateDialogState extends State<FilenameTemplateDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
+            decoration: InputDecoration(
+              floatingLabelStyle: TextStyle(color: Theme.of(context).primaryColor),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).primaryColor), // Color of the underline when focused
+            ),
+            ),
+            cursorColor: Theme.of(context).primaryColor,
             controller: _controller,
             onChanged: (String s) => _new = s,
           ),
@@ -829,10 +847,16 @@ class _FilenameTemplateDialogState extends State<FilenameTemplateDialog> {
       ),
       actions: [
         TextButton(
+                  style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
           child: Text('Cancel'.i18n),
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
+                  style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
           child: Text('Reset'.i18n),
           onPressed: () {
             _controller.value =
@@ -841,10 +865,16 @@ class _FilenameTemplateDialogState extends State<FilenameTemplateDialog> {
           },
         ),
         TextButton(
+                                                      style: ButtonStyle(
+                                              foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor)
+                                            ),
           child: Text('Clear'.i18n),
           onPressed: () => _controller.clear(),
         ),
         TextButton(
+                                                      style: ButtonStyle(
+                                              foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor)
+                                            ),
           child: Text('Save'.i18n),
           onPressed: () async {
             widget.onSave(_new);
@@ -972,6 +1002,9 @@ class _DownloadsSettingsState extends State<DownloadsSettings> {
                                   .i18n),
                           actions: [
                             TextButton(
+                                                                          style: ButtonStyle(
+                                              foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor)
+                                            ),
                               child: Text('Dismiss'.i18n),
                               onPressed: () => Navigator.of(context).pop(),
                             )
@@ -1115,11 +1148,18 @@ class _DownloadsSettingsState extends State<DownloadsSettings> {
             trailing: SizedBox(
               width: 75.0,
               child: TextField(
+                cursorColor: Theme.of(context).primaryColor,
                 controller: _artistSeparatorController,
                 onChanged: (s) async {
                   settings.artistSeparator = s;
                   await settings.save();
                 },
+                            decoration: InputDecoration(
+                              floatingLabelStyle: TextStyle(color: Theme.of(context).primaryColor),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).primaryColor), // Color of the underline when focused
+            ),
+                            ),
               ),
             ),
           ),
@@ -1304,6 +1344,46 @@ class _GeneralSettingsState extends State<GeneralSettings> {
             //enabled: false,
           ),
           ListTile(
+            title: Text('LastFM API Key'.i18n),
+            leading: Icon(Icons.key),
+            trailing: Container(
+              width: 75.0,
+              child: TextField(
+                cursorColor: Theme.of(context).primaryColor,
+                onChanged: (s) async {
+                  settings.lastFMAPIKey = s;
+                  await settings.save();
+                },
+                  decoration: InputDecoration(
+                    floatingLabelStyle: TextStyle(color: Theme.of(context).primaryColor),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).primaryColor), // Color of the underline when focused
+                  ),
+                ),
+              ),
+            ),
+          ),
+          ListTile(
+            title: Text('LastFM API Secret'.i18n),
+            leading: Icon(Icons.warning),
+            trailing: Container(
+              width: 75.0,
+              child: TextField(
+                cursorColor: Theme.of(context).primaryColor,
+                onChanged: (s) async {
+                  settings.lastFMAPISecret = s;
+                  await settings.save();
+                },
+                  decoration: InputDecoration(
+                    floatingLabelStyle: TextStyle(color: Theme.of(context).primaryColor),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).primaryColor), // Color of the underline when focused
+                  ),
+                ),
+              ),
+            ),
+          ),
+          ListTile(
             title: Text('Ignore interruptions'.i18n),
             subtitle: Text('Requires app restart to apply!'.i18n),
             leading: const Icon(Icons.not_interested),
@@ -1311,6 +1391,18 @@ class _GeneralSettingsState extends State<GeneralSettings> {
               value: settings.ignoreInterruptions,
               onChanged: (bool v) async {
                 setState(() => settings.ignoreInterruptions = v);
+                await settings.save();
+              },
+            ),
+          ),
+          ListTile(
+            title: Text('Disable Eastereggs'.i18n),
+            leading: Icon(Icons.egg),
+            trailing: Switch(
+              value: settings.eastereggsDisabled,
+              onChanged: (bool v) async {
+                setState(() => settings.eastereggsDisabled = v);
+                settings.stopRainbowColorUpdates();
                 await settings.save();
               },
             ),
@@ -1340,10 +1432,16 @@ class _GeneralSettingsState extends State<GeneralSettings> {
                         content: Text('Are you sure you want to log out?'.i18n),
                         actions: <Widget>[
                           TextButton(
+                                                      style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
                             child: Text('Cancel'.i18n),
                             onPressed: () => Navigator.of(context).pop(),
                           ),
                           TextButton(
+                                                      style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
                             //child: Text('(ARL ONLY) Continue'.i18n),
                             child: Text('Continue'.i18n),
                             onPressed: () async {
@@ -1396,30 +1494,48 @@ class _LastFMLoginState extends State<LastFMLogin> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
-            decoration: InputDecoration(hintText: 'Username'.i18n),
+            cursorColor: Theme.of(context).primaryColor,
+            decoration: InputDecoration(hintText: 'Username'.i18n,
+            floatingLabelStyle: TextStyle(color: Theme.of(context).primaryColor),
+                              focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                              ),
+            ),
             onChanged: (v) => _username = v,
           ),
           Container(height: 8.0),
           TextField(
+            cursorColor: Theme.of(context).primaryColor,
             obscureText: true,
-            decoration: InputDecoration(hintText: 'Password'.i18n),
+            decoration: InputDecoration(hintText: 'Password'.i18n,
+            floatingLabelStyle: TextStyle(color: Theme.of(context).primaryColor),
+                                          focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                              ),
+            ),
             onChanged: (v) => _password = v,
           )
         ],
       ),
       actions: [
         TextButton(
+                                    style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
           child: Text('Cancel'.i18n),
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
+                                    style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
           child: Text('Login'.i18n),
           onPressed: () async {
             LastFM last;
             try {
               last = await LastFM.authenticate(
-                  apiKey: Env.lastFmApiKey,
-                  apiSecret: Env.lastFmApiSecret,
+                  apiKey: settings.lastFMAPIKey ?? '',
+                  apiSecret: settings.lastFMAPISecret ?? '',
                   username: _username,
                   password: _password);
             } catch (e) {
@@ -1536,12 +1652,12 @@ class _DirectoryPickerState extends State<DirectoryPicker> {
                           builder: (context, snapshot) {
                             if (snapshot.hasError) return const ErrorScreen();
                             if (!snapshot.hasData) {
-                              return const Padding(
+                              return Padding(
                                 padding: EdgeInsets.symmetric(vertical: 8.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    CircularProgressIndicator()
+                                    CircularProgressIndicator(color: Theme.of(context).primaryColor,)
                                   ],
                                 ),
                               );
@@ -1597,8 +1713,8 @@ class _DirectoryPickerState extends State<DirectoryPicker> {
             });
           }
           if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
             );
           }
 
@@ -1661,24 +1777,27 @@ class CreditsScreen extends StatefulWidget {
 class _CreditsScreenState extends State<CreditsScreen> {
   String _version = '';
 
-  static final List<List<String>> translators = [
-    ['Xandar Null', 'Arabic'],
-    ['Markus', 'German'],
-    ['Andrea', 'Italian'],
-    ['Diego Hiro', 'Portuguese'],
-    ['Orfej', 'Russian'],
-    ['Chino Pacia', 'Filipino'],
-    ['ArcherDelta & PetFix', 'Spanish'],
-    ['Shazzaam', 'Croatian'],
-    ['VIRGIN_KLM', 'Greek'],
-    ['koreezzz', 'Korean'],
-    ['Fwwwwwwwwwweze', 'French'],
-    ['kobyrevah', 'Hebrew'],
-    ['HoScHaKaL', 'Turkish'],
-    ['MicroMihai', 'Romanian'],
-    ['LenteraMalam', 'Indonesian'],
-    ['RTWO2', 'Persian']
-  ];
+  // static final List<List<String>> translators = [
+  //   ['Xandar Null', 'Arabic'],
+  //   ['Markus', 'German'],
+  //   ['Andrea', 'Italian'],
+  //   ['Diego Hiro', 'Portuguese'],
+  //   ['Orfej', 'Russian'],
+  //   ['Chino Pacia', 'Filipino'],
+  //   ['ArcherDelta & PetFix', 'Spanish'],
+  //   ['Shazzaam', 'Croatian'],
+  //   ['VIRGIN_KLM', 'Greek'],
+  //   ['koreezzz', 'Korean'],
+  //   ['Fwwwwwwwwwweze', 'French'],
+  //   ['kobyrevah', 'Hebrew'],
+  //   ['HoScHaKaL', 'Turkish'],
+  //   ['MicroMihai', 'Romanian'],
+  //   ['LenteraMalam', 'Indonesian'],
+  //   ['RTWO2', 'Persian']
+  // ];
+static final List<List<String>> translators = [
+];
+
 
   @override
   void initState() {
@@ -1703,134 +1822,71 @@ class _CreditsScreenState extends State<CreditsScreen> {
             style: const TextStyle(fontStyle: FontStyle.italic),
           ),
           const FreezerDivider(),
-          const ListTile(
-            title: Text('DJDoubleD',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text('Developer, tester, new icon & logo, ...'),
-          ),
-          const FreezerDivider(),
-          /*ListTile(
-            title: Text('Telegram Channel'.i18n),
-            subtitle: Text('To get latest releases'.i18n),
-            leading: const Icon(FontAwesome5.telegram, color: Color(0xFF27A2DF), size: 36.0),
+          ListTile(
+            title: Text('bw86'),
+            subtitle: Text('Logo Designer, Developer'),
             onTap: () {
-              launchUrlString('https://t.me/joinchat/Se4zLEBvjS1NCiY9');
-            },
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text('Visit my site!'.i18n),
+                                        content: Text('www.semen.makeup'.i18n),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: Text('AGREE'.i18n),
+                                            style: ButtonStyle(
+                                              foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor)
+                                            ),
+                                            onPressed: () => Navigator.of(context).pop(),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+            }
           ),
           ListTile(
-            title: Text('Telegram Group'.i18n),
-            subtitle: Text('Official chat'.i18n),
-            leading: const Icon(FontAwesome5.telegram, color: Colors.cyan, size: 36.0),
-            onTap: () {
-              launchUrlString('https://t.me/freezerandroid');
-            },
-          ),
-          ListTile(
-            title: Text('Discord'.i18n),
-            subtitle: Text('Official Discord server'.i18n),
-            leading: const Icon(FontAwesome5.discord, color: Color(0xff7289da), size: 36.0),
-            onTap: () {
-              launchUrlString('https://discord.gg/qwJpa3r4dQ');
-            },
-          ),*/
-          ListTile(
-            title: Text('Repository'.i18n),
-            subtitle: Text('Source code, report issues there.'.i18n),
-            leading: const Icon(Icons.code, color: Colors.green, size: 36.0),
-            onTap: () {
-              launchUrlString('https://github.com/DJDoubleD/ReFreezer');
-            },
-          ),
-          ListTile(
-            title: Text('Donate'.i18n),
-            subtitle: Text(
-                'You should rather support your favorite artists, instead of this app!'
-                    .i18n),
-            leading:
-                const Icon(FontAwesome5.paypal, color: Colors.blue, size: 36.0),
-            onTap: () {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text('Donate'.i18n),
-                      content: Text(
-                          'No really, go support your favorite artists instead ;)'
-                              .i18n),
-                      actions: [
-                        TextButton(
-                          child: const Text('OK'),
-                          onPressed: () {
-                            if (context.mounted) Navigator.of(context).pop();
-                          },
-                        )
-                      ],
-                    );
-                  });
-              // launchUrlString('https://paypal.me/exttex');
-            },
-          ),
-          const Padding(padding: EdgeInsets.all(8.0)),
-          const FreezerDivider(),
-          const Padding(padding: EdgeInsets.all(8.0)),
-          const FreezerDivider(),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  //const Icon(Icons.favorite_border),
-                  Image.asset('assets/icon_legacy.png', width: 24, height: 24),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                    child: Text(
-                      'The original freezer development team'.i18n,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          fontSize: 16.0, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  //const Icon(Icons.favorite_border),
-                  Image.asset('assets/icon_legacy.png', width: 24, height: 24),
-                ]),
-          ),
-          const FreezerDivider(),
-          const ListTile(
-            title: Text('exttex'),
+            title: Text('Matt'),
             subtitle: Text('Developer'),
+                        onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text('hiya!! please star the repo'.i18n),
+                                        content: Text('github.com/Ascensionist'.i18n),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: Text('AGREE'.i18n),
+                                            style: ButtonStyle(
+                                              foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor)
+                                            ),
+                                            onPressed: () => Navigator.of(context).pop(),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+            }
           ),
           const ListTile(
-            title: Text('Bas Curtiz'),
-            subtitle: Text('Icon, logo, banner, design suggestions, tester'),
+            title: Text('DJDoubleD'),
+            subtitle: Text('For allowing us to use his updated source & maintained forks of discontinued libs.'),
           ),
           const ListTile(
-            title: Text('Tobs'),
-            subtitle: Text('Alpha testers'),
-          ),
-          const ListTile(
-            title: Text('Deemix'),
-            subtitle: Text('Better app <3'),
-          ),
-          const ListTile(
-            title: Text('Xandar Null'),
-            subtitle: Text('Tester, translations help'),
+            title: Text('ettex, Xander Null, Francesco, Tobs'),
+            subtitle: Text('Original Freezer App'),
           ),
           ListTile(
-            title: const Text('Francesco'),
-            subtitle: const Text('Tester'),
-            onTap: () {
-              setState(() {
-                settings.primaryColor = const Color(0xff333333);
-              });
-              updateTheme();
-              settings.save();
-            },
-          ),
-          const ListTile(
-            title: Text('Annexhack'),
-            subtitle: Text('Android Auto help'),
+            title: Text('Open-Source Licenses & Libraries'),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LicensesScreen()),
+            ),
           ),
           const FreezerDivider(),
+          const Padding(padding: EdgeInsets.all(8.0)),
           ...List.generate(
               translators.length,
               (i) => ListTile(
@@ -1841,6 +1897,59 @@ class _CreditsScreenState extends State<CreditsScreen> {
             padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
             child: Text(
               'Huge thanks to all the contributors! <3'.i18n,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16.0),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class LicensesScreen extends StatefulWidget {
+  const LicensesScreen({super.key});
+
+  @override
+  _LicensesScreenState createState() => _LicensesScreenState();
+}
+
+class _LicensesScreenState extends State<LicensesScreen> {
+
+static final List<List<String>> licenses = [
+  ['Scrobblenaut', 'NPL | DJDoubleD & Nebulino', 'https://github.com/DJDoubleD/Scrobblenaut'],
+  ['move_to_background', 'MIT | DJDoubleD & Coin-ai', 'https://github.com/DJDoubleD/move_to_background'],
+  ['marquee', 'MIT | DJDoubleD & MarcelGarus', 'https://github.com/DJDoubleD/marquee'],
+  ['external_path', 'MIT | DJDoubleD & Siruss187', 'https://github.com/DJDoubleD/external_path'],
+  ['equalizer_flutter', 'MIT | DJDoubleD & nickwph', 'https://github.com/DJDoubleD/equalizer_flutter'],
+  ['custom_navigator', 'MIT | DJDoubleD & justprodev', 'https://github.com/DJDoubleD/custom_navigator'],
+];
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: FreezerAppBar('Open-Source Licenses & Libs'.i18n),
+      body: ListView(
+        children: [
+          ...List.generate(
+              licenses.length,
+              (i) => ListTile(
+                    title: Text(licenses[i][0]),
+                    subtitle: Text(licenses[i][1] + ' | Click to view Repo'),
+                    onTap: () {
+                    launchUrlString(licenses[i][2]);
+                    },
+                  )),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
+            child: Text(
+              'Huge thanks to DJDoubleD & contributors! <3'.i18n,
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 16.0),
             ),

@@ -182,8 +182,8 @@ const language_de_de = {
     'Go up': 'Nach oben',
     'Permission denied': 'Zugriff verweigert',
     'Language': 'Sprache',
-    'Language changed, please restart ReFreezer to apply!':
-        'Sprache geändert, bitte ReFreezer neu starten!',
+    'Language changed, please restart Saturn to apply!':
+        'Sprache geändert, bitte Saturn neu starten!',
     'Importing...': 'Importiere...',
     'Radio': 'Radio',
     //0.5.0 Strings:

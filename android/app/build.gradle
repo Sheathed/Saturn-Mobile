@@ -29,7 +29,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace 'r.r.refreezer'
+    namespace 's.s.saturn'
     compileSdk 34
     //ndkVersion flutter.ndkVersion
     ndkVersion "26.1.10909125"
@@ -38,19 +38,19 @@ android {
     compileOptions {
         // Flag to enable support for the new language APIs
         coreLibraryDesugaringEnabled true
-        // Sets Java compatibility to Java 17
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        // Sets Java compatibility to Java 8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "1.8"
     }
 
     defaultConfig {
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        applicationId "r.r.refreezer"
+        applicationId "s.s.saturn"
         minSdk 21
         targetSdk 34
         versionCode flutterVersionCode.toInteger()
@@ -74,7 +74,7 @@ android {
         }
         debug {
             applicationIdSuffix '.debug'
-            versionNameSuffix ' DEBUG'
+            versionNameSuffix '-DEBUG'
         }
     }
 
@@ -89,7 +89,7 @@ android {
 }
 
 dependencies {
-    implementation files('libs/extension-flac.aar') // Required for older Android versions (< android 10?)
+    implementation files('libs/extension-flac.aar') // Required for older Android version
     implementation("androidx.activity:activity-ktx:1.9.0")
     //implementation group: 'net.jthink', name: 'jaudiotagger', version: '3.0.1' // requires java 8 so no android 6
     implementation group: 'net.jthink', name: 'jaudiotagger', version: '2.2.5'

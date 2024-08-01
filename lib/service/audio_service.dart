@@ -13,7 +13,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:refreezer/utils/env.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:scrobblenaut/scrobblenaut.dart';
 
@@ -29,12 +28,12 @@ Future<AudioPlayerHandler> initAudioService() async {
   return await AudioService.init(
     builder: () => AudioPlayerHandler(),
     config: const AudioServiceConfig(
-        androidNotificationChannelId: 'r.r.refreezer.audio',
-        androidNotificationChannelName: 'ReFreezer',
+        androidNotificationChannelId: 's.s.saturn.audio',
+        androidNotificationChannelName: 'Saturn',
         androidNotificationOngoing: true,
         androidStopForegroundOnPause: true,
         androidNotificationClickStartsActivity: true,
-        androidNotificationChannelDescription: 'ReFreezer',
+        androidNotificationChannelDescription: 'Saturn',
         androidNotificationIcon: 'drawable/ic_logo'),
   );
 }
@@ -720,8 +719,8 @@ class AudioPlayerHandler extends BaseAudioHandler
     String password = settings.lastFMPassword ?? '';
     try {
       LastFM lastFM = await LastFM.authenticateWithPasswordHash(
-          apiKey: Env.lastFmApiKey,
-          apiSecret: Env.lastFmApiSecret,
+          apiKey: settings.lastFMAPIKey ?? '',
+          apiSecret: settings.lastFMAPISecret ?? '',
           username: username,
           passwordHash: password);
       _scrobblenaut = Scrobblenaut(lastFM: lastFM);

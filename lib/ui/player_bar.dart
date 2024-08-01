@@ -139,6 +139,7 @@ class _PlayerBarState extends State<PlayerBar> {
                 SizedBox(
                   height: 3.0,
                   child: LinearProgressIndicator(
+                    color: Theme.of(context).primaryColor,
                     backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
                     value: _progress,
                   ),
@@ -280,7 +281,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with SingleTickerProv
               child: Center(
                 child: Transform.scale(
                   scale: 0.85, // Adjust the scale to 75% of the original size
-                  child: const CircularProgressIndicator(),
+                  child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
                 ),
               ),
             );

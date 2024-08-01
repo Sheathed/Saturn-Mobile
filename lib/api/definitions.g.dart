@@ -218,6 +218,20 @@ Map<String, dynamic> _$ImageDetailsToJson(ImageDetails instance) =>
       'imageHash': instance.imageHash,
     };
 
+FlowImage _$FlowImageFromJson(Map<String, dynamic> json) => FlowImage(
+      fullUrl: json['fullUrl'] as String?,
+      thumbUrl: json['thumbUrl'] as String?,
+      type: json['type'] as String?,
+      imageHash: json['imageHash'] as String?,
+    );
+
+Map<String, dynamic> _$FlowImageToJson(FlowImage instance) => <String, dynamic>{
+      'fullUrl': instance.fullUrl,
+      'thumbUrl': instance.thumbUrl,
+      'type': instance.type,
+      'imageHash': instance.imageHash,
+    };
+
 LogoDetails _$LogoDetailsFromJson(Map<String, dynamic> json) => LogoDetails(
       fullUrl: json['fullUrl'] as String?,
       thumbUrl: json['thumbUrl'] as String?,
@@ -410,7 +424,7 @@ DeezerFlow _$DeezerFlowFromJson(Map<String, dynamic> json) => DeezerFlow(
       target: json['target'] as String?,
       cover: json['cover'] == null
           ? null
-          : ImageDetails.fromJson(json['cover'] as Map<String, dynamic>),
+          : FlowImage.fromJson(json['cover'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$DeezerFlowToJson(DeezerFlow instance) =>

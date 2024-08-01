@@ -7,6 +7,7 @@ import 'package:fluttericon/typicons_icons.dart';
 import 'package:get_it/get_it.dart';
 
 import '../api/cache.dart';
+import '../settings.dart';
 import '../api/deezer.dart';
 import '../api/definitions.dart';
 import '../api/download.dart';
@@ -205,6 +206,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           }
                         },
                         child: TextField(
+                          cursorColor: Theme.of(context).primaryColor,
                           onChanged: (String s) {
                             setState(() {
                               _showCards = false;
@@ -225,12 +227,57 @@ class _SearchScreenState extends State<SearchScreen> {
                                 borderSide: BorderSide(color: Colors.grey)),
                             enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.grey)),
+                            floatingLabelStyle: TextStyle(color: Theme.of(context).primaryColor),
                           ),
                           controller: _controller,
                           textInputAction: TextInputAction.search,
                           onSubmitted: (String s) {
-                            _submit(context, query: s);
-                            _textFieldFocusNode.unfocus();
+                                if (s.toLowerCase().contains('gay')) {
+                                if (settings.eastereggsDisabled) {
+                                  // If eastereggs are disabled, skip the dialog and directly call _submit
+                                  _submit(context, query: s);
+                                  _textFieldFocusNode.unfocus();
+                                } else {
+                                  // Show the dialog
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text('Are you sure?'.i18n),
+                                        content: Text('Continuing may result in rainbows and gay people!'.i18n),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: Text('Get me out!'.i18n),
+                                            onPressed: () => Navigator.of(context).pop(),
+                                                    style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
+                                          ),
+                                          TextButton(
+                                            child: Text('Yes I\'m sure!'.i18n),
+                                                    style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+         ),
+                                            onPressed: () async {
+                                              Navigator.of(context).pop(); // Close the dialog
+                                              _submit(context, query: s); // Handle the normal submission
+                                              _textFieldFocusNode.unfocus();
+
+                                              // Add a 10-second delay before calling startRainbowColorUpdates
+                                              await Future.delayed(Duration(seconds: 10));
+                                              settings.startRainbowColorUpdates();
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              } else {
+                                // Handle the query normally if it doesn't contain "gay"
+                                _submit(context, query: s);
+                                _textFieldFocusNode.unfocus();
+                              }
                           },
                         ),
                       ),
@@ -277,7 +324,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 },
               ),
             ),
-            if (_loading) const LinearProgressIndicator(),
+            if (_loading) LinearProgressIndicator(color: Theme.of(context).primaryColor, backgroundColor: Theme.of(context).dividerColor),
             const FreezerDivider(),
 
             //"Browse" Cards
@@ -526,8 +573,8 @@ class SearchResultsScreen extends StatelessWidget {
           future: _search(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
               );
             }
             if (snapshot.hasError) return const ErrorScreen();

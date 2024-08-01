@@ -2,17 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:logging/logging.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../api/cache.dart';
 import '../api/download.dart';
@@ -29,112 +27,90 @@ class UpdaterScreen extends StatefulWidget {
 }
 
 class _UpdaterScreenState extends State<UpdaterScreen> {
-  static const MethodChannel _platform = MethodChannel('r.r.refreezer/native');
   bool _loading = true;
   bool _error = false;
-  ReFreezerLatest? _latestRelease;
-  Version _currentVersion = Version.parse('0.0.0');
+  FreezerVersions? _versions;
+  String? _current;
   String? _arch;
   double _progress = 0.0;
   bool _buttonEnabled = true;
 
-  static Future<bool> _checkInstallPackagesPermission() async {
-    try {
-      return await _platform.invokeMethod('checkInstallPackagesPermission');
-    } catch (e) {
-      Logger.root.severe('Failed to check install packages permission', e);
-      return false;
+  Future<void> _checkInstallPackagesPermission() async {
+    if (await Permission.requestInstallPackages.isDenied) {
+      final status = await Permission.requestInstallPackages.request();
+      if (!status.isGranted) {
+        throw Exception('Permission to install packages not granted');
+      }
     }
   }
 
-  static Future<void> _requestInstallPackagesPermission() async {
-    try {
-      await _platform.invokeMethod('requestInstallPackagesPermission');
-    } catch (e) {
-      Logger.root.severe('Failed to request install packages permission', e);
-    }
-  }
-
-  Future _load() async {
-    // Load current version (convert DEBUG mode to SemVer)
+  Future<void> _load() async {
+    // Load current version
     PackageInfo info = await PackageInfo.fromPlatform();
-    String versionString = info.version.replaceFirst(' DEBUG', '-debug');
+    setState(() => _current = info.version);
 
-    // Parse the version string
-    setState(() {
-      _currentVersion =
-          Version.tryParse(versionString) ?? Version.parse('0.0.0');
-    });
-
-    //Get architecture
+    // Get architecture
     _arch = await DownloadManager.platform.invokeMethod('arch');
+    if (_arch == 'armv8l') _arch = 'arm32';
 
-    //Load from website
+    // Load from website
     try {
-      ReFreezerLatest latestRelease = await ReFreezerLatest.fetch();
+      FreezerVersions versions = await FreezerVersions.fetch();
       setState(() {
-        _latestRelease = latestRelease;
+        _versions = versions;
         _loading = false;
       });
     } catch (e, st) {
-      Logger.root.severe('Failed to load latest release', e, st);
-      _error = true;
-      _loading = false;
+      if (kDebugMode) {
+        print(e.toString() + st.toString());
+      }
+      setState(() {
+        _error = true;
+        _loading = false;
+      });
     }
   }
 
-  ReFreezerDownload? get _versionDownload {
-    return _latestRelease?.downloads.firstWhereOrNull(
-      (d) => d.architectures
-          .any((arch) => arch.toLowerCase() == _arch?.toLowerCase()),
-    );
+  FreezerDownload? get _versionDownload {
+    return _versions?.versions[0].downloads.firstWhere((d) => d.version.toLowerCase().contains(_arch!.toLowerCase()));
   }
 
-  Future _download() async {
-    if (!await _checkInstallPackagesPermission()) {
-      await _requestInstallPackagesPermission();
-    }
-
+  Future<void> _download() async {
     try {
+      await _checkInstallPackagesPermission();
+
       String? url = _versionDownload?.directUrl;
       if (url == null) {
-        throw Exception('No compatible download available');
+        print("No URL available for download");
+        return;
       }
-      //Start request
+
+      // Start request
       http.Client client = http.Client();
-      http.StreamedResponse res =
-          await client.send(http.Request('GET', Uri.parse(url)));
+      http.StreamedResponse res = await client.send(http.Request('GET', Uri.parse(url)));
       int? size = res.contentLength;
-      //Open file
-      String path =
-          p.join((await getExternalStorageDirectory())!.path, 'update.apk');
+
+      // Open file
+      String path = p.join((await getExternalStorageDirectory())!.path, 'update.apk');
       File file = File(path);
       IOSink fileSink = file.openWrite();
-      //Update progress
+
+      // Update progress
       Future.doWhile(() async {
         int received = await file.length();
         setState(() => _progress = received / size!.toInt());
         return received != size;
       });
-      //Pipe
+
+      // Pipe
       await res.stream.pipe(fileSink);
-      fileSink.close();
+      await fileSink.close();
 
       OpenFilex.open(path);
-      setState(() {
-        _buttonEnabled = true;
-        _progress = 0.0;
-      });
+      setState(() => _buttonEnabled = true);
     } catch (e) {
-      Logger.root.severe('Failed to download latest release file', e);
-      Fluttertoast.showToast(
-          msg: 'Download failed!'.i18n,
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM);
-      setState(() {
-        _progress = 0.0;
-        _buttonEnabled = true;
-      });
+      print('Error during download: $e');
+      setState(() => _buttonEnabled = true);
     }
   }
 
@@ -152,69 +128,51 @@ class _UpdaterScreenState extends State<UpdaterScreen> {
           children: [
             if (_error) const ErrorScreen(),
             if (_loading)
-              const Padding(
+              Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [CircularProgressIndicator()],
+                  children: [CircularProgressIndicator(color: Theme.of(context).primaryColor,)],
                 ),
               ),
             if (!_error &&
                 !_loading &&
-                (_latestRelease?.version ?? Version(0, 0, 0)) <=
-                    _currentVersion)
+                Version.parse((_versions?.latest.toString() ?? '0.0.0')) <= Version.parse(_current!))
               Center(
                   child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text('You are running latest version!'.i18n,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 26.0)),
+                    textAlign: TextAlign.center, style: const TextStyle(fontSize: 26.0)),
               )),
             if (!_error &&
                 !_loading &&
-                (_latestRelease?.version ?? Version(0, 0, 0)) > _currentVersion)
+                Version.parse((_versions?.latest.toString() ?? '0.0.0')) > Version.parse(_current!))
               Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'New update available!'.i18n +
-                          ' ' +
-                          _latestRelease!.version.toString(),
+                      'New update available!'.i18n + ' ' + _versions!.latest.toString(),
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                     ),
                   ),
                   Text(
-                    'Current version: ' + _currentVersion.toString(),
-                    style: const TextStyle(
-                        fontSize: 14.0, fontStyle: FontStyle.italic),
+                    'Current version: ' + _current!,
+                    style: const TextStyle(fontSize: 14.0, fontStyle: FontStyle.italic),
                   ),
                   Container(height: 8.0),
                   const FreezerDivider(),
                   Container(height: 8.0),
                   const Text(
                     'Changelog',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
-                  Container(height: 8.0),
-                  const FreezerDivider(),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
-                    /*child: Text(
-                      _latestRelease?.changelog ?? '',
+                    child: Text(
+                      _versions!.versions[0].changelog,
                       style: const TextStyle(fontSize: 16.0),
-                    ),*/
-                    child: Container(
-                      constraints: const BoxConstraints(
-                          maxHeight: 350 // Screen Title height, ...
-                          ),
-                      child: Markdown(
-                        data: _latestRelease?.changelog ?? '',
-                        shrinkWrap: true,
-                      ),
                     ),
                   ),
                   const FreezerDivider(),
@@ -223,8 +181,8 @@ class _UpdaterScreenState extends State<UpdaterScreen> {
                   if (_versionDownload != null)
                     Column(children: [
                       ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).primaryColor,
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll<Color>(Theme.of(context).primaryColor),
                           ),
                           onPressed: _buttonEnabled
                               ? () {
@@ -232,14 +190,10 @@ class _UpdaterScreenState extends State<UpdaterScreen> {
                                   _download();
                                 }
                               : null,
-                          child: Text(
-                              'Download'.i18n + ' (${_versionDownload?.abi})')),
+                          child: Text('Download'.i18n + ' (${_versionDownload?.version})')),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: LinearProgressIndicator(
-                          value: _progress,
-                          color: Theme.of(context).primaryColor,
-                        ),
+                        child: LinearProgressIndicator(value: _progress, color: Theme.of(context).primaryColor, backgroundColor: Theme.of(context).dividerColor),
                       )
                     ]),
                   //Unsupported arch
@@ -256,130 +210,78 @@ class _UpdaterScreenState extends State<UpdaterScreen> {
   }
 }
 
-class ReFreezerLatest {
-  final String versionString;
-  final Version version;
-  final String changelog;
-  final List<ReFreezerDownload> downloads;
+class FreezerVersions {
+  String latest;
+  List<FreezerVersion> versions;
 
-  static const Map<String, List<String>> abiMap = {
-    'arm64-v8a': ['arm64', 'aarch64'],
-    'armeabi-v7a': ['arm32', 'armhf', 'armv8l'],
-    'x86_64': ['x86_64'],
-  };
+  FreezerVersions({required this.latest, required this.versions});
 
-  ReFreezerLatest({
-    required this.versionString,
-    required this.changelog,
-    required this.downloads,
-  }) : version = Version.tryParse(versionString) ?? Version.parse('0.0.0');
+  factory FreezerVersions.fromJson(Map data) => FreezerVersions(
+      latest: data['android']['latest'],
+      versions: data['android']['versions'].map<FreezerVersion>((v) => FreezerVersion.fromJson(v)).toList());
 
-  static Future<ReFreezerLatest> fetch() async {
-    http.Response res = await http.get(
-      Uri.parse(
-          'https://api.github.com/repos/DJDoubleD/refreezer/releases/latest'),
-      headers: {'Accept': 'application/vnd.github.v3+json'},
-    );
-
-    if (res.statusCode != 200) {
-      throw Exception(
-          'Failed to load latest version from Github API: $res.statusCode $res.statusMessage');
-    }
-
-    Map<String, dynamic> data = jsonDecode(res.body);
-
-    List<ReFreezerDownload> downloads = (data['assets'] as List)
-        .map((asset) {
-          String abi = abiMap.keys.firstWhere(
-            (key) => asset['name'].contains(key),
-            orElse: () => 'unknown',
-          );
-          return ReFreezerDownload(
-            abi: abi,
-            directUrl: asset['browser_download_url'],
-          );
-        })
-        .where((download) => download.abi != 'unknown')
-        .toList();
-
-    return ReFreezerLatest(
-      versionString: data['tag_name'],
-      changelog: data['body'],
-      downloads: downloads,
-    );
+  //Fetch from website API
+  static Future<FreezerVersions> fetch() async {
+    http.Response response = await http.get(Uri.parse('https://saturn.kim/api/versions'));
+    return FreezerVersions.fromJson(jsonDecode(response.body));
   }
 
-  static Future<void> checkUpdate() async {
-    final now = DateTime.now().millisecondsSinceEpoch;
-
-    // Check every 24 hours
-    if (now - (cache.lastUpdateCheck ?? 0) <=
-        const Duration(hours: 24).inMilliseconds) {
-      return;
-    }
-    cache.lastUpdateCheck = now;
+  static Future checkUpdate() async {
+    //Check only each 24h
+    int updateDelay = 86400000;
+    if ((DateTime.now().millisecondsSinceEpoch - (cache.lastUpdateCheck ?? 0)) < updateDelay) return;
+    cache.lastUpdateCheck = DateTime.now().millisecondsSinceEpoch;
     await cache.save();
 
-    try {
-      final latestVersion = await fetch();
+    FreezerVersions versions = await FreezerVersions.fetch();
 
-      //Load current version
-      final packageInfo = await PackageInfo.fromPlatform();
-      final currentVersion =
-          Version.tryParse(packageInfo.version) ?? Version.parse('0.0.0');
+    //Load current version
+    PackageInfo info = await PackageInfo.fromPlatform();
+    if (Version.parse(versions.latest) <= Version.parse(info.version)) return;
 
-      if (latestVersion.version <= currentVersion) return;
+    //Get architecture
+    String arch = await DownloadManager.platform.invokeMethod('arch');
+    if (arch == 'armv8l') arch = 'arm32';
+    //Check compatible architecture
+    var compatibleVersion =
+        versions.versions[0].downloads.firstWhereOrNull((d) => d.version.toLowerCase().contains(arch.toLowerCase()));
+    if (compatibleVersion == null) return;
 
-      //Get architecture
-      String arch = await DownloadManager.platform.invokeMethod('arch');
-      Logger.root
-          .info('Checking for updates to version $currentVersion on $arch');
-
-      if (!latestVersion.downloads.any((download) => download.architectures.any(
-          (architecture) =>
-              architecture.toLowerCase() == arch.toLowerCase()))) {
-        Logger.root.warning('No assets found for architecture $arch');
-        return;
-      }
-
-      //Show notification
-      FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-          FlutterLocalNotificationsPlugin();
-      const AndroidInitializationSettings androidInitializationSettings =
-          AndroidInitializationSettings('drawable/ic_logo');
-      const InitializationSettings initializationSettings =
-          InitializationSettings(
-              android: androidInitializationSettings, iOS: null);
-      await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-
-      AndroidNotificationDetails androidNotificationDetails =
-          AndroidNotificationDetails(
-        'freezerupdates',
-        'Freezer Updates'.i18n,
-        channelDescription: 'Freezer Updates'.i18n,
-        importance: Importance.high,
-        priority: Priority.high,
-      );
-
-      NotificationDetails notificationDetails =
-          NotificationDetails(android: androidNotificationDetails, iOS: null);
-
-      await flutterLocalNotificationsPlugin.show(
-          0,
-          'New update available!'.i18n,
-          'Update to latest version in the settings.'.i18n,
-          notificationDetails);
-    } catch (e) {
-      Logger.root.severe('Error checking for updates', e);
-    }
+    //Show notification
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    const AndroidInitializationSettings androidInitializationSettings =
+        AndroidInitializationSettings('drawable/ic_logo');
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: androidInitializationSettings);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
+        'freezerupdates', 'Freezer Updates'.i18n,
+        channelDescription: 'Freezer Updates'.i18n);
+    NotificationDetails notificationDetails = NotificationDetails(android: androidNotificationDetails);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'New update available!'.i18n, 'Update to latest version in the settings.'.i18n, notificationDetails);
   }
 }
 
-class ReFreezerDownload {
-  final String abi;
-  final String directUrl;
-  final List<String> architectures;
+class FreezerVersion {
+  String version;
+  String changelog;
+  List<FreezerDownload> downloads;
 
-  ReFreezerDownload({required this.abi, required this.directUrl})
-      : architectures = ReFreezerLatest.abiMap[abi] ?? [abi];
+  FreezerVersion({required this.version, required this.changelog, required this.downloads});
+
+  factory FreezerVersion.fromJson(Map data) => FreezerVersion(
+      version: data['version'],
+      changelog: data['changelog'],
+      downloads: data['downloads'].map<FreezerDownload>((d) => FreezerDownload.fromJson(d)).toList());
+}
+
+class FreezerDownload {
+  String version;
+  String directUrl;
+
+  FreezerDownload({required this.version, required this.directUrl});
+
+  factory FreezerDownload.fromJson(Map data) =>
+      FreezerDownload(version: data['version'], directUrl: data['links'].first['url']);
 }

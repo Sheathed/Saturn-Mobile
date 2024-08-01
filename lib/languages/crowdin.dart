@@ -175,7 +175,7 @@ const crowdin = {
     'Go up': 'اذهب للأعلى',
     'Permission denied': 'طلب الاذن مرفوض',
     'Language': 'اللغة',
-    'Language changed, please restart ReFreezer to apply!':
+    'Language changed, please restart Saturn to apply!':
         'تم تغيير اللغة، الرجاء إعادة تشغيل فريزر لتطبيق!',
     'Importing...': 'جار الاستيراد...',
     'Radio': 'راديو',
@@ -312,7 +312,7 @@ const crowdin = {
     'Genre': 'الصنف',
     'Contributors': 'المساهمون',
     'Album art': 'صورة الألبوم',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
         'ديزر غير متوفر في بلدك، قد لا يعمل فريزر بشكل صحيح. الرجاء استخدام VPN',
     'Deezer is unavailable': 'ديزر غير متوفر',
     'Continue': 'استمرار',
@@ -559,8 +559,8 @@ const crowdin = {
     'Go up': 'Xubir',
     'Permission denied': "Negóse'l permisu",
     'Language': 'Llingua',
-    'Language changed, please restart ReFreezer to apply!':
-        "La llingua camudó, reanicia ReFreezer p'aplicar los cambeos.",
+    'Language changed, please restart Saturn to apply!':
+        "La llingua camudó, reanicia Saturn p'aplicar los cambeos.",
     'Importing...': 'Importando…',
     'Radio': 'Radio',
     'Flow': 'Flow',
@@ -701,8 +701,8 @@ const crowdin = {
     'Genre': 'Xéneru',
     'Contributors': 'Collaboradores',
     'Album art': 'Portada del álbum',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer nun ta disponible nel to país y ReFreezer pue nun funcionar afayadizamente. Usa una VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer nun ta disponible nel to país y Saturn pue nun funcionar afayadizamente. Usa una VPN',
     'Deezer is unavailable': 'Deezer nun ta disponible',
     'Continue': 'Continue',
     'Email Login': 'Email Login',
@@ -948,8 +948,8 @@ const crowdin = {
     'Go up': 'Go up',
     'Permission denied': 'Permission denied',
     'Language': 'Language',
-    'Language changed, please restart ReFreezer to apply!':
-        'Language changed, please restart ReFreezer to apply!',
+    'Language changed, please restart Saturn to apply!':
+        'Language changed, please restart Saturn to apply!',
     'Importing...': 'Importing...',
     'Radio': 'Radio',
     'Flow': 'Flow',
@@ -1087,8 +1087,8 @@ const crowdin = {
     'Genre': 'Жанр',
     'Contributors': 'Сътрудници',
     'Album art': 'Обложка на албума',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer не е достъпен във вашата държава и в последствие някои функционалности на ReFreezer може да не са използваеми. Моля, ползвайте VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer не е достъпен във вашата държава и в последствие някои функционалности на Saturn може да не са използваеми. Моля, ползвайте VPN',
     'Deezer is unavailable': 'Deezer не е достъпен',
     'Continue': 'Продължаване',
     'Email Login': 'Влизане с е-поща',
@@ -1324,7 +1324,7 @@ const crowdin = {
     'Go up': '向上一级',
     'Permission denied': '获取权限失败',
     'Language': '语言',
-    'Language changed, please restart ReFreezer to apply!': '语言已更改，请重启生效',
+    'Language changed, please restart Saturn to apply!': '语言已更改，请重启生效',
     'Importing...': '正在导入中',
     'Radio': '电台',
     'Flow': 'Flow',
@@ -1455,8 +1455,8 @@ const crowdin = {
     'Genre': '乐种',
     'Contributors': '贡献者',
     'Album art': '专辑封面',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN',
     'Deezer is unavailable': 'Deezer is unavailable',
     'Continue': 'Continue',
     'Email Login': 'Email Login',
@@ -1701,8 +1701,8 @@ const crowdin = {
     'Go up': 'Idi gore',
     'Permission denied': 'Dopuštenje odbijeno',
     'Language': 'Jezik',
-    'Language changed, please restart ReFreezer to apply!':
-        'Jezik je promijenjen, molimo vas da ponovno pokrenete ReFreezer kako bi se promjene primijenile!',
+    'Language changed, please restart Saturn to apply!':
+        'Jezik je promijenjen, molimo vas da ponovno pokrenete Saturn kako bi se promjene primijenile!',
     'Importing...': 'Uvoz...',
     'Radio': 'Radio',
     'Flow': 'Flow',
@@ -1842,8 +1842,8 @@ const crowdin = {
     'Genre': 'Žanr',
     'Contributors': 'Suradnici',
     'Album art': 'Omot albuma',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer nije dostupan u vašoj zemlji, ReFreezer možda neće pravilno funkcionirati. Molimo koristite VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer nije dostupan u vašoj zemlji, Saturn možda neće pravilno funkcionirati. Molimo koristite VPN',
     'Deezer is unavailable': 'Deezer je nedostupan',
     'Continue': 'Nastavi',
     'Email Login': 'Email prijava',
@@ -2090,8 +2090,8 @@ const crowdin = {
     'Go up': 'Go up',
     'Permission denied': 'Permission denied',
     'Language': 'Language',
-    'Language changed, please restart ReFreezer to apply!':
-        'Language changed, please restart ReFreezer to apply!',
+    'Language changed, please restart Saturn to apply!':
+        'Language changed, please restart Saturn to apply!',
     'Importing...': 'Importing...',
     'Radio': 'Radio',
     'Flow': 'Flow',
@@ -2229,8 +2229,8 @@ const crowdin = {
     'Genre': 'Genre',
     'Contributors': 'Contributors',
     'Album art': 'Album art',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN',
     'Deezer is unavailable': 'Deezer is unavailable',
     'Continue': 'Continue',
     'Email Login': 'Email Login',
@@ -2475,8 +2475,8 @@ const crowdin = {
     'Go up': 'Omhoog gaan',
     'Permission denied': 'Toegang geweigerd',
     'Language': 'Taal',
-    'Language changed, please restart ReFreezer to apply!':
-        'Taal veranderd, herstart ReFreezer om het toe te passen!',
+    'Language changed, please restart Saturn to apply!':
+        'Taal veranderd, herstart Saturn om het toe te passen!',
     'Importing...': 'Bezig met importeren...',
     'Radio': 'Radio',
     'Flow': 'Flow',
@@ -2616,8 +2616,8 @@ const crowdin = {
     'Genre': 'Genre',
     'Contributors': 'Bijdragers',
     'Album art': 'Album afbeelding',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer is niet beschikbaar in jouw land, ReFreezer werkt mogelijk niet correct. Gebruik een VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer is niet beschikbaar in jouw land, Saturn werkt mogelijk niet correct. Gebruik een VPN',
     'Deezer is unavailable': 'Deezer is niet beschikbaar',
     'Continue': 'Ga door',
     'Email Login': 'E-mail login',
@@ -2861,8 +2861,8 @@ const crowdin = {
     'Go up': 'Go up',
     'Permission denied': 'Pewmission denyied',
     'Language': "Wanguage (Don't change me >w<)",
-    'Language changed, please restart ReFreezer to apply!':
-        "Language changed, please restart ReFreezer to apply! (you changed me, nyow I'm gonnya k-kill youw famiwy uwu)",
+    'Language changed, please restart Saturn to apply!':
+        "Language changed, please restart Saturn to apply! (you changed me, nyow I'm gonnya k-kill youw famiwy uwu)",
     'Importing...': 'I-I-Impowting...',
     'Radio': 'Wadio',
     'Flow': 'Flow',
@@ -3001,8 +3001,8 @@ const crowdin = {
     'Genre': 'Genwe',
     'Contributors': 'Contwibutows',
     'Album art': 'Awbum awt',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN',
     'Deezer is unavailable': 'Deezer is unavailable',
     'Continue': 'Continue',
     'Email Login': 'Email Login',
@@ -3248,7 +3248,7 @@ const crowdin = {
     'Go up': 'Pumunta paitaas',
     'Permission denied': 'Hindi pinapayagan',
     'Language': 'Wika',
-    'Language changed, please restart ReFreezer to apply!':
+    'Language changed, please restart Saturn to apply!':
         'Pinalitan ang wika, paki-restart ang Deezer para mai-apply!',
     'Importing...': 'Ini-import...',
     'Radio': 'Radyo',
@@ -3390,8 +3390,8 @@ const crowdin = {
     'Genre': 'Genre',
     'Contributors': 'Contributors',
     'Album art': 'Album art',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN',
     'Deezer is unavailable': 'Deezer is unavailable',
     'Continue': 'Continue',
     'Email Login': 'Email Login',
@@ -3639,8 +3639,8 @@ const crowdin = {
     'Go up': 'Remonter',
     'Permission denied': 'Autorisation refusée',
     'Language': 'Langue',
-    'Language changed, please restart ReFreezer to apply!':
-        'Langue modifiée, veuillez redémarrer ReFreezer pour que les changements prennent effet!',
+    'Language changed, please restart Saturn to apply!':
+        'Langue modifiée, veuillez redémarrer Saturn pour que les changements prennent effet!',
     'Importing...': 'Importation...',
     'Radio': 'Radio',
     'Flow': 'Flow',
@@ -3782,8 +3782,8 @@ const crowdin = {
     'Genre': 'Genre',
     'Contributors': 'Contributeurs',
     'Album art': "Pochette d'album",
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        "Deezer n'est pas disponible dans votre pays, ReFreezer pourrait ne pas fonctionner correctement. Veuillez utiliser un VPN",
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        "Deezer n'est pas disponible dans votre pays, Saturn pourrait ne pas fonctionner correctement. Veuillez utiliser un VPN",
     'Deezer is unavailable': "Freezer n'est pas disponible",
     'Continue': 'Continuer',
     'Email Login': 'Connexion par email',
@@ -4030,8 +4030,8 @@ const crowdin = {
     'Go up': 'Nach oben',
     'Permission denied': 'Zugriff verweigert',
     'Language': 'Sprache',
-    'Language changed, please restart ReFreezer to apply!':
-        'Sprache geändert, bitte ReFreezer neu starten!',
+    'Language changed, please restart Saturn to apply!':
+        'Sprache geändert, bitte Saturn neu starten!',
     'Importing...': 'Importiere...',
     'Radio': 'Radio',
     'Flow': 'Flow',
@@ -4170,8 +4170,8 @@ const crowdin = {
     'Genre': 'Genre',
     'Contributors': 'Mitwirkende',
     'Album art': 'Album-Cover',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer ist in deinem Land nicht verfügbar, ReFreezer funktioniert möglicherweise nicht richtig. Bitte benutzen Sie ein VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer ist in deinem Land nicht verfügbar, Saturn funktioniert möglicherweise nicht richtig. Bitte benutzen Sie ein VPN',
     'Deezer is unavailable': 'Deezer ist nicht verfügbar',
     'Continue': 'Weiter',
     'Email Login': 'E-Mail - Login',
@@ -4420,8 +4420,8 @@ const crowdin = {
     'Go up': 'Πήγαινε πάνω',
     'Permission denied': 'Η άδεια απορρίφθηκε',
     'Language': 'Γλώσσα',
-    'Language changed, please restart ReFreezer to apply!':
-        'Η γλώσσα άλλαξε, κάντε επανεκκίνηση του ReFreezer για εφαρμογή!',
+    'Language changed, please restart Saturn to apply!':
+        'Η γλώσσα άλλαξε, κάντε επανεκκίνηση του Saturn για εφαρμογή!',
     'Importing...': 'Εισαγωγή...',
     'Radio': 'Ραδιόφωνο',
     'Flow': 'Flow',
@@ -4564,7 +4564,7 @@ const crowdin = {
     'Genre': 'Είδος',
     'Contributors': 'Συντελεστές',
     'Album art': 'Εξώφυλλο άλμπουμ',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
         'Το Deezer δεν είναι διαθέσιμο στη χώρα σας και μπορεί να μην λειτουργεί σωστά. Παρακαλούμε χρησιμοποιήστε ένα VPN',
     'Deezer is unavailable': 'Το Deezer δεν είναι διαθέσιμο',
     'Continue': 'Συνέχεια',
@@ -4809,8 +4809,8 @@ const crowdin = {
     'Go up': 'עלה למעלה',
     'Permission denied': 'הרשאה נדחתה',
     'Language': 'שפה',
-    'Language changed, please restart ReFreezer to apply!':
-        'שפה שונתה, בבקשה הפעל מחדש את ReFreezer כדי להחיל!',
+    'Language changed, please restart Saturn to apply!':
+        'שפה שונתה, בבקשה הפעל מחדש את Saturn כדי להחיל!',
     'Importing...': 'מייבא...',
     'Radio': 'רדיו',
     'Flow': 'Flow',
@@ -4946,8 +4946,8 @@ const crowdin = {
     'Genre': "ז'אנר",
     'Contributors': 'תורמים',
     'Album art': 'עטיפת אלבום',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer לא זמין במדינתך, לכן ReFreezer כנראה לא יפעל כראוי. אנא השתמש ב־VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer לא זמין במדינתך, לכן Saturn כנראה לא יפעל כראוי. אנא השתמש ב־VPN',
     'Deezer is unavailable': 'Deezer לא זמין',
     'Continue': 'המשך',
     'Email Login': 'כניסה באמצעות דוא\"ל',
@@ -5192,7 +5192,7 @@ const crowdin = {
     'Go up': 'ऊपर जाना',
     'Permission denied': 'अनुमति नहीं मिली',
     'Language': 'भाषा',
-    'Language changed, please restart ReFreezer to apply!':
+    'Language changed, please restart Saturn to apply!':
         'भाषा बदली गई, कृपया आवेदन करने के लिए फ्रीजर को फिर से शुरू करें!',
     'Importing...': 'आयात किया जा रहा है...',
     'Radio': 'रेडियो',
@@ -5332,7 +5332,7 @@ const crowdin = {
     'Genre': 'शैली',
     'Contributors': 'योगदानकर्ताओं',
     'Album art': 'एलबम कला',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
         'आपके देश में डीज़र उपलब्ध नहीं है, हो सकता है कि फ्रीजर ठीक से काम न करे। कृपया एक वीपीएन का उपयोग करें',
     'Deezer is unavailable': 'डीज़र अनुपलब्ध है',
     'Continue': 'जारी रखें',
@@ -5580,7 +5580,7 @@ const crowdin = {
     'Go up': 'Menjen fel',
     'Permission denied': 'Hozzáférés megtagadva',
     'Language': 'Nyelv',
-    'Language changed, please restart ReFreezer to apply!':
+    'Language changed, please restart Saturn to apply!':
         'A nyelv megváltozott, kérem indítsa újra a Freezer-t az alkalmazáshoz!',
     'Importing...': 'Importálás...',
     'Radio': 'Rádió',
@@ -5723,8 +5723,8 @@ const crowdin = {
     'Genre': 'Műfaj',
     'Contributors': 'Közreműködők',
     'Album art': 'Borítókép',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'A Deezer nem elérhető az Ön országában, ezért a ReFreezer nem biztos hogy működni fog. Kérjük használjon VPN-t.',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'A Deezer nem elérhető az Ön országában, ezért a Saturn nem biztos hogy működni fog. Kérjük használjon VPN-t.',
     'Deezer is unavailable': 'A Deezer nem elérhető',
     'Continue': 'Tovább',
     'Email Login': 'Emailes belépés',
@@ -5973,7 +5973,7 @@ const crowdin = {
     'Go up': 'Ke Atas',
     'Permission denied': 'Akses dilarang',
     'Language': 'Bahasa',
-    'Language changed, please restart ReFreezer to apply!':
+    'Language changed, please restart Saturn to apply!':
         'Bahasa diganti, Mulai ulang aplikasi untuk menerapkannya!',
     'Importing...': 'Mengimpor...',
     'Radio': 'Radio',
@@ -6113,8 +6113,8 @@ const crowdin = {
     'Genre': 'Genre',
     'Contributors': 'Kontributor',
     'Album art': 'Gambar album',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer tidak tersedia di negara Anda, ReFreezer mungkin tidak berfungsi dengan baik. Mohon gunakan VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer tidak tersedia di negara Anda, Saturn mungkin tidak berfungsi dengan baik. Mohon gunakan VPN',
     'Deezer is unavailable': 'Deezer tidak tersedia',
     'Continue': 'Lanjutkan',
     'Email Login': 'Email Masuk',
@@ -6360,8 +6360,8 @@ const crowdin = {
     'Go up': 'Vai su',
     'Permission denied': 'Permesso negato',
     'Language': 'Lingua',
-    'Language changed, please restart ReFreezer to apply!':
-        'Lingua cambiata, riavvia ReFreezer per applicare la modifica!',
+    'Language changed, please restart Saturn to apply!':
+        'Lingua cambiata, riavvia Saturn per applicare la modifica!',
     'Importing...': 'Importando...',
     'Radio': 'Radio',
     'Flow': 'Flow',
@@ -6502,8 +6502,8 @@ const crowdin = {
     'Genre': 'Genere',
     'Contributors': 'Collaboratori',
     'Album art': 'Copertina album',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer non è disponibile nel tuo paese, ReFreezer potrebbe non funzionare correttamente. Utilizza una VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer non è disponibile nel tuo paese, Saturn potrebbe non funzionare correttamente. Utilizza una VPN',
     'Deezer is unavailable': 'Deezer non è disponibile',
     'Continue': 'Continua',
     'Email Login': 'Accesso via e-mail',
@@ -6742,7 +6742,7 @@ const crowdin = {
     'Go up': '위로 이동',
     'Permission denied': '권한이 거부되었습니다.',
     'Language': '언어',
-    'Language changed, please restart ReFreezer to apply!':
+    'Language changed, please restart Saturn to apply!':
         '언어가 변경되었습니다. 적용하려면 Freezer를 다시 시작하세요!',
     'Importing...': '…\$가져 오는 중',
     'Radio': '라디오',
@@ -6876,8 +6876,8 @@ const crowdin = {
     'Genre': 'Genre',
     'Contributors': 'Contributors',
     'Album art': 'Album art',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN',
     'Deezer is unavailable': 'Deezer is unavailable',
     'Continue': 'Continue',
     'Email Login': 'Email Login',
@@ -7122,7 +7122,7 @@ const crowdin = {
     'Go up': 'رفتن به بالا',
     'Permission denied': 'اجازه داده نشد',
     'Language': 'زبان',
-    'Language changed, please restart ReFreezer to apply!':
+    'Language changed, please restart Saturn to apply!':
         'زبان عوض شد، لطفاً فریزر را ریستارت کنید',
     'Importing...': 'وارد کردن...',
     'Radio': 'رادیو',
@@ -7261,7 +7261,7 @@ const crowdin = {
     'Genre': 'ژانر',
     'Contributors': 'مشارکت کنندگان',
     'Album art': 'تصویر آلبوم',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
         'دیزر در کشور شما قابل دسترس نیست، ممکن است فریزر به درستی کار نکند، لطفاً از وی پی ان استفاده کنید',
     'Deezer is unavailable': 'دیزر در دسترس نیست',
     'Continue': 'ادامه',
@@ -7506,8 +7506,8 @@ const crowdin = {
     'Go up': 'Idź do góry',
     'Permission denied': 'Odmowa uprawnień',
     'Language': 'Język',
-    'Language changed, please restart ReFreezer to apply!':
-        'Zmieniono język, uruchom ponownie ReFreezer aby zastosować!',
+    'Language changed, please restart Saturn to apply!':
+        'Zmieniono język, uruchom ponownie Saturn aby zastosować!',
     'Importing...': 'Importowanie...',
     'Radio': 'Radio',
     'Flow': 'Flow',
@@ -7645,8 +7645,8 @@ const crowdin = {
     'Genre': 'Gatunek',
     'Contributors': 'Współautorzy',
     'Album art': 'Okładka albumu',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer nie jest dostępny w twoim kraju, ReFreezer może nie działać prawidłowo. Użyj VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer nie jest dostępny w twoim kraju, Saturn może nie działać prawidłowo. Użyj VPN',
     'Deezer is unavailable': 'Deezer jest niedostępny',
     'Continue': 'Kontynuuj',
     'Email Login': 'Logowanie przez e-mail',
@@ -7891,8 +7891,8 @@ const crowdin = {
     'Go up': 'Ir para cima',
     'Permission denied': 'Permissão negada',
     'Language': 'Linguagem',
-    'Language changed, please restart ReFreezer to apply!':
-        'Idioma alterado, reinicie o ReFreezer para aplicar!',
+    'Language changed, please restart Saturn to apply!':
+        'Idioma alterado, reinicie o Saturn para aplicar!',
     'Importing...': 'Importando...',
     'Radio': 'Rádio',
     'Flow': 'Flow',
@@ -8031,8 +8031,8 @@ const crowdin = {
     'Genre': 'Gênero',
     'Contributors': 'Colaboradores',
     'Album art': 'Arte do álbum',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'O Deezer está indisponível no seu país, o ReFreezer pode não funcionar corretamente. Por favor, utilize uma VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'O Deezer está indisponível no seu país, o Saturn pode não funcionar corretamente. Por favor, utilize uma VPN',
     'Deezer is unavailable': 'Deezer está indisponível',
     'Continue': 'Continuar',
     'Email Login': 'Login com e-mail',
@@ -8279,8 +8279,8 @@ const crowdin = {
     'Go up': 'Du-te sus',
     'Permission denied': 'Permisie refuzată',
     'Language': 'Limbă',
-    'Language changed, please restart ReFreezer to apply!':
-        'Limba a fost schimbată, restart-ați ReFreezer pentru a aplica schimbarea!',
+    'Language changed, please restart Saturn to apply!':
+        'Limba a fost schimbată, restart-ați Saturn pentru a aplica schimbarea!',
     'Importing...': 'Importând...',
     'Radio': 'Radio',
     'Flow': 'Fluxuri',
@@ -8420,8 +8420,8 @@ const crowdin = {
     'Genre': 'Genul',
     'Contributors': 'Contribuitori',
     'Album art': 'Coperta albumului',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer nu este disponibil în țara voastră, e posibil ca ReFreezer să nu funcționeze corect. Vă rugăm să utilizați un VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer nu este disponibil în țara voastră, e posibil ca Saturn să nu funcționeze corect. Vă rugăm să utilizați un VPN',
     'Deezer is unavailable': 'Deezer nu este disponibil',
     'Continue': 'Continuă',
     'Email Login': 'Autentificare prin email',
@@ -8666,8 +8666,8 @@ const crowdin = {
     'Go up': 'На уровень вверх',
     'Permission denied': 'Доступ запрещен',
     'Language': 'Язык',
-    'Language changed, please restart ReFreezer to apply!':
-        'Язык изменен, перезапустите приложение ReFreezer для применения!',
+    'Language changed, please restart Saturn to apply!':
+        'Язык изменен, перезапустите приложение Saturn для применения!',
     'Importing...': 'Импортирование...',
     'Radio': 'Радио',
     'Flow': 'Flow',
@@ -8805,8 +8805,8 @@ const crowdin = {
     'Genre': 'Жанр',
     'Contributors': 'Участники',
     'Album art': 'Обложка',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN',
     'Deezer is unavailable': 'Deezer is unavailable',
     'Continue': 'Continue',
     'Email Login': 'Email Login',
@@ -9051,7 +9051,7 @@ const crowdin = {
     'Go up': 'Ísť hore',
     'Permission denied': 'Prístup zamietnutý',
     'Language': 'Jazyk',
-    'Language changed, please restart ReFreezer to apply!':
+    'Language changed, please restart Saturn to apply!':
         'Jazyk zmenený, pre použitie prosím reštartujte Freezer!',
     'Importing...': 'Importujem...',
     'Radio': 'Rádio',
@@ -9190,8 +9190,8 @@ const crowdin = {
     'Genre': 'Žáner',
     'Contributors': 'Prispievatelia',
     'Album art': 'Obrázok albumu',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer nie je dostupný vo vašej krajine a tak, ReFreezer nemusí fungovať správne. Použite prosím VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer nie je dostupný vo vašej krajine a tak, Saturn nemusí fungovať správne. Použite prosím VPN',
     'Deezer is unavailable': 'Deezer je nedostupný',
     'Continue': 'Pokračovať',
     'Email Login': 'Prihlásiť cez email',
@@ -9437,8 +9437,8 @@ const crowdin = {
     'Go up': 'Pojdi gor',
     'Permission denied': 'Dovoljenje zavrnjeno',
     'Language': 'Jezik',
-    'Language changed, please restart ReFreezer to apply!':
-        'Jezik zamenjan, prosimo ponovno zaženite ReFreezer za uveljavitev!',
+    'Language changed, please restart Saturn to apply!':
+        'Jezik zamenjan, prosimo ponovno zaženite Saturn za uveljavitev!',
     'Importing...': 'Uvažanje...',
     'Radio': 'Radio',
     'Flow': 'Tok',
@@ -9578,8 +9578,8 @@ const crowdin = {
     'Genre': 'Žanr',
     'Contributors': 'Sodelujoči',
     'Album art': 'Naslovnica albuma',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer ni na voljo v vaši državi, zato ReFreezer mogoče ne bo deloval. Prosimo uporabite VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer ni na voljo v vaši državi, zato Saturn mogoče ne bo deloval. Prosimo uporabite VPN',
     'Deezer is unavailable': 'Deezer ni na voljo',
     'Continue': 'Nadaljuj',
     'Email Login': 'E-poštna prijava',
@@ -9832,8 +9832,8 @@ const crowdin = {
     'Go up': 'Subir',
     'Permission denied': 'Permiso denegado',
     'Language': 'Idioma',
-    'Language changed, please restart ReFreezer to apply!':
-        '¡El idioma se cambió, por favor reinicie ReFreezer para aplicarlo!',
+    'Language changed, please restart Saturn to apply!':
+        '¡El idioma se cambió, por favor reinicie Saturn para aplicarlo!',
     'Importing...': 'Importando...',
     'Radio': 'Radio',
     'Flow': 'Flow',
@@ -9974,8 +9974,8 @@ const crowdin = {
     'Genre': 'Género',
     'Contributors': 'Colaboradores',
     'Album art': 'Arte del álbum',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer no está disponible en tu país, ReFreezer puede no funcionar correctamente. Por favor usa una VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer no está disponible en tu país, Saturn puede no funcionar correctamente. Por favor usa una VPN',
     'Deezer is unavailable': 'Deezer no está disponible',
     'Continue': 'Continuar',
     'Email Login': 'Ingreso con Email',
@@ -10222,7 +10222,7 @@ const crowdin = {
     'Go up': 'Yukarı git',
     'Permission denied': 'İzin reddedildi',
     'Language': 'Dil',
-    'Language changed, please restart ReFreezer to apply!':
+    'Language changed, please restart Saturn to apply!':
         'Dil değişti,değişiklik için Freezeri yeniden başlatın!',
     'Importing...': 'İçe aktarılıyor...',
     'Radio': 'Radyo',
@@ -10364,8 +10364,8 @@ const crowdin = {
     'Genre': 'Tür',
     'Contributors': 'Katkıda bulunanlar',
     'Album art': 'Albüm kapağı',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer ülkenizde mevcut değildir, ReFreezer düzgün çalışmayabilir. Lütfen bir VPN kullanın',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer ülkenizde mevcut değildir, Saturn düzgün çalışmayabilir. Lütfen bir VPN kullanın',
     'Deezer is unavailable': 'Deezer kullanılamıyor',
     'Continue': 'Devam et',
     'Email Login': 'E-posta girişi',
@@ -10614,8 +10614,8 @@ const crowdin = {
     'Go up': 'Вгору',
     'Permission denied': 'Доступ заборонено',
     'Language': 'Мова',
-    'Language changed, please restart ReFreezer to apply!':
-        'Мову змінено, будь ласка, перезапустіть ReFreezer для застосування!',
+    'Language changed, please restart Saturn to apply!':
+        'Мову змінено, будь ласка, перезапустіть Saturn для застосування!',
     'Importing...': 'Імпорт...',
     'Radio': 'Радіо',
     'Flow': 'Flow',
@@ -10754,8 +10754,8 @@ const crowdin = {
     'Genre': 'Жанр',
     'Contributors': 'Учасники',
     'Album art': 'Обкладинка',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer недоступний у вашій країні, ReFreezer може працювати некоректно. Будь ласка, використовуйте VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer недоступний у вашій країні, Saturn може працювати некоректно. Будь ласка, використовуйте VPN',
     'Deezer is unavailable': 'Deezer недоступний',
     'Continue': 'Продовжити',
     'Email Login': 'Email Логін',
@@ -10999,8 +10999,8 @@ const crowdin = {
     'Go up': 'Go up',
     'Permission denied': 'Permission denied',
     'Language': 'Language',
-    'Language changed, please restart ReFreezer to apply!':
-        'Language changed, please restart ReFreezer to apply!',
+    'Language changed, please restart Saturn to apply!':
+        'Language changed, please restart Saturn to apply!',
     'Importing...': 'Importing...',
     'Radio': 'Radio',
     'Flow': 'Flow',
@@ -11137,8 +11137,8 @@ const crowdin = {
     'Genre': 'Genre',
     'Contributors': 'Contributors',
     'Album art': 'Album art',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN',
     'Deezer is unavailable': 'Deezer is unavailable',
     'Continue': 'Continue',
     'Email Login': 'Email Login',
@@ -11384,7 +11384,7 @@ const crowdin = {
     'Go up': 'Về trước',
     'Permission denied': 'Quyền truy cập bị từ chối',
     'Language': 'Ngôn ngữ',
-    'Language changed, please restart ReFreezer to apply!':
+    'Language changed, please restart Saturn to apply!':
         'Đã thay đổi ngôn ngữ, xin vui lòng khởi động lại Freezer!',
     'Importing...': 'Đang nhập...',
     'Radio': 'Radio',
@@ -11524,8 +11524,8 @@ const crowdin = {
     'Genre': 'Thể loại',
     'Contributors': 'Người đóng góp',
     'Album art': 'Ảnh album',
-    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN':
-        'Deezer không khả dụng ở quốc gia của bạn, ReFreezer có thể sẽ không hoạt động như bình thường. Vui lòng sử dụng VPN',
+    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN':
+        'Deezer không khả dụng ở quốc gia của bạn, Saturn có thể sẽ không hoạt động như bình thường. Vui lòng sử dụng VPN',
     'Deezer is unavailable': 'Deezer không khả dụng',
     'Continue': 'Tiếp tục',
     'Email Login': 'Đăng nhập qua email',

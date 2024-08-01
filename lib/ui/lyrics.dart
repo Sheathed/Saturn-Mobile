@@ -178,11 +178,11 @@ class _LyricsScreenState extends State<LyricsScreen> {
 
                   //Loading
                   if (_loading)
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [CircularProgressIndicator()],
+                        children: [CircularProgressIndicator(color: Theme.of(context).primaryColor,)],
                       ),
                     ),
 

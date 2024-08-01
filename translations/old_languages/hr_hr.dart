@@ -183,8 +183,8 @@ const language_hr_hr = {
     'Go up': 'Idi gore',
     'Permission denied': 'Dozvola odbijena',
     'Language': 'Jezik',
-    'Language changed, please restart ReFreezer to apply!':
-        'Jezik je promjenjen, molimo vas da ponovno pokrenete ReFreezer da se promjene primjene.',
+    'Language changed, please restart Saturn to apply!':
+        'Jezik je promjenjen, molimo vas da ponovno pokrenete Saturn da se promjene primjene.',
     'Importing...': 'Uvoženje...',
     'Radio': 'Radio',
     'Flow': 'Flow',

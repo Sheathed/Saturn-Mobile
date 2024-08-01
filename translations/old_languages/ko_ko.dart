@@ -177,7 +177,7 @@ const language_ko_ko = {
     'Go up': '위로 이동',
     'Permission denied': '권한이 거부되었습니다.',
     'Language': '언어',
-    'Language changed, please restart ReFreezer to apply!':
+    'Language changed, please restart Saturn to apply!':
         '언어가 변경되었습니다. 적용하려면 Freezer를 다시 시작하세요!',
     'Importing...': '…\$가져 오는 중',
     'Radio': '라디오',

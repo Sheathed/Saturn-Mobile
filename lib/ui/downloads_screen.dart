@@ -304,8 +304,8 @@ class DownloadTile extends StatelessWidget {
           trailing: trailing(),
           onTap: () => onClick(context),
         ),
-        if (download.state == DownloadState.DOWNLOADING) LinearProgressIndicator(value: download.progress),
-        if (download.state == DownloadState.POST) const LinearProgressIndicator(),
+        if (download.state == DownloadState.DOWNLOADING) LinearProgressIndicator(value: download.progress, color: Theme.of(context).primaryColor, backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),),
+        if (download.state == DownloadState.POST) LinearProgressIndicator(color: Theme.of(context).primaryColor, backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),),
       ],
     );
   }

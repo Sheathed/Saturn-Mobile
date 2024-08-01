@@ -185,8 +185,8 @@ const language_ro_ro = {
     'Go up': 'Du-te sus',
     'Permission denied': 'Permisie refuzată',
     'Language': 'Limbă',
-    'Language changed, please restart ReFreezer to apply!':
-        'Limba a fost schimbată, restart-ați ReFreezer pentru a aplica schimbarea!',
+    'Language changed, please restart Saturn to apply!':
+        'Limba a fost schimbată, restart-ați Saturn pentru a aplica schimbarea!',
     'Importing...': 'Importând...',
     'Radio': 'Radio',
     'Flow': 'Flow',

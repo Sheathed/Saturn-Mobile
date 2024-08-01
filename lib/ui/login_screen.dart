@@ -2,11 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logging/logging.dart';
 
 import '../api/deezer.dart';
-import '../api/deezer_login.dart';
 import '../api/definitions.dart';
 import '../utils/navigator_keys.dart';
 import '../settings.dart';
@@ -57,7 +55,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           builder: (context) => AlertDialog(
                 title: Text('Deezer is unavailable'.i18n),
                 content: Text(
-                    'Deezer is unavailable in your country, ReFreezer might not work properly. Please use a VPN'
+                    'Deezer is unavailable in your country, Saturn might not work properly. Please use a VPN'
                         .i18n),
                 actions: [
                   TextButton(
@@ -156,9 +154,9 @@ class _LoginWidgetState extends State<LoginWidget> {
   Widget build(BuildContext context) {
     //If arl is null, show loading
     if (settings.arl != null) {
-      return const Scaffold(
+      return Scaffold(
         body: Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
         ),
       );
     }
@@ -191,19 +189,6 @@ class _LoginWidgetState extends State<LoginWidget> {
               Container(
                 height: 16.0,
               ),
-              //Email login dialog
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                  child: OutlinedButton(
-                    child: Text(
-                      'Login using email'.i18n,
-                    ),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) => EmailLogin(_update));
-                    },
-                  )),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: OutlinedButton(
@@ -232,7 +217,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                             content: TextField(
                               onChanged: (String s) => _arl = s,
                               decoration: InputDecoration(
-                                  labelText: 'Token (ARL)'.i18n),
+                                  labelText: 'Token (ARL)'.i18n,
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Theme.of(context).primaryColor), // Color of the underline when focused
+                                  ),
+                                  ),
                               focusNode: focusNode,
                               controller: controller,
                               onSubmitted: (String s) {
@@ -253,22 +242,6 @@ class _LoginWidgetState extends State<LoginWidget> {
               Container(
                 height: 16.0,
               ),
-              Text(
-                "If you don't have account, you can register on deezer.com for free."
-                    .i18n,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16.0),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                child: OutlinedButton(
-                  child: Text('Open in browser'.i18n),
-                  onPressed: () {
-                    InAppBrowser.openWithSystemBrowser(
-                        url: WebUri('https://deezer.com/register'));
-                  },
-                ),
-              ),
               Container(
                 height: 8.0,
               ),
@@ -277,7 +250,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 height: 8.0,
               ),
               Text(
-                "By using this app, you don't agree with the Deezer ToS".i18n,
+                "2k24 saturn.kim".i18n,
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 16.0),
               )
@@ -332,106 +305,6 @@ class LoginBrowser extends StatelessWidget {
             },
           ),
         ),
-      ],
-    );
-  }
-}
-
-class EmailLogin extends StatefulWidget {
-  final Function callback;
-  const EmailLogin(this.callback, {super.key});
-
-  @override
-  _EmailLoginState createState() => _EmailLoginState();
-}
-
-class _EmailLoginState extends State<EmailLogin> {
-  String? _email;
-  String? _password;
-  bool _loading = false;
-
-  Future _login() async {
-    setState(() => _loading = true);
-    //Try logging in
-    String? arl;
-    String? exception;
-    try {
-      arl = await DeezerLogin.getArlByEmailAndPassword(_email!, _password!);
-    } on DeezerLoginException catch (dle) {
-      exception = dle.toString();
-    } catch (e, st) {
-      exception = e.toString();
-      if (kDebugMode) {
-        print(e);
-        print(st);
-      }
-    }
-    setState(() => _loading = false);
-    settings.arl = arl;
-    if (mounted) Navigator.of(context).pop();
-
-    if (exception == null) {
-      //Success
-      widget.callback();
-      return;
-    } else if (mounted) {
-      //Error
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: Text('Error logging in!'.i18n),
-                content: Text(
-                    'Error logging in using email, please check your credentials.\n\nError: ${exception!}'),
-                actions: [
-                  TextButton(
-                    child: Text('Dismiss'.i18n),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              ));
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('Email Login'.i18n),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: _loading
-            ? [const CircularProgressIndicator()]
-            : [
-                TextField(
-                  decoration: InputDecoration(labelText: 'Email'.i18n),
-                  onChanged: (s) => _email = s,
-                ),
-                Container(
-                  height: 8.0,
-                ),
-                TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(labelText: 'Password'.i18n),
-                  onChanged: (s) => _password = s,
-                )
-              ],
-      ),
-      actions: [
-        if (!_loading)
-          TextButton(
-            child: const Text('Login'),
-            onPressed: () async {
-              if (_email != null && _password != null) {
-                await _login();
-              } else {
-                Fluttertoast.showToast(
-                    msg: 'Missing email or password!'.i18n,
-                    gravity: ToastGravity.BOTTOM,
-                    toastLength: Toast.LENGTH_SHORT);
-              }
-            },
-          )
       ],
     );
   }

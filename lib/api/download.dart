@@ -23,9 +23,9 @@ DownloadManager downloadManager = DownloadManager();
 
 class DownloadManager {
   //Platform channels
-  static const MethodChannel platform = MethodChannel('r.r.refreezer/native');
+  static const MethodChannel platform = MethodChannel('s.s.saturn/native');
   static const EventChannel eventChannel =
-      EventChannel('r.r.refreezer/downloads');
+      EventChannel('s.s.saturn/downloads');
 
   bool running = false;
   int queueSize = 0;
@@ -171,9 +171,7 @@ class DownloadManager {
       builder: (context) {
         return AlertDialog(
           title: Text('Storage Permission Required'.i18n),
-          content: Text(
-              'Storage permission is required to download content.\nPlease open system settings and grant storage permission to ReFreezer.'
-                  .i18n),
+          content: Text('Storage permission is required to download content.\nPlease open system settings and grant storage permission to Saturn.'.i18n),
           actions: <Widget>[
             TextButton(
               child: Text('Cancel'.i18n),
