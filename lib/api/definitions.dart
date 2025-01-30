@@ -189,7 +189,9 @@ class Track {
         favorite: (data['favorite'] == 1) ? true : false,
         diskNumber: data['diskNumber'],
         explicit: (data['explicit'] == 1) ? true : false,
-        fallback: data['fallback'] != null ? Track(id: data['fallback'].toString()) : null,
+        fallback: data['fallback'] != null
+            ? Track(id: data['fallback'].toString())
+            : null,
         //favoriteDate: data['favoriteDate']
       );
 
@@ -214,7 +216,8 @@ class ClubUser {
   });
 
   // Factory method for JSON deserialization
-  factory ClubUser.fromJson(Map<String, dynamic> json) => _$ClubUserFromJson(json);
+  factory ClubUser.fromJson(Map<String, dynamic> json) =>
+      _$ClubUserFromJson(json);
 
   // Method for JSON serialization
   Map<String, dynamic> toJson() => _$ClubUserToJson(this);
@@ -233,7 +236,8 @@ class ClubMSG {
   });
 
   // Factory method for JSON deserialization
-  factory ClubMSG.fromJson(Map<String, dynamic> json) => _$ClubMSGFromJson(json);
+  factory ClubMSG.fromJson(Map<String, dynamic> json) =>
+      _$ClubMSGFromJson(json);
 
   // Method for JSON serialization
   Map<String, dynamic> toJson() => _$ClubMSGToJson(this);
@@ -628,7 +632,6 @@ class FlowImage {
   Map<String, dynamic> toJson() => _$FlowImageToJson(this);
 }
 
-
 @JsonSerializable()
 class LogoDetails {
   String? fullUrl;
@@ -747,6 +750,89 @@ class Lyrics {
         ],
         errorMessage: message,
       );
+
+  static Lyrics fromLRC(String lrcContent) {
+    try {
+      final List<SynchronizedLyric> syncedLyrics = [];
+      final RegExp timeTagRegex = RegExp(r'\[(\d{2}):(\d{2})\.(\d{2,3})\]');
+      final List<String> lines = lrcContent.split('\n');
+
+      // Metadata fields from LRC
+      String? title;
+      String? artist;
+      String? album;
+      String? author;
+
+      for (String line in lines) {
+        line = line.trim();
+        if (line.isEmpty) continue;
+
+        // Parse metadata
+        if (line.startsWith('[ti:')) {
+          title = line.substring(4, line.length - 1);
+          continue;
+        }
+        if (line.startsWith('[ar:')) {
+          artist = line.substring(4, line.length - 1);
+          continue;
+        }
+        if (line.startsWith('[al:')) {
+          album = line.substring(4, line.length - 1);
+          continue;
+        }
+        if (line.startsWith('[au:')) {
+          author = line.substring(4, line.length - 1);
+          continue;
+        }
+
+        // Parse time tags and lyrics
+        final matches = timeTagRegex.allMatches(line);
+        if (matches.isEmpty) continue;
+
+        String lyricText = line.replaceAll(timeTagRegex, '').trim();
+
+        for (Match match in matches) {
+          final minutes = int.parse(match.group(1)!);
+          final seconds = int.parse(match.group(2)!);
+          final millisStr = match.group(3)!;
+          final millis = int.parse(millisStr.padRight(3, '0'));
+
+          final offset = Duration(
+            minutes: minutes,
+            seconds: seconds,
+            milliseconds: millis,
+          );
+
+          syncedLyrics.add(SynchronizedLyric(
+            offset: offset,
+            text: lyricText,
+            lrcTimestamp:
+                match.group(0)!.substring(1, match.group(0)!.length - 1),
+          ));
+        }
+      }
+
+      // Sort lyrics by time
+      syncedLyrics.sort((a, b) => a.offset!.compareTo(b.offset!));
+
+      // Calculate durations
+      for (int i = 0; i < syncedLyrics.length - 1; i++) {
+        syncedLyrics[i].duration =
+            syncedLyrics[i + 1].offset! - syncedLyrics[i].offset!;
+      }
+      // Last lyric duration (assume 5 seconds if no next lyric)
+      if (syncedLyrics.isNotEmpty) {
+        syncedLyrics.last.duration = const Duration(seconds: 5);
+      }
+
+      return Lyrics(
+        syncedLyrics: syncedLyrics,
+        writers: author,
+      );
+    } catch (e) {
+      return error('Failed to parse LRC file: $e');
+    }
+  }
 
   bool isLoaded() =>
       syncedLyrics?.isNotEmpty == true || unsyncedLyrics?.isNotEmpty == true;
@@ -1167,8 +1253,6 @@ enum HomePageItemType {
 }
 
 enum HomePageSectionLayout { ROW, GRID }
-
-enum RepeatType { NONE, LIST, TRACK }
 
 enum DeezerLinkType { TRACK, ALBUM, ARTIST, PLAYLIST }
 

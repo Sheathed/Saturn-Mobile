@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:logging/logging.dart';
 
 import '../api/deezer.dart';
 import '../api/definitions.dart';
@@ -15,6 +14,7 @@ import '../settings.dart';
 import '../translations.i18n.dart';
 import '../ui/elements.dart';
 import '../ui/error.dart';
+import '../utils/unmanagedtext.dart';
 
 late Function updateColor;
 late Color scaffoldBackgroundColor;
@@ -42,6 +42,8 @@ class _LyricsScreenState extends State<LyricsScreen> {
   LinearGradient? _bgGradient;
   ImageProvider? _blurImage;
   final double height = 90;
+  bool _isSynced = false;
+  bool _isUnsynced = false;
 
   @override
   void initState() {
@@ -70,9 +72,35 @@ class _LyricsScreenState extends State<LyricsScreen> {
     }
 
     try {
+      _isSynced = false;
+      _isUnsynced = false;
       Lyrics l = await deezerAPI.lyrics(widget.trackId);
+      if (l.isSynced()) {
+        _isSynced = true;
+        _isUnsynced = false;
+      }
+      if (l.isUnsynced()) {
+        _isUnsynced = true;
+        _isSynced = false;
+      }
+      if (l.isUnsynced() == false && l.isSynced() == false) {
+        _isSynced = true;
+        _isUnsynced = false;
+        _updateLyricsState(Lyrics(
+          syncedLyrics: [
+            SynchronizedLyric(
+              offset: const Duration(milliseconds: 0),
+              text: 'No lyrics found'.i18n,
+            )
+          ],
+          unsyncedLyrics: null,
+          errorMessage: null,
+        ));
+        return;
+      }
       _updateLyricsState(l);
     } catch (e) {
+      print('[Lyrics] Error loading lyrics: $e');
       _timer?.cancel();
       setState(() {
         _error = true;
@@ -82,17 +110,16 @@ class _LyricsScreenState extends State<LyricsScreen> {
   }
 
   void _updateLyricsState(Lyrics lyrics) {
+    _isSynced = false;
+    _isUnsynced = false;
     String screenTitle = 'Lyrics'.i18n;
-
-    if (lyrics.isSynced()) {
+    if (lyrics.syncedLyrics!.isNotEmpty) {
+      _isSynced = true;
       _startSyncTimer();
-    } else if (lyrics.isUnsynced()) {
+    } else if (lyrics.unsyncedLyrics!.isNotEmpty) {
       screenTitle = 'Unsynchronized lyrics'.i18n;
+      _isUnsynced = true;
       _timer?.cancel();
-    }
-
-    if (lyrics.errorMessage != null) {
-      Logger.root.warning('Error loading lyrics for track id ${widget.trackId}: ${lyrics.errorMessage}');
     }
 
     setState(() {
@@ -104,20 +131,26 @@ class _LyricsScreenState extends State<LyricsScreen> {
   }
 
   void _startSyncTimer() {
+    print('[Lyrics] Starting sync timer');
     Timer.periodic(const Duration(milliseconds: 350), (timer) {
       _timer = timer;
       if (_loading) return;
 
       //Update current lyric index
-      setState(() => _currentIndex = lyrics!.syncedLyrics!.lastIndexWhere((lyric) =>
-          (lyric.offset ?? const Duration(seconds: 0)) <= GetIt.I<AudioPlayerHandler>().playbackState.value.position));
+      setState(() => _currentIndex = lyrics!.syncedLyrics!.lastIndexWhere(
+          (lyric) =>
+              (lyric.offset ?? const Duration(seconds: 0)) <=
+              GetIt.I<AudioPlayerHandler>().playbackState.value.position));
 
       //Scroll to current lyric
       if (_currentIndex <= 0) return;
       if (_prevIndex == _currentIndex) return;
       _prevIndex = _currentIndex;
       _controller.animateTo(
-          (height * _currentIndex) - (MediaQuery.of(context).size.height / 2) + (height / 2) + 56,
+          (height * _currentIndex) -
+              (MediaQuery.of(context).size.height / 2) +
+              (height / 2) +
+              56,
           duration: const Duration(milliseconds: 250),
           curve: Curves.ease);
     });
@@ -126,7 +159,9 @@ class _LyricsScreenState extends State<LyricsScreen> {
   Future<void> _updateColor() async {
     if (GetIt.I<AudioPlayerHandler>().mediaItem.value == null) return;
 
-    if (!settings.themeAdditonalItems && !settings.colorGradientBackground && !settings.blurPlayerBackground) {
+    if (!settings.themeAdditonalItems &&
+        !settings.colorGradientBackground &&
+        !settings.blurPlayerBackground) {
       return;
     }
 
@@ -154,9 +189,9 @@ class _LyricsScreenState extends State<LyricsScreen> {
     if (settings.themeAdditonalItems && settings.blurPlayerBackground) {
       SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(
-          statusBarColor: palette.dominantColor!.color.withOpacity(0.25),
+          statusBarColor: palette.dominantColor!.color.withValues(alpha: 0.25),
           systemNavigationBarColor: Color.alphaBlend(
-            palette.dominantColor!.color.withOpacity(0.25),
+            palette.dominantColor!.color.withValues(alpha: 0.25),
             scaffoldBackgroundColor,
           ),
         ),
@@ -164,13 +199,15 @@ class _LyricsScreenState extends State<LyricsScreen> {
     }
 
     // Set gradient background color
-    if (settings.themeAdditonalItems && !settings.blurPlayerBackground && settings.colorGradientBackground) {
+    if (settings.themeAdditonalItems &&
+        !settings.blurPlayerBackground &&
+        settings.colorGradientBackground) {
       setState(() {
         _bgGradient = LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            palette.dominantColor!.color.withOpacity(0.7),
+            palette.dominantColor!.color.withValues(alpha: 0.7),
             const Color.fromARGB(0, 0, 0, 0),
           ],
           stops: const [0.0, 0.6],
@@ -200,11 +237,163 @@ class _LyricsScreenState extends State<LyricsScreen> {
     scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
 
     return Scaffold(
-      appBar: FreezerAppBar(appBarTitle, enableBlur: true, opacity: 0, blurStrength: 15.0),
+      appBar: FreezerAppBar(
+        appBarTitle,
+        enableBlur: true,
+        opacity: 0,
+        blurStrength: 15.0,
+        actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert),
+            onSelected: (value) async {
+              setState(() {
+                _loading = true;
+                _error = false;
+              });
+              if (value == 'deezer') {
+                _load();
+              } else {
+                final mediaItem = GetIt.I<AudioPlayerHandler>().mediaItem.value;
+                if (mediaItem != null) {
+                  final query =
+                      '${mediaItem.displayTitle} ${mediaItem.displaySubtitle ?? ''}'
+                          .trim();
+                  final lrc = await LyricsAPI.getLyrics(value, query, '1');
+                  if (lrc['lyrics'] == 'error') {
+                    _updateLyricsState(Lyrics(
+                      syncedLyrics: [
+                        SynchronizedLyric(
+                          offset: const Duration(milliseconds: 0),
+                          text: 'No lyrics found'.i18n,
+                        )
+                      ],
+                      unsyncedLyrics: null,
+                      errorMessage: null,
+                    ));
+                  } else {
+                    if (lrc['lyrics'] != null) {
+                      final lrcText = lrc['lyrics'] as String;
+                      final syncedLyrics = <SynchronizedLyric>[];
+                      final lines = lrcText.split('\n');
+
+                      // Try to parse as synced lyrics
+                      for (final line in lines) {
+                        final match =
+                            RegExp(r'\[(\d{2}):(\d{2})\.(\d{2})\](.*)')
+                                .firstMatch(line);
+                        if (match != null) {
+                          final minutes = int.parse(match.group(1)!);
+                          final seconds = int.parse(match.group(2)!);
+                          final milliseconds = int.parse(match.group(3)!) * 10;
+                          final text = match.group(4)!.trim();
+
+                          syncedLyrics.add(SynchronizedLyric(
+                            text: text,
+                            offset: Duration(
+                              minutes: minutes,
+                              seconds: seconds,
+                              milliseconds: milliseconds,
+                            ),
+                          ));
+                        }
+                      }
+
+                      if (syncedLyrics.isNotEmpty) {
+                        _isSynced = true;
+                        _isUnsynced = false;
+                        _updateLyricsState(Lyrics(
+                          syncedLyrics: syncedLyrics,
+                          unsyncedLyrics: null,
+                          errorMessage: null,
+                        ));
+                      } else {
+                        _isUnsynced = true;
+                        _isSynced = false;
+                        _updateLyricsState(Lyrics(
+                          syncedLyrics: [],
+                          unsyncedLyrics: lrcText,
+                          errorMessage: null,
+                        ));
+                      }
+                    } else {
+                      setState(() {
+                        _error = true;
+                        _loading = false;
+                      });
+                    }
+                  }
+                }
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem<String>(
+                  value: 'deezer',
+                  child: Row(
+                    children: [
+                      const Icon(Icons.music_note),
+                      const SizedBox(width: 8),
+                      Text('Deezer'.i18n),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  enabled: false,
+                  child: FutureBuilder<dynamic>(
+                    future: LyricsAPI().listProviders(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Row(
+                          children: [
+                            SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                            SizedBox(width: 8),
+                            Text('Loading providers...'),
+                          ],
+                        );
+                      }
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ...snapshot.data['providers'].map<Widget>((provider) {
+                            final displayName = provider.keys.first;
+                            final providerCode = provider.values.first;
+                            return InkWell(
+                              onTap: () {
+                                Navigator.pop(context, providerCode);
+                              },
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.cloud),
+                                    const SizedBox(width: 8),
+                                    Text(displayName),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ];
+            },
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           // Background (Blur Image or Gradient)
-          if (settings.themeAdditonalItems && settings.blurPlayerBackground && _blurImage != null)
+          if (settings.themeAdditonalItems &&
+              settings.blurPlayerBackground &&
+              _blurImage != null)
             ClipRect(
               child: Container(
                 decoration: BoxDecoration(
@@ -212,7 +401,7 @@ class _LyricsScreenState extends State<LyricsScreen> {
                     image: _blurImage!,
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.25),
+                      Colors.black.withValues(alpha: 0.25),
                       BlendMode.dstATop,
                     ),
                   ),
@@ -236,7 +425,8 @@ class _LyricsScreenState extends State<LyricsScreen> {
                 stream: GetIt.I<AudioPlayerHandler>().visualizerStream,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   List<double> data = snapshot.data ?? [];
-                  double width = MediaQuery.of(context).size.width / data.length - 0.25;
+                  double width =
+                      MediaQuery.of(context).size.width / data.length - 0.25;
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -256,7 +446,8 @@ class _LyricsScreenState extends State<LyricsScreen> {
 
           // Lyrics
           Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, settings.lyricsVisualizer ? 100 : 0),
+            padding: EdgeInsets.fromLTRB(
+                0, 0, 0, settings.lyricsVisualizer ? 100 : 0),
             child: ListView(
               controller: _controller,
               children: [
@@ -266,7 +457,10 @@ class _LyricsScreenState extends State<LyricsScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [CircularProgressIndicator(color: Theme.of(context).primaryColor)],
+                      children: [
+                        CircularProgressIndicator(
+                            color: Theme.of(context).primaryColor)
+                      ],
                     ),
                   ),
                 if (lyrics != null && lyrics!.syncedLyrics?.isNotEmpty == true)
@@ -276,7 +470,9 @@ class _LyricsScreenState extends State<LyricsScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8.0),
-                          color: (_currentIndex == i) ? Colors.grey.withOpacity(0.25) : Colors.transparent,
+                          color: (_currentIndex == i)
+                              ? Colors.grey.withValues(alpha: 0.25)
+                              : Colors.transparent,
                         ),
                         height: height,
                         child: Center(
@@ -294,7 +490,9 @@ class _LyricsScreenState extends State<LyricsScreen> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 26.0,
-                                fontWeight: (_currentIndex == i) ? FontWeight.bold : FontWeight.normal,
+                                fontWeight: (_currentIndex == i)
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
                               ),
                             ),
                           ),
@@ -302,7 +500,9 @@ class _LyricsScreenState extends State<LyricsScreen> {
                       ),
                     );
                   }),
-                if (lyrics != null && (lyrics!.syncedLyrics?.isEmpty ?? true) && lyrics!.unsyncedLyrics != null)
+                if (lyrics != null &&
+                    (lyrics!.syncedLyrics?.isEmpty ?? true) &&
+                    lyrics!.unsyncedLyrics != null)
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Container(

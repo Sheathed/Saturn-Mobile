@@ -227,58 +227,86 @@ class _SearchScreenState extends State<SearchScreen> {
                                 borderSide: BorderSide(color: Colors.grey)),
                             enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.grey)),
-                            floatingLabelStyle: TextStyle(color: Theme.of(context).primaryColor),
+                            floatingLabelStyle: TextStyle(
+                                color: Theme.of(context).primaryColor),
                           ),
                           controller: _controller,
                           textInputAction: TextInputAction.search,
                           onSubmitted: (String s) {
-                                final realcontext = context;
-                                if (s.toLowerCase().contains('gay')) {
-                                if (settings.eastereggsDisabled) {
-                                  // If eastereggs are disabled, skip the dialog and directly call _submit
-                                  _submit(realcontext, query: s);
-                                  _textFieldFocusNode.unfocus();
-                                } else {
-                                  // Show the dialog
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: Text('Are you sure?'.i18n),
-                                        content: Text('Continuing may result in rainbows and gay people!'.i18n),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () => Navigator.of(context).pop(),
-                                                    style: ButtonStyle(
-          overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
-         ),
-         child: Text('Get me out!'.i18n),
-                                          ),
-                                          TextButton(
-                                                    style: ButtonStyle(
-          overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
-         ),
-         child: Text('Yes I\'m sure!'.i18n),
-                                            onPressed: () async {
-                                              _submit(realcontext, query: s); // Handle the normal submission
-                                              Navigator.of(context).pop(); // Close the dialog
-                                              _textFieldFocusNode.unfocus();
-
-                                              // Add a 10-second delay before calling startRainbowColorUpdates
-                                              await Future.delayed(const Duration(seconds: 10));
-                                              settings.startRainbowColorUpdates();
-                                            },
-                                          )
-                                        ],
-                                      );
-                                    },
-                                  );
-                                }
-                              } else {
-                                // Handle the query normally if it doesn't contain "gay"
-                                _submit(context, query: s);
+                            final realcontext = context;
+                            if (s.toLowerCase().contains('gay')) {
+                              if (settings.eastereggsDisabled) {
+                                // If eastereggs are disabled, skip the dialog and directly call _submit
+                                _submit(realcontext, query: s);
                                 _textFieldFocusNode.unfocus();
+                              } else {
+                                // Show the dialog
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text('Are you sure?'.i18n),
+                                      content: Text(
+                                          'Continuing may result in rainbows and gay people!'
+                                              .i18n),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(),
+                                          style: ButtonStyle(
+                                            overlayColor: WidgetStateProperty
+                                                .resolveWith<Color?>(
+                                                    (Set<WidgetState> states) {
+                                              if (states.contains(
+                                                  WidgetState.pressed)) {
+                                                return Theme.of(context)
+                                                    .primaryColor
+                                                    .withOpacity(0.3);
+                                              }
+                                              return null;
+                                            }),
+                                          ),
+                                          child: Text('Get me out!'.i18n),
+                                        ),
+                                        TextButton(
+                                          style: ButtonStyle(
+                                            overlayColor: WidgetStateProperty
+                                                .resolveWith<Color?>(
+                                                    (Set<WidgetState> states) {
+                                              if (states.contains(
+                                                  WidgetState.pressed)) {
+                                                return Theme.of(context)
+                                                    .primaryColor
+                                                    .withOpacity(0.3);
+                                              }
+                                              return null;
+                                            }),
+                                          ),
+                                          child: Text('Yes I\'m sure!'.i18n),
+                                          onPressed: () async {
+                                            _submit(realcontext,
+                                                query:
+                                                    s); // Handle the normal submission
+                                            Navigator.of(context)
+                                                .pop(); // Close the dialog
+                                            _textFieldFocusNode.unfocus();
+
+                                            // Add a 10-second delay before calling startRainbowColorUpdates
+                                            await Future.delayed(
+                                                const Duration(seconds: 10));
+                                            settings.startRainbowColorUpdates();
+                                          },
+                                        )
+                                      ],
+                                    );
+                                  },
+                                );
                               }
+                            } else {
+                              // Handle the query normally if it doesn't contain "gay"
+                              _submit(context, query: s);
+                              _textFieldFocusNode.unfocus();
+                            }
                           },
                         ),
                       ),
@@ -325,7 +353,10 @@ class _SearchScreenState extends State<SearchScreen> {
                 },
               ),
             ),
-            if (_loading) LinearProgressIndicator(color: Theme.of(context).primaryColor, backgroundColor: Theme.of(context).dividerColor),
+            if (_loading)
+              LinearProgressIndicator(
+                  color: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).dividerColor),
             const FreezerDivider(),
 
             //"Browse" Cards
@@ -347,11 +378,10 @@ class _SearchScreenState extends State<SearchScreen> {
                     onTap: () async {
                       // No channel for Flow...
                       if (clubroom.ifclub()) {
-                        if (clubroom.ifhost()) {
-                        }
+                        if (clubroom.ifhost()) {}
                       } else {
-                      await GetIt.I<AudioPlayerHandler>()
-                          .playFromSmartTrackList(SmartTrackList(id: 'flow'));
+                        await GetIt.I<AudioPlayerHandler>()
+                            .playFromSmartTrackList(SmartTrackList(id: 'flow'));
                       }
                     },
                   ),
@@ -376,7 +406,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 children: [
                   SearchBrowseCard(
                     color: const Color(0xffff555d),
-                    icon: const Icon(FontAwesome5.chart_line, color: Colors.white),
+                    icon: const Icon(FontAwesome5.chart_line,
+                        color: Colors.white),
                     text: 'Charts'.i18n,
                     onTap: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => Scaffold(
@@ -422,20 +453,22 @@ class _SearchScreenState extends State<SearchScreen> {
                       onTap: () {
                         if (clubroom.ifclub()) {
                           if (clubroom.ifhost()) {
-                            GetIt.I<AudioPlayerHandler>().insertQueueItem(-1, data.toMediaItem());
+                            GetIt.I<AudioPlayerHandler>()
+                                .insertQueueItem(-1, data.toMediaItem());
                           }
                         } else {
-                        List<Track> queue = cache.searchHistory!
-                            .where((h) => h.type == SearchHistoryItemType.TRACK)
-                            .map<Track>((t) => t.data)
-                            .toList();
-                        GetIt.I<AudioPlayerHandler>().playFromTrackList(
-                            queue,
-                            data.id,
-                            QueueSource(
-                                text: 'Search history'.i18n,
-                                source: 'searchhistory',
-                                id: 'searchhistory'));
+                          List<Track> queue = cache.searchHistory!
+                              .where(
+                                  (h) => h.type == SearchHistoryItemType.TRACK)
+                              .map<Track>((t) => t.data)
+                              .toList();
+                          GetIt.I<AudioPlayerHandler>().playFromTrackList(
+                              queue,
+                              data.id,
+                              QueueSource(
+                                  text: 'Search history'.i18n,
+                                  source: 'searchhistory',
+                                  id: 'searchhistory'));
                         }
                       },
                       onHold: () {
@@ -483,8 +516,6 @@ class _SearchScreenState extends State<SearchScreen> {
                       },
                       trailing: _removeHistoryItemWidget(i),
                     );
-                  default:
-                    return Container();
                 }
               }),
 
@@ -586,7 +617,9 @@ class SearchResultsScreen extends StatelessWidget {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (!snapshot.hasData) {
               return Center(
-                child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).primaryColor,
+                ),
               );
             }
             if (snapshot.hasError) return const ErrorScreen();
@@ -635,17 +668,18 @@ class SearchResultsScreen extends StatelessWidget {
                     onTap: () {
                       if (clubroom.ifclub()) {
                         if (clubroom.ifhost()) {
-                          GetIt.I<AudioPlayerHandler>().insertQueueItem(-1, t.toMediaItem());
+                          GetIt.I<AudioPlayerHandler>()
+                              .insertQueueItem(-1, t.toMediaItem());
                         }
                       } else {
-                      cache.addToSearchHistory(t);
-                      GetIt.I<AudioPlayerHandler>().playFromTrackList(
-                          results.tracks!,
-                          t.id ?? '',
-                          QueueSource(
-                              text: 'Search'.i18n,
-                              id: query,
-                              source: 'search_page'));
+                        cache.addToSearchHistory(t);
+                        GetIt.I<AudioPlayerHandler>().playFromTrackList(
+                            results.tracks!,
+                            t.id ?? '',
+                            QueueSource(
+                                text: 'Search'.i18n,
+                                id: query,
+                                source: 'search_page'));
                       }
                     },
                     onHold: () {
@@ -879,12 +913,12 @@ class SearchResultsScreen extends StatelessWidget {
                     ),
                     onTap: () async {
                       if (!clubroom.ifclub()) {
-                      //Load entire show, then play
-                      List<ShowEpisode> episodes =
-                          await deezerAPI.allShowEpisodes(e.show!.id ?? '');
-                      await GetIt.I<AudioPlayerHandler>().playShowEpisode(
-                          e.show!, episodes,
-                          index: episodes.indexWhere((ep) => e.id == ep.id));
+                        //Load entire show, then play
+                        List<ShowEpisode> episodes =
+                            await deezerAPI.allShowEpisodes(e.show!.id ?? '');
+                        await GetIt.I<AudioPlayerHandler>().playShowEpisode(
+                            e.show!, episodes,
+                            index: episodes.indexWhere((ep) => e.id == ep.id));
                       }
                     },
                   );
@@ -952,11 +986,12 @@ class TrackListScreen extends StatelessWidget {
             onTap: () {
               if (clubroom.ifclub()) {
                 if (clubroom.ifhost()) {
-                  GetIt.I<AudioPlayerHandler>().insertQueueItem(-1, t.toMediaItem());
+                  GetIt.I<AudioPlayerHandler>()
+                      .insertQueueItem(-1, t.toMediaItem());
                 }
               } else {
-              GetIt.I<AudioPlayerHandler>()
-                  .playFromTrackList(tracks, t.id ?? '', queueSource);
+                GetIt.I<AudioPlayerHandler>()
+                    .playFromTrackList(tracks, t.id ?? '', queueSource);
               }
             },
             onHold: () {
@@ -1080,12 +1115,12 @@ class EpisodeListScreen extends StatelessWidget {
               ),
               onTap: () async {
                 if (!clubroom.ifclub()) {
-                //Load entire show, then play
-                List<ShowEpisode> episodes =
-                    await deezerAPI.allShowEpisodes(e.show!.id ?? '');
-                await GetIt.I<AudioPlayerHandler>().playShowEpisode(
-                    e.show!, episodes,
-                    index: episodes.indexWhere((ep) => e.id == ep.id));
+                  //Load entire show, then play
+                  List<ShowEpisode> episodes =
+                      await deezerAPI.allShowEpisodes(e.show!.id ?? '');
+                  await GetIt.I<AudioPlayerHandler>().playShowEpisode(
+                      e.show!, episodes,
+                      index: episodes.indexWhere((ep) => e.id == ep.id));
                 }
               },
             );
