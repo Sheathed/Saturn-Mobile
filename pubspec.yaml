@@ -40,7 +40,8 @@ dependencies:
 
   crypto: ^3.0.3
   custom_navigator:
-    path: ./custom_navigator
+    git:
+      url: https://github.com/Sheathed/cn.git
   device_info_plus: ^10.1.0
   #disk_space_plus: ^0.2.3
   # Gradle 8 updated version:
