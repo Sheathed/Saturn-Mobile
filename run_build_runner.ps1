@@ -10,13 +10,16 @@ function Invoke-BuildRunner {
     Write-Host "Processing $name at $dir" -ForegroundColor Cyan
     Set-Location $dir
 
+    Write-Host "Running 'dart pub add dev:build_runner' for $name" -ForegroundColor Cyan
+    dart pub add dev:build_runner
+
     Write-Host "Running 'flutter pub get' for $name" -ForegroundColor Green
     flutter pub get
 
-    Write-Host "Running 'dart run build_runner clean' for $name" -ForegroundColor Green
+    Write-Host "Running 'flutter pub run build_runner clean' for $name" -ForegroundColor Green
     dart run build_runner clean
 
-    Write-Host "Running 'dart run build_runner build --delete-conflicting-outputs' for $name" -ForegroundColor Green
+    Write-Host "Running 'flutter pub run build_runner build --delete-conflicting-outputs' for $name" -ForegroundColor Green
     dart run build_runner build --delete-conflicting-outputs
 
     Write-Host "Running 'flutter clean' for $name" -ForegroundColor Green
