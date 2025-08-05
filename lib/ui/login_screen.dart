@@ -259,7 +259,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 height: 8.0,
               ),
               Text(
-                '2k24 saturn.kim'.i18n,
+                '2k25 saturn.kim'.i18n,
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 16.0),
               )
