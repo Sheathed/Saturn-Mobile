@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
+import '../api/deezer_login.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../api/deezer.dart';
 import '../api/definitions.dart';
@@ -59,9 +61,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                         .i18n),
                 actions: [
                   TextButton(
-                    style: ButtonStyle(
-                      overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
-                    ),
                     child: Text('Continue'.i18n),
                     onPressed: () {
                       if (context.mounted) Navigator.of(context).pop();
@@ -103,9 +102,6 @@ class _LoginWidgetState extends State<LoginWidget> {
             ),
             actions: <Widget>[
               TextButton(
-                style: ButtonStyle(
-                  overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
-                ),
                 child: Text('Dismiss'.i18n),
                 onPressed: () {
                   _error = null;
@@ -127,7 +123,8 @@ class _LoginWidgetState extends State<LoginWidget> {
           onError: (e) => setState(() => _error = e.toString()));
       if (resp == false) {
         //false, not null
-        if ((settings.arl ?? '').length != 192) {
+        int arlLength = (settings.arl ?? '').length;
+        if (arlLength != 175 && arlLength != 192) {
           _error = '${(_error ?? '')}Invalid ARL length!';
         }
         setState(() => settings.arl = null);
@@ -160,9 +157,9 @@ class _LoginWidgetState extends State<LoginWidget> {
   Widget build(BuildContext context) {
     //If arl is null, show loading
     if (settings.arl != null) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(
-          child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
+          child: CircularProgressIndicator(),
         ),
       );
     }
@@ -195,6 +192,19 @@ class _LoginWidgetState extends State<LoginWidget> {
               Container(
                 height: 16.0,
               ),
+              //Email login dialog
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  child: OutlinedButton(
+                    child: Text(
+                      'Login with email'.i18n,
+                    ),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => EmailLogin(_update));
+                    },
+                  )),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: OutlinedButton(
@@ -217,17 +227,13 @@ class _LoginWidgetState extends State<LoginWidget> {
                               const Duration(seconds: 1),
                               () => {
                                     focusNode.requestFocus()
-                                  }); // autofocus doesn't work - it's replacement
+                                  });
                           return AlertDialog(
                             title: Text('Enter ARL'.i18n),
                             content: TextField(
                               onChanged: (String s) => _arl = s,
                               decoration: InputDecoration(
-                                  labelText: 'Token (ARL)'.i18n,
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Theme.of(context).primaryColor), // Color of the underline when focused
-                                  ),
-                                  ),
+                                  labelText: 'Token (ARL)'.i18n),
                               focusNode: focusNode,
                               controller: controller,
                               onSubmitted: (String s) {
@@ -236,9 +242,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                             ),
                             actions: <Widget>[
                               TextButton(
-                                style: ButtonStyle(
-                                  overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
-                                ),
                                 child: Text('Save'.i18n),
                                 onPressed: () => goARL(null, controller),
                               )
@@ -295,8 +298,9 @@ class LoginBrowser extends StatelessWidget {
 
               //Parse arl from url
               if (loadedUri
-                  .toString()
-                  .startsWith('intent://deezer.page.link')) {
+                      .toString()
+                      .startsWith('intent://deezer.page.link') ||
+                  loadedUri.toString().startsWith('intent://dzr.page.link')) {
                 try {
                   //Actual url is in `link` query parameter
                   Uri linkUri = Uri.parse(loadedUri.queryParameters['link']!);
@@ -314,6 +318,106 @@ class LoginBrowser extends StatelessWidget {
             },
           ),
         ),
+      ],
+    );
+  }
+}
+
+class EmailLogin extends StatefulWidget {
+  final Function callback;
+  const EmailLogin(this.callback, {super.key});
+
+  @override
+  _EmailLoginState createState() => _EmailLoginState();
+}
+
+class _EmailLoginState extends State<EmailLogin> {
+  String? _email;
+  String? _password;
+  bool _loading = false;
+
+  Future _login() async {
+    setState(() => _loading = true);
+    //Try logging in
+    String? arl;
+    String? exception;
+    try {
+      arl = await DeezerLogin.getArlByEmailAndPassword(_email!, _password!);
+    } on DeezerLoginException catch (dle) {
+      exception = dle.toString();
+    } catch (e, st) {
+      exception = e.toString();
+      if (kDebugMode) {
+        print(e);
+        print(st);
+      }
+    }
+    setState(() => _loading = false);
+    settings.arl = arl;
+    if (mounted) Navigator.of(context).pop();
+
+    if (exception == null) {
+      //Success
+      widget.callback();
+      return;
+    } else if (mounted) {
+      //Error
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text('Error logging in!'.i18n),
+                content: Text(
+                    'Error logging in using email, please check your credentials.\n\nError: ${exception!}'),
+                actions: [
+                  TextButton(
+                    child: Text('Dismiss'.i18n),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Email Login'.i18n),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: _loading
+            ? [const CircularProgressIndicator()]
+            : [
+                TextField(
+                  decoration: InputDecoration(labelText: 'Email'.i18n),
+                  onChanged: (s) => _email = s,
+                ),
+                Container(
+                  height: 8.0,
+                ),
+                TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(labelText: 'Password'.i18n),
+                  onChanged: (s) => _password = s,
+                )
+              ],
+      ),
+      actions: [
+        if (!_loading)
+          TextButton(
+            child: const Text('Login'),
+            onPressed: () async {
+              if (_email != null && _password != null) {
+                await _login();
+              } else {
+                Fluttertoast.showToast(
+                    msg: 'Missing email or password!'.i18n,
+                    gravity: ToastGravity.BOTTOM,
+                    toastLength: Toast.LENGTH_SHORT);
+              }
+            },
+          )
       ],
     );
   }

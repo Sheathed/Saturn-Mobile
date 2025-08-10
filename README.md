@@ -37,6 +37,8 @@ git submodule init
 git submodule update
 ```
 
+###### Rename .env.example in /lib to .env & fill out the values if necessary.
+
 Compile:  
 ```
 .\run_build_runner.ps1

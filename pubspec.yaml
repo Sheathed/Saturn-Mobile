@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.2.1
+version: 2.2.2
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -37,6 +37,7 @@ dependencies:
   collection: ^1.18.0
   connectivity_plus: ^6.0.2
   country_currency_pickers: ^3.0.0
+  envied: ^1.0.0
 
   crypto: ^3.0.3
   custom_navigator:
@@ -50,7 +51,6 @@ dependencies:
       url: https://github.com/famasf1/disk_space_plus.git
   draggable_scrollbar: ^0.1.0
   encrypt: ^5.0.3
-  envied: ^0.5.3
   #equalizer_flutter: ^0.0.1
   # Gradle 8 updated version:
   equalizer_flutter:
@@ -138,7 +138,7 @@ dev_dependencies:
   json_serializable: ^6.7.1
   build_runner: ^2.4.14
   flutter_lints: ^4.0.0
-  envied_generator: ^0.5.3
+  envied_generator: ^1.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -103,7 +103,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:scheme="https"
-                    android:host="deezer.page.link" />
+                    android:host="dzr.page.link" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -111,7 +111,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:scheme="https"
-                    android:host="www.deezer.page.link" />
+                    android:host="www.dzr.page.link" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
