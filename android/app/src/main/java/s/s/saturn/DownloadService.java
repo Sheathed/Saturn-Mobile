@@ -322,22 +322,17 @@ public class DownloadService extends Service {
             //Fallback
             Deezer.QualityInfo qualityInfo = new Deezer.QualityInfo(this.download.quality, this.download.streamTrackId, this.download.trackToken, this.download.md5origin, this.download.mediaVersion, logger);
             String sURL = null;
-            if (!download.isUserUploaded()) {
-                try {
-                    sURL = qualityInfo.fallback(deezer);
-                    if (sURL == null)
-                        throw new Exception("No more to fallback!");
+            try {
+                sURL = qualityInfo.fallback(deezer);
+                if (sURL == null)
+                    throw new Exception("No more to fallback!");
 
-                    download.quality = qualityInfo.quality;
-                } catch (Exception e) {
-                    logger.error("Fallback failed " + e.toString());
-                    download.state = Download.DownloadState.DEEZER_ERROR;
-                    exit();
-                    return;
-                }
-            } else {
-                //User uploaded MP3
-                qualityInfo.quality = 3;
+                download.quality = qualityInfo.quality;
+            } catch (Exception e) {
+                logger.error("Fallback failed " + e.toString());
+                download.state = Download.DownloadState.DEEZER_ERROR;
+                exit();
+                return;
             }
 
             if (!download.priv) {

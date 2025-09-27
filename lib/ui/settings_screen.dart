@@ -1795,7 +1795,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
                                     builder: (context) {
                                       return AlertDialog(
                                         title: Text('Visit my site!'.i18n),
-                                        content: Text('www.semen.makeup'.i18n),
+                                        content: Text('www.autow.in'.i18n),
                                         actions: <Widget>[
                                           TextButton(
                                             style: ButtonStyle(
@@ -1819,7 +1819,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
                                     builder: (context) {
                                       return AlertDialog(
                                         title: Text('hiya!! please star the repo'.i18n),
-                                        content: Text('github.com/Ascensionist'.i18n),
+                                        content: Text('github.com/Sheathed'.i18n),
                                         actions: <Widget>[
                                           TextButton(
                                             style: ButtonStyle(

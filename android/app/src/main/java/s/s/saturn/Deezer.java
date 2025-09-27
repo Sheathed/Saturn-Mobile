@@ -334,6 +334,7 @@ public class Deezer {
 
             if (quality == 3) format = "MP3_320";
             if (quality == 1) format = "MP3_128";
+            if (trackId.startsWith("-")) format = "MP3_MISC";
 
             try {
                 //arl cookie
