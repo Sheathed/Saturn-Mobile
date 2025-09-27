@@ -1766,7 +1766,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
             subtitle: Text('Official Discord server'.i18n),
             leading: const Icon(FontAwesome5.discord, color: Color(0xff7289da), size: 36.0),
             onTap: () {
-              launchUrlString('https://saturnclient.dev/discord');
+              launchUrlString('https://saturn.kim/discord');
             },
           ),
           ListTile(
@@ -1782,7 +1782,7 @@ class _CreditsScreenState extends State<CreditsScreen> {
             subtitle: const Text('Send crypto to the Saturn fund to support the development.'),
             leading: const Icon(FontAwesome5.bitcoin, color: Color.fromRGBO(247,147,26, 58), size: 36.0),
             onTap: () {
-              launchUrlString('https://fund.saturnclient.dev/');
+              launchUrlString('https://fund.saturn.kim/');
             },
           ),
           const FreezerDivider(),
