@@ -167,7 +167,7 @@ class ArtistTile extends StatelessWidget {
               ),
               CachedImage(
                 url: artist.picture?.thumb ?? '',
-               circular: true,
+                circular: true,
                 width: 100,
               ),
               Container(
@@ -501,14 +501,17 @@ class ChannelTile extends StatelessWidget {
                 child: Stack(
               children: [
                 if (channel.backgroundImage != null)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(5), // Adjust the radius as needed
-                  child: CachedImage(
-                    url: channel.backgroundImage?.customUrl('134', '264', quality: '100') ?? '',
-                    width: 150,
-                    height: 75,
+                  ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(5), // Adjust the radius as needed
+                    child: CachedImage(
+                      url: channel.backgroundImage
+                              ?.customUrl('134', '264', quality: '100') ??
+                          '',
+                      width: 150,
+                      height: 75,
+                    ),
                   ),
-                ),
                 if (channel.logoImage != null)
                   CachedImage(
                     url: channel.logoImage?.thumbUrl ?? '',
@@ -546,35 +549,35 @@ class ShowCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-    height: 180.0,
-    child: InkWell(
-      onTap: onTap,
-      onLongPress: onHold,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CachedImage(
-              url: show.art?.thumb ?? '',
-              width: 128.0,
-              height: 128.0,
-              rounded: true,
+      height: 180.0,
+      child: InkWell(
+        onTap: onTap,
+        onLongPress: onHold,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CachedImage(
+                url: show.art?.thumb ?? '',
+                width: 128.0,
+                height: 128.0,
+                rounded: true,
+              ),
             ),
-          ),
-          SizedBox(
-            width: 144.0,
-            child: Text(
-              show.name ?? '',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 14.0),
+            SizedBox(
+              width: 144.0,
+              child: Text(
+                show.name ?? '',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 14.0),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
     );
   }
 }
@@ -641,7 +644,7 @@ class ShowEpisodeTile extends StatelessWidget {
                       .textTheme
                       .titleMedium
                       ?.color
-                      ?.withOpacity(0.9)),
+                      ?.withValues(alpha: 0.9)),
             ),
           ),
           Padding(
@@ -659,7 +662,7 @@ class ShowEpisodeTile extends StatelessWidget {
                           .textTheme
                           .titleMedium
                           ?.color
-                          ?.withOpacity(0.6)),
+                          ?.withValues(alpha: 0.6)),
                 ),
               ],
             ),

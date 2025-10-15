@@ -26,7 +26,9 @@ class ImagesDatabase {
 
   Future<bool> isDark(String url) async {
     PaletteGenerator paletteGenerator = await getPaletteGenerator(url);
-    return paletteGenerator.colors.first.computeLuminance() > 0.5 ? false : true;
+    return paletteGenerator.colors.first.computeLuminance() > 0.5
+        ? false
+        : true;
   }
 }
 
@@ -99,10 +101,13 @@ class _CachedImageState extends State<CachedImage> {
             height: widget.height,
           );
         }
-        return Image.asset('assets/cover_thumb.jpg', width: widget.width, height: widget.height);
+        return Image.asset('assets/cover_thumb.jpg',
+            width: widget.width, height: widget.height);
       },
-      errorWidget: (context, url, error) =>
-          Image.asset('assets/cover_thumb.jpg', width: widget.width, height: widget.height),
+      errorWidget: (context, url, error) => Image.asset(
+          'assets/cover_thumb.jpg',
+          width: widget.width,
+          height: widget.height),
     );
   }
 }
@@ -112,7 +117,8 @@ class ZoomableImage extends StatefulWidget {
   final bool rounded;
   final double? width;
 
-  const ZoomableImage({super.key, required this.url, this.rounded = false, this.width});
+  const ZoomableImage(
+      {super.key, required this.url, this.rounded = false, this.width});
 
   @override
   _ZoomableImageState createState() => _ZoomableImageState();
@@ -133,7 +139,8 @@ class _ZoomableImageState extends State<ZoomableImage> {
   void listener(PhotoViewControllerValue value) {
     if (value.scale! < 0.16 && photoViewOpened) {
       Navigator.pop(ctx!);
-      photoViewOpened = false; // to avoid multiple pop() when picture are being scaled out too slowly
+      photoViewOpened =
+          false; // to avoid multiple pop() when picture are being scaled out too slowly
     }
   }
 
@@ -141,9 +148,15 @@ class _ZoomableImageState extends State<ZoomableImage> {
   Widget build(BuildContext context) {
     ctx = context;
     return TextButton(
-              style: ButtonStyle(
-          overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
-         ),
+        style: ButtonStyle(
+          overlayColor: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) {
+            if (states.contains(WidgetState.pressed)) {
+              return Theme.of(context).primaryColor.withValues(alpha: 0.3);
+            }
+            return null;
+          }),
+        ),
         child: Semantics(
           label: 'Album art'.i18n,
           child: CachedImage(
@@ -163,7 +176,8 @@ class _ZoomableImageState extends State<ZoomableImage> {
                     maxScale: 8.0,
                     minScale: 0.2,
                     controller: controller,
-                    backgroundDecoration: const BoxDecoration(color: Color.fromARGB(0x90, 0, 0, 0)));
+                    backgroundDecoration: const BoxDecoration(
+                        color: Color.fromARGB(0x90, 0, 0, 0)));
               }));
         });
   }

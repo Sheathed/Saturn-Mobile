@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class LyricsAPI {
@@ -25,7 +26,7 @@ class LyricsAPI {
 
     final keyBytes =
         utf8.encode(year + now.month.toString() + now.day.toString());
-    print('[LyricsAPI] Key bytes: $keyBytes');
+    debugPrint('[LyricsAPI] Key bytes: $keyBytes');
 
     final hmac = Hmac(sha256, keyBytes);
     final digest = hmac.convert(dateBytes);
@@ -48,7 +49,7 @@ class LyricsAPI {
       }
       throw Exception('E${response.statusCode}');
     } catch (e) {
-      print('[LyricsAPI] Error during request: $e');
+      debugPrint('[LyricsAPI] Error during request: $e');
       throw Exception('E$e');
     }
   }

@@ -14,8 +14,7 @@ DeezerAPI deezerAPI = DeezerAPI();
 class DeezerAPI {
   DeezerAPI({this.arl});
 
-  static const String userAgent =
-      'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36';
+  static const String userAgent = 'Deezer/8.0.0.0 (Android; 13; Tablet; us)';
 
   String? arl;
   String? token;

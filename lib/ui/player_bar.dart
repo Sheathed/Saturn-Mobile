@@ -15,9 +15,6 @@ import '../ui/router.dart';
 import 'cached_image.dart';
 import 'player_screen.dart';
 
-import '../api/clubs.dart';
-ClubRoom clubroom = ClubRoom();
-
 class PlayerBar extends StatefulWidget {
   const PlayerBar({super.key});
 
@@ -34,9 +31,16 @@ class PlayerBarState extends State<PlayerBar> {
   StreamSubscription? _mediaItemSub;
 
   double get _progress {
-    if (audioHandler.playbackState.value.processingState == AudioProcessingState.idle) return 0.0;
-    if (audioHandler.mediaItem.value == null) return 0.0;
-    if (audioHandler.mediaItem.value!.duration!.inSeconds == 0) return 0.0; // Avoid division by 0
+    if (audioHandler.playbackState.value.processingState ==
+        AudioProcessingState.idle) {
+      return 0.0;
+    }
+    if (audioHandler.mediaItem.value == null) {
+      return 0.0;
+    }
+    if (audioHandler.mediaItem.value!.duration!.inSeconds == 0) {
+      return 0.0; // Avoid division by 0
+    }
     return audioHandler.playbackState.value.position.inSeconds /
         audioHandler.mediaItem.value!.duration!.inSeconds;
   }
@@ -48,7 +52,8 @@ class PlayerBarState extends State<PlayerBar> {
     if (settings.blurPlayerBackground) {
       setState(() {
         _blurImage = CachedNetworkImageProvider(
-          audioHandler.mediaItem.value?.extras?['thumb'] ?? audioHandler.mediaItem.value?.artUri,
+          audioHandler.mediaItem.value?.extras?['thumb'] ??
+              audioHandler.mediaItem.value?.artUri,
         );
       });
     }
@@ -56,7 +61,8 @@ class PlayerBarState extends State<PlayerBar> {
     // Generate a color palette from the image
     PaletteGenerator palette = await PaletteGenerator.fromImageProvider(
       CachedNetworkImageProvider(
-        audioHandler.mediaItem.value?.extras?['thumb'] ?? audioHandler.mediaItem.value?.artUri,
+        audioHandler.mediaItem.value?.extras?['thumb'] ??
+            audioHandler.mediaItem.value?.artUri,
       ),
     );
 
@@ -66,7 +72,7 @@ class PlayerBarState extends State<PlayerBar> {
         begin: Alignment.centerLeft,
         end: Alignment.centerRight,
         colors: [
-          palette.dominantColor?.color.withOpacity(0.7) ?? Colors.black,
+          palette.dominantColor?.color.withValues(alpha: 0.7) ?? Colors.black,
           Colors.transparent,
         ],
         stops: const [0.0, 0.6],
@@ -78,7 +84,7 @@ class PlayerBarState extends State<PlayerBar> {
     _updateBackground();
   }
 
-    @override
+  @override
   void initState() {
     super.initState();
     _mediaItemSub = audioHandler.mediaItem.listen((event) {
@@ -109,46 +115,51 @@ class PlayerBarState extends State<PlayerBar> {
     return Stack(
       children: [
         // Blur background image
-        if (settings.themeAdditonalItems && settings.blurPlayerBackground && _blurImage != null)
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: Container(
-            height: 100.0,
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: Container(
-                    color: Theme.of(context).bottomAppBarTheme.color,
-                 ),
-                ),
-                if (_blurImage != null)
-                ClipRect(      
-                  child: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: _blurImage!,
-                        fit: BoxFit.cover,
-                        colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.25),
-                          BlendMode.dstATop,
+        if (settings.themeAdditonalItems &&
+            settings.blurPlayerBackground &&
+            _blurImage != null)
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: SizedBox(
+              height: 100.0,
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Container(
+                      color: Theme.of(context).bottomAppBarTheme.color,
+                    ),
+                  ),
+                  if (_blurImage != null)
+                    ClipRect(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: _blurImage!,
+                            fit: BoxFit.cover,
+                            colorFilter: ColorFilter.mode(
+                              Colors.black.withValues(alpha: 0.25),
+                              BlendMode.dstATop,
+                            ),
+                          ),
+                        ),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                          child: Container(color: Colors.transparent),
                         ),
                       ),
                     ),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                      child: Container(color: Colors.transparent),
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
 
         // Gradient overlay
-        if (settings.themeAdditonalItems && !settings.blurPlayerBackground && settings.colorGradientBackground && _bgGradient != null)
+        if (settings.themeAdditonalItems &&
+            !settings.blurPlayerBackground &&
+            settings.colorGradientBackground &&
+            _bgGradient != null)
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(gradient: _bgGradient),
@@ -160,22 +171,20 @@ class PlayerBarState extends State<PlayerBar> {
           onHorizontalDragEnd: (DragEndDetails details) async {
             if ((details.primaryVelocity ?? 0) < -100) {
               // Swiped left
-              if (clubroom.ifhost()) {
-                await audioHandler.skipToPrevious();
-              }
+              await audioHandler.skipToPrevious();
             } else if ((details.primaryVelocity ?? 0) > 100) {
               // Swiped right
-              if (clubroom.ifhost()) {
-                await audioHandler.skipToNext();
-              }
+              await audioHandler.skipToNext();
             }
           },
           onVerticalDragEnd: (DragEndDetails details) async {
             if ((details.primaryVelocity ?? 0) < -100) {
               // Swiped up
-              Navigator.of(context).push(SlideBottomRoute(widget: const PlayerScreen()));
+              Navigator.of(context)
+                  .push(SlideBottomRoute(widget: const PlayerScreen()));
               SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-                systemNavigationBarColor: settings.themeData.scaffoldBackgroundColor,
+                systemNavigationBarColor:
+                    settings.themeData.scaffoldBackgroundColor,
               ));
             }
           },
@@ -190,15 +199,23 @@ class PlayerBarState extends State<PlayerBar> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(
-                    color: focusNode.hasFocus ? Colors.black26 : settings.themeAdditonalItems ? Colors.transparent : Theme.of(context).bottomAppBarTheme.color,
+                    color: focusNode.hasFocus
+                        ? Colors.black26
+                        : settings.themeAdditonalItems
+                            ? Colors.transparent
+                            : Theme.of(context).bottomAppBarTheme.color,
                     child: ListTile(
                       dense: true,
                       focusNode: focusNode,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 8.0),
                       onTap: () {
-                        Navigator.of(context).push(SlideBottomRoute(widget: const PlayerScreen()));
-                        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-                          systemNavigationBarColor: settings.themeData.scaffoldBackgroundColor,
+                        Navigator.of(context).push(
+                            SlideBottomRoute(widget: const PlayerScreen()));
+                        SystemChrome.setSystemUIOverlayStyle(
+                            SystemUiOverlayStyle(
+                          systemNavigationBarColor:
+                              settings.themeData.scaffoldBackgroundColor,
                         ));
                       },
                       leading: CachedImage(
@@ -220,7 +237,11 @@ class PlayerBarState extends State<PlayerBar> {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          PrevNextButton(iconSize, prev: true, hidePrev: true,),
+                          PrevNextButton(
+                            iconSize,
+                            prev: true,
+                            hidePrev: true,
+                          ),
                           PlayPauseButton(iconSize),
                           PrevNextButton(iconSize),
                         ],
@@ -231,7 +252,8 @@ class PlayerBarState extends State<PlayerBar> {
                     height: 3.0,
                     child: LinearProgressIndicator(
                       color: Theme.of(context).primaryColor,
-                      backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+                      backgroundColor:
+                          Theme.of(context).primaryColor.withValues(alpha: 0.1),
                       value: _progress,
                     ),
                   ),
@@ -250,7 +272,8 @@ class PrevNextButton extends StatelessWidget {
   final bool prev;
   final bool hidePrev;
 
-  const PrevNextButton(this.size, {super.key, this.prev = false, this.hidePrev = false});
+  const PrevNextButton(this.size,
+      {super.key, this.prev = false, this.hidePrev = false});
 
   @override
   Widget build(BuildContext context) {
@@ -269,27 +292,16 @@ class PrevNextButton extends StatelessWidget {
               onPressed: null,
             );
           }
-          ClubRoom clubroom = ClubRoom();
           while (true) {
-          if (clubroom.ifhost()) {
-          return IconButton(
-            icon: Icon(
-              Icons.skip_next,
-              semanticLabel: 'Play next'.i18n,
-            ),
-            iconSize: size,
-            onPressed: () => GetIt.I<AudioPlayerHandler>().skipToNext(),
-          );} else {
-          return IconButton(
-            icon: Icon(
-              Icons.skip_next,
-              semanticLabel: 'Play next'.i18n,
-            ),
-            iconSize: size,
-            onPressed: null,
-          );
+            return IconButton(
+              icon: Icon(
+                Icons.skip_next,
+                semanticLabel: 'Play next'.i18n,
+              ),
+              iconSize: size,
+              onPressed: () => GetIt.I<AudioPlayerHandler>().skipToNext(),
+            );
           }
-        }
         }
         if (prev) {
           if (!(queueState?.hasPrevious ?? false)) {
@@ -299,7 +311,7 @@ class PrevNextButton extends StatelessWidget {
                 width: 0,
               );
             }
-            
+
             return IconButton(
               icon: Icon(
                 Icons.skip_previous,
@@ -310,25 +322,14 @@ class PrevNextButton extends StatelessWidget {
             );
           }
           while (true) {
-          if (clubroom.ifhost()) {
-          return IconButton(
-            icon: Icon(
-              Icons.skip_previous,
-              semanticLabel: 'Play previous'.i18n,
-            ),
-            iconSize: size,
-            onPressed: () => GetIt.I<AudioPlayerHandler>().skipToPrevious(),
-          );
-          } else {
             return IconButton(
               icon: Icon(
                 Icons.skip_previous,
                 semanticLabel: 'Play previous'.i18n,
               ),
               iconSize: size,
-              onPressed: null,
+              onPressed: () => GetIt.I<AudioPlayerHandler>().skipToPrevious(),
             );
-          }
           }
         }
         return Container();
@@ -345,14 +346,17 @@ class PlayPauseButton extends StatefulWidget {
   _PlayPauseButtonState createState() => _PlayPauseButtonState();
 }
 
-class _PlayPauseButtonState extends State<PlayPauseButton> with SingleTickerProviderStateMixin {
+class _PlayPauseButtonState extends State<PlayPauseButton>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
   @override
   void initState() {
-    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
-    _animation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+    _controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 200));
+    _animation = Tween<double>(begin: 0, end: 1)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
     super.initState();
   }
 
@@ -373,7 +377,9 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with SingleTickerProv
 
         // Animated icon by pato05
         // Morph from pause to play or from play to pause
-        if (playing || processingState == AudioProcessingState.ready || processingState == AudioProcessingState.idle) {
+        if (playing ||
+            processingState == AudioProcessingState.ready ||
+            processingState == AudioProcessingState.idle) {
           if (playing) {
             _controller.forward();
           } else {
@@ -388,15 +394,12 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with SingleTickerProv
                 semanticLabel: playing ? 'Pause'.i18n : 'Play'.i18n,
               ),
               iconSize: widget.size,
-              onPressed: () async { 
-            if (clubroom.ifhost()) {
-              playing ? await GetIt.I<AudioPlayerHandler>().pause() : await GetIt.I<AudioPlayerHandler>().play();
-            } else {
-              null;
-            }
-              }
-    );
-  }
+              onPressed: () async {
+                playing
+                    ? await GetIt.I<AudioPlayerHandler>().pause()
+                    : await GetIt.I<AudioPlayerHandler>().play();
+              });
+        }
         switch (processingState) {
           //Loading, connecting, rewinding...
           case AudioProcessingState.buffering:
@@ -407,7 +410,9 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with SingleTickerProv
               child: Center(
                 child: Transform.scale(
                   scale: 0.85, // Adjust the scale to 75% of the original size
-                  child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
             );

@@ -42,8 +42,6 @@ class _LyricsScreenState extends State<LyricsScreen> {
   LinearGradient? _bgGradient;
   ImageProvider? _blurImage;
   final double height = 90;
-  bool _isSynced = false;
-  bool _isUnsynced = false;
 
   @override
   void initState() {
@@ -72,20 +70,10 @@ class _LyricsScreenState extends State<LyricsScreen> {
     }
 
     try {
-      _isSynced = false;
-      _isUnsynced = false;
       Lyrics l = await deezerAPI.lyrics(widget.trackId);
-      if (l.isSynced()) {
-        _isSynced = true;
-        _isUnsynced = false;
-      }
-      if (l.isUnsynced()) {
-        _isUnsynced = true;
-        _isSynced = false;
-      }
+      if (l.isSynced()) {}
+      if (l.isUnsynced()) {}
       if (l.isUnsynced() == false && l.isSynced() == false) {
-        _isSynced = true;
-        _isUnsynced = false;
         _updateLyricsState(Lyrics(
           syncedLyrics: [
             SynchronizedLyric(
@@ -100,7 +88,7 @@ class _LyricsScreenState extends State<LyricsScreen> {
       }
       _updateLyricsState(l);
     } catch (e) {
-      print('[Lyrics] Error loading lyrics: $e');
+      debugPrint('[Lyrics] Error loading lyrics: $e');
       _timer?.cancel();
       setState(() {
         _error = true;
@@ -110,15 +98,11 @@ class _LyricsScreenState extends State<LyricsScreen> {
   }
 
   void _updateLyricsState(Lyrics lyrics) {
-    _isSynced = false;
-    _isUnsynced = false;
     String screenTitle = 'Lyrics'.i18n;
     if (lyrics.syncedLyrics!.isNotEmpty) {
-      _isSynced = true;
       _startSyncTimer();
     } else if (lyrics.unsyncedLyrics!.isNotEmpty) {
       screenTitle = 'Unsynchronized lyrics'.i18n;
-      _isUnsynced = true;
       _timer?.cancel();
     }
 
@@ -131,7 +115,7 @@ class _LyricsScreenState extends State<LyricsScreen> {
   }
 
   void _startSyncTimer() {
-    print('[Lyrics] Starting sync timer');
+    debugPrint('[Lyrics] Starting sync timer');
     Timer.periodic(const Duration(milliseconds: 350), (timer) {
       _timer = timer;
       if (_loading) return;
@@ -299,16 +283,12 @@ class _LyricsScreenState extends State<LyricsScreen> {
                       }
 
                       if (syncedLyrics.isNotEmpty) {
-                        _isSynced = true;
-                        _isUnsynced = false;
                         _updateLyricsState(Lyrics(
                           syncedLyrics: syncedLyrics,
                           unsyncedLyrics: null,
                           errorMessage: null,
                         ));
                       } else {
-                        _isUnsynced = true;
-                        _isSynced = false;
                         _updateLyricsState(Lyrics(
                           syncedLyrics: [],
                           unsyncedLyrics: lrcText,
@@ -480,9 +460,7 @@ class _LyricsScreenState extends State<LyricsScreen> {
                             onTap: () {
                               final offset = lyrics!.syncedLyrics![i].offset;
                               if (offset != null) {
-                                if (clubRoom.ifhost()) {
-                                  GetIt.I<AudioPlayerHandler>().seek(offset);
-                                }
+                                GetIt.I<AudioPlayerHandler>().seek(offset);
                               }
                             },
                             child: Text(

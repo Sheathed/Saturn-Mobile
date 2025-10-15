@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -18,9 +20,6 @@ import '../translations.i18n.dart';
 import '../ui/cached_image.dart';
 import '../ui/details_screens.dart';
 import '../ui/error.dart';
-
-import '../api/clubs.dart';
-ClubRoom clubroom = ClubRoom();
 
 class MenuSheet {
   Function navigateCallback;
@@ -139,15 +138,7 @@ class MenuSheet {
       {required BuildContext context,
       List<Widget> options = const [],
       Function? onRemove}) {
-
-      List<Widget> queueOptions = [];
-
-      if (clubroom.ifhost()) {
-        queueOptions.add(addToQueueNext(track, context));
-        queueOptions.add(addToQueue(track, context));
-      } else {
-        queueOptions.add(requestSong(track, context));
-      }
+    List<Widget> queueOptions = [];
 
     showWithTrack(context, track, [
       ...queueOptions,
@@ -169,25 +160,6 @@ class MenuSheet {
   //===================
   // TRACK OPTIONS
   //===================
-    
-    dead() async { 
-    if (clubroom.ifhost()) {
-      return();
-    } else {
-      return();
-    }}
-
-  Widget requestSong(Track t, BuildContext context) => ListTile(
-      title: Text('Request Song'.i18n),
-      leading: const Icon(Icons.music_note),
-      onTap: () async {
-        ClubRoom clubRoom = ClubRoom();
-        SocketManagement socketManagement = SocketManagement(address: 'https://clubs.saturn.kim:443', clubRoom: clubRoom);
-        print('precall');
-        socketManagement.songRequest(t.id.toString());
-        print('aftercall');
-        if (context.mounted) _close(context);
-      });
 
   Widget addToQueueNext(Track t, BuildContext context) => ListTile(
       title: Text('Play next'.i18n),
@@ -307,29 +279,28 @@ class MenuSheet {
 
   //Redirect to artist page (ie from track)
   Widget showArtist(Artist a, BuildContext context) => ListTile(
-        title: Text(
-          'Go to'.i18n + ' ${a.name}',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        leading: const Icon(Icons.recent_actors),
-        onTap: () async {
-          try {
-            Artist b = await deezerAPI.artist(a.id!);
-            if (context.mounted) _close(context);
-            customNavigatorKey.currentState
-                ?.push(MaterialPageRoute(builder: (context) => ArtistDetails(b)));
+      title: Text(
+        'Go to'.i18n + ' ${a.name}',
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      leading: const Icon(Icons.recent_actors),
+      onTap: () async {
+        try {
+          Artist b = await deezerAPI.artist(a.id!);
+          if (context.mounted) _close(context);
+          customNavigatorKey.currentState
+              ?.push(MaterialPageRoute(builder: (context) => ArtistDetails(b)));
 
-            navigateCallback();
-          } catch(e) {
-            if (context.mounted) _close(context);
-            customNavigatorKey.currentState
-                ?.push(MaterialPageRoute(builder: (context) => const ErrorScreen()));
+          navigateCallback();
+        } catch (e) {
+          if (context.mounted) _close(context);
+          customNavigatorKey.currentState?.push(
+              MaterialPageRoute(builder: (context) => const ErrorScreen()));
 
-            navigateCallback();
-          }
+          navigateCallback();
         }
-      );
+      });
 
   Widget showAlbum(Album a, BuildContext context) => ListTile(
         title: Text(
@@ -603,7 +574,10 @@ class MenuSheet {
   //===================
 
   defaultShowMenu(Show s,
-      {required BuildContext context, List<Widget> options = const [], Function? onRemove, Function? onUpdate}) async {
+      {required BuildContext context,
+      List<Widget> options = const [],
+      Function? onRemove,
+      Function? onUpdate}) async {
     show(context, [
       (await deezerAPI.checkShowFavorite(s))
           ? removeShowLibrary(s, context, onRemove: onRemove)
@@ -614,11 +588,14 @@ class MenuSheet {
   }
 
   defaultShowEpisodeMenu(Show s, ShowEpisode e,
-      {required BuildContext context, List<Widget> options = const [], Function? onRemove, Function? onUpdate}) async {
+      {required BuildContext context,
+      List<Widget> options = const [],
+      Function? onRemove,
+      Function? onUpdate}) async {
     show(context, [
       (await deezerAPI.checkShowFavorite(s))
-      ? removeShowLibrary(s, context, onRemove: onRemove)
-      : addShowLibrary(s, context),
+          ? removeShowLibrary(s, context, onRemove: onRemove)
+          : addShowLibrary(s, context),
       shareTile('episode', e.id!),
       shareShow(s.id!),
       downloadExternalEpisode(e),
@@ -656,8 +633,7 @@ class MenuSheet {
         onTap: () async {
           await deezerAPI.addFavoriteShow(s.id!);
           Fluttertoast.showToast(
-              msg: 'Added Show to library'.i18n,
-              gravity: ToastGravity.BOTTOM);
+              msg: 'Added Show to library'.i18n, gravity: ToastGravity.BOTTOM);
           if (context.mounted) _close(context);
         },
       );
@@ -794,9 +770,15 @@ class _SleepTimerDialogState extends State<SleepTimerDialog> {
       ),
       actions: [
         TextButton(
-                  style: ButtonStyle(
-          overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
-         ),
+          style: ButtonStyle(
+            overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                (Set<WidgetState> states) {
+              if (states.contains(WidgetState.pressed)) {
+                return Theme.of(context).primaryColor.withValues(alpha: 0.3);
+              }
+              return null;
+            }),
+          ),
           child: Text('Dismiss'.i18n),
           onPressed: () {
             Navigator.of(context).pop();
@@ -804,9 +786,15 @@ class _SleepTimerDialogState extends State<SleepTimerDialog> {
         ),
         if (cache.sleepTimer != null)
           TextButton(
-                    style: ButtonStyle(
-          overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
-         ),
+            style: ButtonStyle(
+              overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                  (Set<WidgetState> states) {
+                if (states.contains(WidgetState.pressed)) {
+                  return Theme.of(context).primaryColor.withValues(alpha: 0.3);
+                }
+                return null;
+              }),
+            ),
             child: Text('Cancel current timer'.i18n),
             onPressed: () {
               cache.sleepTimer!.cancel();
@@ -816,9 +804,15 @@ class _SleepTimerDialogState extends State<SleepTimerDialog> {
             },
           ),
         TextButton(
-                  style: ButtonStyle(
-          overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
-         ),
+          style: ButtonStyle(
+            overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                (Set<WidgetState> states) {
+              if (states.contains(WidgetState.pressed)) {
+                return Theme.of(context).primaryColor.withValues(alpha: 0.3);
+              }
+              return null;
+            }),
+          ),
           child: Text('Save'.i18n),
           onPressed: () {
             Duration duration = Duration(hours: hours, minutes: minutes);
@@ -877,7 +871,9 @@ class _SelectPlaylistDialogState extends State<SelectPlaylistDialog> {
             return SizedBox(
               height: 100,
               child: Center(
-                child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             );
           }
@@ -886,7 +882,7 @@ class _SelectPlaylistDialogState extends State<SelectPlaylistDialog> {
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const SizedBox(
               child: ErrorScreen(),
-            );  
+            );
           }
 
           List<Playlist> playlists = snapshot.data!;
@@ -964,10 +960,13 @@ class _CreatePlaylistDialogState extends State<CreatePlaylistDialog> {
         children: <Widget>[
           TextField(
             cursorColor: Theme.of(context).primaryColor,
-            decoration: InputDecoration(labelText: 'Title'.i18n,
+            decoration: InputDecoration(
+              labelText: 'Title'.i18n,
               focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).primaryColor), // Color of the underline when focused
-            ),
+                borderSide: BorderSide(
+                    color: Theme.of(context)
+                        .primaryColor), // Color of the underline when focused
+              ),
             ),
             controller: _titleController ?? TextEditingController(),
             onChanged: (String s) => _title = s,
@@ -976,10 +975,13 @@ class _CreatePlaylistDialogState extends State<CreatePlaylistDialog> {
             cursorColor: Theme.of(context).primaryColor,
             onChanged: (String s) => _description = s,
             controller: _descController ?? TextEditingController(),
-            decoration: InputDecoration(labelText: 'Description'.i18n,
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).primaryColor), // Color of the underline when focused
-            ),
+            decoration: InputDecoration(
+              labelText: 'Description'.i18n,
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                    color: Theme.of(context)
+                        .primaryColor), // Color of the underline when focused
+              ),
             ),
           ),
           Container(
@@ -1005,16 +1007,28 @@ class _CreatePlaylistDialogState extends State<CreatePlaylistDialog> {
       ),
       actions: <Widget>[
         TextButton(
-                  style: ButtonStyle(
-          overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
-         ),
+          style: ButtonStyle(
+            overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                (Set<WidgetState> states) {
+              if (states.contains(WidgetState.pressed)) {
+                return Theme.of(context).primaryColor.withValues(alpha: 0.3);
+              }
+              return null;
+            }),
+          ),
           child: Text('Cancel'.i18n),
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
-                  style: ButtonStyle(
-          overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
-         ),
+          style: ButtonStyle(
+            overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                (Set<WidgetState> states) {
+              if (states.contains(WidgetState.pressed)) {
+                return Theme.of(context).primaryColor.withValues(alpha: 0.3);
+              }
+              return null;
+            }),
+          ),
           child: Text(edit ? 'Update'.i18n : 'Create'.i18n),
           onPressed: () async {
             if (edit) {

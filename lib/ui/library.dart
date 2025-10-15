@@ -19,12 +19,8 @@ import '../ui/downloads_screen.dart';
 import '../ui/elements.dart';
 import '../ui/error.dart';
 import '../ui/tiles.dart';
-import '../ui/clubs_screen.dart';
 import 'menu.dart';
 import 'settings_screen.dart';
-import '../api/clubs.dart';
-
-ClubRoom clubRoom = ClubRoom();
 
 class LibraryAppBar extends StatelessWidget implements PreferredSizeWidget {
   const LibraryAppBar({super.key});
@@ -157,21 +153,6 @@ class LibraryScreen extends StatelessWidget {
             },
           ),
           const FreezerDivider(),
-          ListTile(
-            title: Text('Clubs'.i18n),
-            leading: const LeadingIcon(Icons.nightlife, color: Color.fromARGB(255, 192, 95, 17)),
-            onTap: () {
-              var realcontext = context;
-              if (!clubRoom.ifclub()) {
-                Navigator.of(realcontext).push(MaterialPageRoute(
-                builder: (realcontext) => const ClubsScreen()));
-              } else {
-                Navigator.of(realcontext).push(MaterialPageRoute(
-                builder: (realcontext) => const InClubScreen()));
-              }
-            },
-          ),
-          const FreezerDivider(),
           ExpansionTile(
             title: Text('Statistics'.i18n),
             leading: const LeadingIcon(Icons.insert_chart, color: Colors.grey),
@@ -187,7 +168,11 @@ class LibraryScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[CircularProgressIndicator(color: Theme.of(context).primaryColor,)],
+                        children: <Widget>[
+                          CircularProgressIndicator(
+                            color: Theme.of(context).primaryColor,
+                          )
+                        ],
                       ),
                     );
                   }
@@ -504,7 +489,15 @@ class _LibraryTracksState extends State<LibraryTracks> {
                     MakePlaylistOffline(_playlist),
                     TextButton(
                       style: ButtonStyle(
-                        overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
+                        overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                            (Set<WidgetState> states) {
+                          if (states.contains(WidgetState.pressed)) {
+                            return Theme.of(context)
+                                .primaryColor
+                                .withValues(alpha: 0.3);
+                          }
+                          return null;
+                        }),
                       ),
                       child: Row(
                         children: <Widget>[
@@ -537,11 +530,6 @@ class _LibraryTracksState extends State<LibraryTracks> {
                   return TrackTile(
                     t,
                     onTap: () {
-                      if (clubroom.ifclub()) {
-                        if (clubroom.ifhost()) {
-                          GetIt.I<AudioPlayerHandler>().insertQueueItem(-1, t.toMediaItem());
-                        }
-                      } else {
                       GetIt.I<AudioPlayerHandler>().playFromTrackList(
                           (tracks.length == (trackCount ?? 0))
                               ? _sorted
@@ -551,7 +539,6 @@ class _LibraryTracksState extends State<LibraryTracks> {
                               id: deezerAPI.favoritesPlaylistId,
                               text: 'Favorites'.i18n,
                               source: 'playlist_page'));
-                      }
                     },
                     onHold: () {
                       MenuSheet m = MenuSheet();
@@ -569,7 +556,9 @@ class _LibraryTracksState extends State<LibraryTracks> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
+                        child: CircularProgressIndicator(
+                          color: Theme.of(context).primaryColor,
+                        ),
                       )
                     ],
                   ),
@@ -588,11 +577,6 @@ class _LibraryTracksState extends State<LibraryTracks> {
                   return TrackTile(
                     t,
                     onTap: () {
-                      if (clubroom.ifclub()) {
-                        if (clubroom.ifhost()) {
-                          GetIt.I<AudioPlayerHandler>().insertQueueItem(-1, t.toMediaItem());
-                        }
-                      } else {
                       GetIt.I<AudioPlayerHandler>().playFromTrackList(
                           allTracks,
                           t.id!,
@@ -600,7 +584,6 @@ class _LibraryTracksState extends State<LibraryTracks> {
                               id: 'allTracks',
                               text: 'All offline tracks'.i18n,
                               source: 'offline'));
-                      }
                     },
                     onHold: () {
                       MenuSheet m = MenuSheet();
@@ -753,7 +736,11 @@ class _LibraryAlbumsState extends State<LibraryAlbums> {
               if (!settings.offlineMode && _albums == null)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[CircularProgressIndicator(color: Theme.of(context).primaryColor,)],
+                  children: <Widget>[
+                    CircularProgressIndicator(
+                      color: Theme.of(context).primaryColor,
+                    )
+                  ],
                 ),
               if (_albums != null)
                 ...List.generate(_albums?.length ?? 0, (int i) {
@@ -970,7 +957,11 @@ class _LibraryArtistsState extends State<LibraryArtists> {
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [CircularProgressIndicator(color: Theme.of(context).primaryColor,)],
+                    children: [
+                      CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor,
+                      )
+                    ],
                   ),
                 ),
               if (_error) const Center(child: ErrorScreen()),
@@ -1145,7 +1136,7 @@ class _LibraryPlaylistsState extends State<LibraryPlaylists> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  cursorColor: Theme.of(context).primaryColor,
+                    cursorColor: Theme.of(context).primaryColor,
                     onChanged: (String s) => setState(() => _filter = s),
                     decoration: InputDecoration(
                       labelText: 'Search'.i18n,
@@ -1155,7 +1146,8 @@ class _LibraryPlaylistsState extends State<LibraryPlaylists> {
                           borderSide: BorderSide(color: Colors.grey)),
                       enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey)),
-                      floatingLabelStyle: TextStyle(color: Theme.of(context).primaryColor),
+                      floatingLabelStyle:
+                          TextStyle(color: Theme.of(context).primaryColor),
                     )),
               ),
               ListTile(
@@ -1180,7 +1172,9 @@ class _LibraryPlaylistsState extends State<LibraryPlaylists> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    CircularProgressIndicator(color: Theme.of(context).primaryColor,),
+                    CircularProgressIndicator(
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ],
                 ),
 
@@ -1393,7 +1387,7 @@ class _LibraryShowsState extends State<LibraryShows> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  cursorColor: Theme.of(context).primaryColor,
+                    cursorColor: Theme.of(context).primaryColor,
                     onChanged: (String s) => setState(() => _filter = s),
                     decoration: InputDecoration(
                       labelText: 'Search'.i18n,
@@ -1403,7 +1397,8 @@ class _LibraryShowsState extends State<LibraryShows> {
                           borderSide: BorderSide(color: Colors.grey)),
                       enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey)),
-                      floatingLabelStyle: TextStyle(color: Theme.of(context).primaryColor),
+                      floatingLabelStyle:
+                          TextStyle(color: Theme.of(context).primaryColor),
                     )),
               ),
               const FreezerDivider(),
@@ -1412,7 +1407,9 @@ class _LibraryShowsState extends State<LibraryShows> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    CircularProgressIndicator(color: Theme.of(context).primaryColor,),
+                    CircularProgressIndicator(
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ],
                 ),
 
@@ -1421,8 +1418,8 @@ class _LibraryShowsState extends State<LibraryShows> {
                   Show s = (_sorted)[i];
                   return ShowTile(
                     s,
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ShowScreen(s))),
+                    onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => ShowScreen(s))),
                     onHold: () {
                       MenuSheet m = MenuSheet();
                       m.defaultShowMenu(s, context: context, onRemove: () {
@@ -1477,17 +1474,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
               return TrackTile(
                 t,
                 onTap: () {
-                  if (clubroom.ifclub()) {
-                    if (clubroom.ifhost()) {
-                      GetIt.I<AudioPlayerHandler>().insertQueueItem(-1, t.toMediaItem());
-                    }
-                  } else {
                   GetIt.I<AudioPlayerHandler>().playFromTrackList(
                       cache.history.reversed.toList(),
                       t.id!,
                       QueueSource(
-                          id: null, text: 'History'.i18n, source: 'history_page'));
-                  }
+                          id: null,
+                          text: 'History'.i18n,
+                          source: 'history_page'));
                 },
                 onHold: () {
                   MenuSheet m = MenuSheet();

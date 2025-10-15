@@ -193,7 +193,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
       return Center(
           child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
+        child: CircularProgressIndicator(
+          color: Theme.of(context).primaryColor,
+        ),
       ));
     }
     if (_error) return const ErrorScreen();
@@ -242,7 +244,15 @@ class HomepageRowSection extends StatelessWidget {
                 if (section.hasMore ?? false) {
                   return TextButton(
                     style: ButtonStyle(
-                      overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
+                      overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                          (Set<WidgetState> states) {
+                        if (states.contains(WidgetState.pressed)) {
+                          return Theme.of(context)
+                              .primaryColor
+                              .withValues(alpha: 0.3);
+                        }
+                        return null;
+                      }),
                     ),
                     child: Text(
                       'Show more'.i18n,
@@ -314,26 +324,16 @@ class HomePageItemWidget extends StatelessWidget {
         return FlowTrackListTile(
           item.value,
           onTap: () {
-            if (clubroom.ifclub()) {
-              if (clubroom.ifhost()) {
-              }
-            } else {
-                DeezerFlow deezerFlow = item.value;
-                GetIt.I<AudioPlayerHandler>().playFromSmartTrackList(SmartTrackList(
+            DeezerFlow deezerFlow = item.value;
+            GetIt.I<AudioPlayerHandler>().playFromSmartTrackList(SmartTrackList(
                 id: 'flow', title: deezerFlow.title, flowType: deezerFlow.id));
-            }
           },
         );
       case HomePageItemType.SMARTTRACKLIST:
         return SmartTrackListTile(
           item.value,
           onTap: () {
-            if (clubroom.ifclub()) {
-              if (clubroom.ifhost()) {
-              }
-            } else {
-              GetIt.I<AudioPlayerHandler>().playFromSmartTrackList(item.value);
-            }
+            GetIt.I<AudioPlayerHandler>().playFromSmartTrackList(item.value);
           },
         );
       case HomePageItemType.ALBUM:
