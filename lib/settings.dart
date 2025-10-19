@@ -123,7 +123,7 @@ class Settings {
   @JsonKey(toJson: _colorToJson, fromJson: _colorFromJson)
   Color primaryColor = Colors.blue;
 
-  static _colorToJson(Color c) => c.value;
+  static _colorToJson(Color c) => c.toARGB32();
   static _colorFromJson(int? v) => v == null ? Colors.blue : Color(v);
 
   @JsonKey(defaultValue: false)
@@ -162,12 +162,24 @@ class Settings {
 
   // List of rainbow colors
   static const List<Color> _rainbowColors = [
-    Color(0xFFF44336), Color(0xFFE91E63), Color(0xFF9C27B0), 
-    Color(0xFF673AB7), Color(0xFF3F51B5), Color(0xFF2196F3), 
-    Color(0xFF03A9F4), Color(0xFF00BCD4), Color(0xFF009688), 
-    Color(0xFF4CAF50), Color(0xFF8BC34A), Color(0xFFCDDC39), 
-    Color(0xFFFFEB3B), Color(0xFFFFC107), Color(0xFFFF9800), 
-    Color(0xFFFF5722), Color(0xFF795548), Color(0xFF607D8B), 
+    Color(0xFFF44336),
+    Color(0xFFE91E63),
+    Color(0xFF9C27B0),
+    Color(0xFF673AB7),
+    Color(0xFF3F51B5),
+    Color(0xFF2196F3),
+    Color(0xFF03A9F4),
+    Color(0xFF00BCD4),
+    Color(0xFF009688),
+    Color(0xFF4CAF50),
+    Color(0xFF8BC34A),
+    Color(0xFFCDDC39),
+    Color(0xFFFFEB3B),
+    Color(0xFFFFC107),
+    Color(0xFFFF9800),
+    Color(0xFFFF5722),
+    Color(0xFF795548),
+    Color(0xFF607D8B),
     Color(0xFF9E9E9E),
   ];
 
@@ -179,7 +191,8 @@ class Settings {
     if (_rainbowColorTimer.isActive) {
       _rainbowColorTimer.cancel();
     }
-    _rainbowColorTimer = Timer.periodic(Duration(milliseconds: 300), (timer) {
+    _rainbowColorTimer =
+        Timer.periodic(const Duration(milliseconds: 300), (timer) {
       primaryColor = _rainbowColors[_currentColorIndex];
       _currentColorIndex = (_currentColorIndex + 1) % _rainbowColors.length;
       updateTheme(); // Make sure this method updates the app theme with the new primary color
@@ -238,7 +251,7 @@ class Settings {
   SliderThemeData get _sliderTheme => SliderThemeData(
       thumbColor: primaryColor,
       activeTrackColor: primaryColor,
-      inactiveTrackColor: primaryColor.withOpacity(0.2));
+      inactiveTrackColor: primaryColor.withValues(alpha: 0.2));
 
   //Load settings/init
   Future<Settings> loadSettings() async {
@@ -376,7 +389,7 @@ class Settings {
               }),
             ),
             bottomAppBarTheme:
-                const BottomAppBarTheme(color: Color(0xfff5f5f5))),
+                const BottomAppBarThemeData(color: Color(0xfff5f5f5))),
         Themes.Dark: ThemeData(
             useMaterial3: false,
             brightness: Brightness.dark,
@@ -435,7 +448,7 @@ class Settings {
               }),
             ),
             bottomAppBarTheme:
-                const BottomAppBarTheme(color: Color(0xff424242))),
+                const BottomAppBarThemeData(color: Color(0xff424242))),
         Themes.Deezer: ThemeData(
             useMaterial3: false,
             brightness: Brightness.dark,
@@ -444,7 +457,6 @@ class Settings {
             primaryColor: primaryColor,
             sliderTheme: _sliderTheme,
             scaffoldBackgroundColor: deezerBg,
-            dialogBackgroundColor: deezerBottom,
             bottomSheetTheme:
                 const BottomSheetThemeData(backgroundColor: deezerBottom),
             cardColor: deezerBg,
@@ -500,7 +512,8 @@ class Settings {
                 return null;
               }),
             ),
-            bottomAppBarTheme: const BottomAppBarTheme(color: deezerBottom)),
+            bottomAppBarTheme:
+                const BottomAppBarThemeData(color: deezerBottom)),
         Themes.Black: ThemeData(
             useMaterial3: false,
             brightness: Brightness.dark,
@@ -508,7 +521,6 @@ class Settings {
             fontFamily: _fontFamily,
             primaryColor: primaryColor,
             scaffoldBackgroundColor: Colors.black,
-            dialogBackgroundColor: Colors.black,
             sliderTheme: _sliderTheme,
             bottomSheetTheme: const BottomSheetThemeData(
               backgroundColor: Colors.black,
@@ -565,7 +577,7 @@ class Settings {
                 return null;
               }),
             ),
-            bottomAppBarTheme: const BottomAppBarTheme(color: Colors.black))
+            bottomAppBarTheme: const BottomAppBarThemeData(color: Colors.black))
       };
 
   Future<String> getPath() async =>

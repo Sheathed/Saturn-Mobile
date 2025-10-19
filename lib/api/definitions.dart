@@ -758,28 +758,12 @@ class Lyrics {
       final List<String> lines = lrcContent.split('\n');
 
       // Metadata fields from LRC
-      String? title;
-      String? artist;
-      String? album;
       String? author;
 
       for (String line in lines) {
         line = line.trim();
         if (line.isEmpty) continue;
 
-        // Parse metadata
-        if (line.startsWith('[ti:')) {
-          title = line.substring(4, line.length - 1);
-          continue;
-        }
-        if (line.startsWith('[ar:')) {
-          artist = line.substring(4, line.length - 1);
-          continue;
-        }
-        if (line.startsWith('[al:')) {
-          album = line.substring(4, line.length - 1);
-          continue;
-        }
         if (line.startsWith('[au:')) {
           author = line.substring(4, line.length - 1);
           continue;
@@ -1214,8 +1198,8 @@ class DeezerChannel {
               : LogoDetails.fromPrivateJson(json['logo_image']));
 
   //JSON
-  static _colorToJson(Color? c) => c?.value;
-  static _colorFromJson(int? v) => Color(v ?? Colors.blue.value);
+  static _colorToJson(Color? c) => c?.toARGB32();
+  static _colorFromJson(int? v) => Color(v ?? Colors.blue.toARGB32());
   factory DeezerChannel.fromJson(Map<String, dynamic> json) =>
       _$DeezerChannelFromJson(json);
   Map<String, dynamic> toJson() => _$DeezerChannelToJson(this);

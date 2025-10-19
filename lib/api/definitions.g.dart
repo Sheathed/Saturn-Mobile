@@ -7,117 +7,116 @@ part of 'definitions.dart';
 // **************************************************************************
 
 Track _$TrackFromJson(Map<String, dynamic> json) => Track(
-      id: json['id'] as String?,
-      title: json['title'] as String?,
-      duration: json['duration'] == null
-          ? null
-          : Duration(microseconds: (json['duration'] as num).toInt()),
-      album: json['album'] == null
-          ? null
-          : Album.fromJson(json['album'] as Map<String, dynamic>),
-      playbackDetails: json['playbackDetails'] as List<dynamic>?,
-      albumArt: json['albumArt'] == null
-          ? null
-          : ImageDetails.fromJson(json['albumArt'] as Map<String, dynamic>),
-      artists: (json['artists'] as List<dynamic>?)
-          ?.map((e) => Artist.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      trackNumber: (json['trackNumber'] as num?)?.toInt(),
-      offline: json['offline'] as bool?,
-      lyrics: json['lyrics'] == null
-          ? null
-          : LyricsFull.fromJson(json['lyrics'] as Map<String, dynamic>),
-      favorite: json['favorite'] as bool?,
-      diskNumber: (json['diskNumber'] as num?)?.toInt(),
-      explicit: json['explicit'] as bool?,
-      addedDate: (json['addedDate'] as num?)?.toInt(),
-      fallback: json['fallback'] == null
-          ? null
-          : Track.fromJson(json['fallback'] as Map<String, dynamic>),
-      playbackDetailsFallback:
-          json['playbackDetailsFallback'] as List<dynamic>?,
-    );
+  id: json['id'] as String?,
+  title: json['title'] as String?,
+  duration: json['duration'] == null
+      ? null
+      : Duration(microseconds: (json['duration'] as num).toInt()),
+  album: json['album'] == null
+      ? null
+      : Album.fromJson(json['album'] as Map<String, dynamic>),
+  playbackDetails: json['playbackDetails'] as List<dynamic>?,
+  albumArt: json['albumArt'] == null
+      ? null
+      : ImageDetails.fromJson(json['albumArt'] as Map<String, dynamic>),
+  artists: (json['artists'] as List<dynamic>?)
+      ?.map((e) => Artist.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  trackNumber: (json['trackNumber'] as num?)?.toInt(),
+  offline: json['offline'] as bool?,
+  lyrics: json['lyrics'] == null
+      ? null
+      : LyricsFull.fromJson(json['lyrics'] as Map<String, dynamic>),
+  favorite: json['favorite'] as bool?,
+  diskNumber: (json['diskNumber'] as num?)?.toInt(),
+  explicit: json['explicit'] as bool?,
+  addedDate: (json['addedDate'] as num?)?.toInt(),
+  fallback: json['fallback'] == null
+      ? null
+      : Track.fromJson(json['fallback'] as Map<String, dynamic>),
+  playbackDetailsFallback: json['playbackDetailsFallback'] as List<dynamic>?,
+);
 
 Map<String, dynamic> _$TrackToJson(Track instance) => <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-      'album': instance.album,
-      'artists': instance.artists,
-      'duration': instance.duration?.inMicroseconds,
-      'albumArt': instance.albumArt,
-      'trackNumber': instance.trackNumber,
-      'offline': instance.offline,
-      'lyrics': instance.lyrics,
-      'favorite': instance.favorite,
-      'diskNumber': instance.diskNumber,
-      'explicit': instance.explicit,
-      'addedDate': instance.addedDate,
-      'fallback': instance.fallback,
-      'playbackDetails': instance.playbackDetails,
-      'playbackDetailsFallback': instance.playbackDetailsFallback,
-    };
+  'id': instance.id,
+  'title': instance.title,
+  'album': instance.album,
+  'artists': instance.artists,
+  'duration': instance.duration?.inMicroseconds,
+  'albumArt': instance.albumArt,
+  'trackNumber': instance.trackNumber,
+  'offline': instance.offline,
+  'lyrics': instance.lyrics,
+  'favorite': instance.favorite,
+  'diskNumber': instance.diskNumber,
+  'explicit': instance.explicit,
+  'addedDate': instance.addedDate,
+  'fallback': instance.fallback,
+  'playbackDetails': instance.playbackDetails,
+  'playbackDetailsFallback': instance.playbackDetailsFallback,
+};
 
 ClubUser _$ClubUserFromJson(Map<String, dynamic> json) => ClubUser(
-      id: (json['id'] as num).toInt(),
-      sid: json['sid'] as String,
-      username: json['username'] as String,
-      picture: json['picture'] as String,
-      admin: json['admin'] as bool,
-    );
+  id: (json['id'] as num).toInt(),
+  sid: json['sid'] as String,
+  username: json['username'] as String,
+  picture: json['picture'] as String,
+  admin: json['admin'] as bool,
+);
 
 Map<String, dynamic> _$ClubUserToJson(ClubUser instance) => <String, dynamic>{
-      'id': instance.id,
-      'sid': instance.sid,
-      'username': instance.username,
-      'picture': instance.picture,
-      'admin': instance.admin,
-    };
+  'id': instance.id,
+  'sid': instance.sid,
+  'username': instance.username,
+  'picture': instance.picture,
+  'admin': instance.admin,
+};
 
 ClubMSG _$ClubMSGFromJson(Map<String, dynamic> json) => ClubMSG(
-      profile: json['profile'] as String,
-      photo: json['photo'] as String,
-      content: json['content'] as String,
-    );
+  profile: json['profile'] as String,
+  photo: json['photo'] as String,
+  content: json['content'] as String,
+);
 
 Map<String, dynamic> _$ClubMSGToJson(ClubMSG instance) => <String, dynamic>{
-      'content': instance.content,
-      'profile': instance.profile,
-      'photo': instance.photo,
-    };
+  'content': instance.content,
+  'profile': instance.profile,
+  'photo': instance.photo,
+};
 
 Album _$AlbumFromJson(Map<String, dynamic> json) => Album(
-      id: json['id'] as String?,
-      title: json['title'] as String?,
-      art: json['art'] == null
-          ? null
-          : ImageDetails.fromJson(json['art'] as Map<String, dynamic>),
-      artists: (json['artists'] as List<dynamic>?)
-          ?.map((e) => Artist.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      tracks: (json['tracks'] as List<dynamic>?)
-          ?.map((e) => Track.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      fans: (json['fans'] as num?)?.toInt(),
-      offline: json['offline'] as bool?,
-      library: json['library'] as bool?,
-      type: $enumDecodeNullable(_$AlbumTypeEnumMap, json['type']),
-      releaseDate: json['releaseDate'] as String?,
-      favoriteDate: json['favoriteDate'] as String?,
-    );
+  id: json['id'] as String?,
+  title: json['title'] as String?,
+  art: json['art'] == null
+      ? null
+      : ImageDetails.fromJson(json['art'] as Map<String, dynamic>),
+  artists: (json['artists'] as List<dynamic>?)
+      ?.map((e) => Artist.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  tracks: (json['tracks'] as List<dynamic>?)
+      ?.map((e) => Track.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  fans: (json['fans'] as num?)?.toInt(),
+  offline: json['offline'] as bool?,
+  library: json['library'] as bool?,
+  type: $enumDecodeNullable(_$AlbumTypeEnumMap, json['type']),
+  releaseDate: json['releaseDate'] as String?,
+  favoriteDate: json['favoriteDate'] as String?,
+);
 
 Map<String, dynamic> _$AlbumToJson(Album instance) => <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-      'artists': instance.artists,
-      'tracks': instance.tracks,
-      'art': instance.art,
-      'fans': instance.fans,
-      'offline': instance.offline,
-      'library': instance.library,
-      'type': _$AlbumTypeEnumMap[instance.type],
-      'releaseDate': instance.releaseDate,
-      'favoriteDate': instance.favoriteDate,
-    };
+  'id': instance.id,
+  'title': instance.title,
+  'artists': instance.artists,
+  'tracks': instance.tracks,
+  'art': instance.art,
+  'fans': instance.fans,
+  'offline': instance.offline,
+  'library': instance.library,
+  'type': _$AlbumTypeEnumMap[instance.type],
+  'releaseDate': instance.releaseDate,
+  'favoriteDate': instance.favoriteDate,
+};
 
 const _$AlbumTypeEnumMap = {
   AlbumType.ALBUM: 'ALBUM',
@@ -139,104 +138,104 @@ Map<String, dynamic> _$ArtistHighlightToJson(ArtistHighlight instance) =>
       'title': instance.title,
     };
 
-const _$ArtistHighlightTypeEnumMap = {
-  ArtistHighlightType.ALBUM: 'ALBUM',
-};
+const _$ArtistHighlightTypeEnumMap = {ArtistHighlightType.ALBUM: 'ALBUM'};
 
 Artist _$ArtistFromJson(Map<String, dynamic> json) => Artist(
-      id: json['id'] as String?,
-      name: json['name'] as String?,
-      albums: (json['albums'] as List<dynamic>?)
-              ?.map((e) => Album.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
-      albumCount: (json['albumCount'] as num?)?.toInt(),
-      topTracks: (json['topTracks'] as List<dynamic>?)
-              ?.map((e) => Track.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
-      picture: json['picture'] == null
-          ? null
-          : ImageDetails.fromJson(json['picture'] as Map<String, dynamic>),
-      fans: (json['fans'] as num?)?.toInt(),
-      offline: json['offline'] as bool?,
-      library: json['library'] as bool?,
-      radio: json['radio'] as bool?,
-      favoriteDate: json['favoriteDate'] as String?,
-      highlight: json['highlight'] == null
-          ? null
-          : ArtistHighlight.fromJson(json['highlight'] as Map<String, dynamic>),
-    );
+  id: json['id'] as String?,
+  name: json['name'] as String?,
+  albums:
+      (json['albums'] as List<dynamic>?)
+          ?.map((e) => Album.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
+  albumCount: (json['albumCount'] as num?)?.toInt(),
+  topTracks:
+      (json['topTracks'] as List<dynamic>?)
+          ?.map((e) => Track.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
+  picture: json['picture'] == null
+      ? null
+      : ImageDetails.fromJson(json['picture'] as Map<String, dynamic>),
+  fans: (json['fans'] as num?)?.toInt(),
+  offline: json['offline'] as bool?,
+  library: json['library'] as bool?,
+  radio: json['radio'] as bool?,
+  favoriteDate: json['favoriteDate'] as String?,
+  highlight: json['highlight'] == null
+      ? null
+      : ArtistHighlight.fromJson(json['highlight'] as Map<String, dynamic>),
+);
 
 Map<String, dynamic> _$ArtistToJson(Artist instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'albums': instance.albums,
-      'albumCount': instance.albumCount,
-      'topTracks': instance.topTracks,
-      'picture': instance.picture,
-      'fans': instance.fans,
-      'offline': instance.offline,
-      'library': instance.library,
-      'radio': instance.radio,
-      'favoriteDate': instance.favoriteDate,
-      'highlight': instance.highlight,
-    };
+  'id': instance.id,
+  'name': instance.name,
+  'albums': instance.albums,
+  'albumCount': instance.albumCount,
+  'topTracks': instance.topTracks,
+  'picture': instance.picture,
+  'fans': instance.fans,
+  'offline': instance.offline,
+  'library': instance.library,
+  'radio': instance.radio,
+  'favoriteDate': instance.favoriteDate,
+  'highlight': instance.highlight,
+};
 
 Playlist _$PlaylistFromJson(Map<String, dynamic> json) => Playlist(
-      id: json['id'] as String?,
-      title: json['title'] as String?,
-      tracks: (json['tracks'] as List<dynamic>?)
-          ?.map((e) => Track.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      image: json['image'] == null
-          ? null
-          : ImageDetails.fromJson(json['image'] as Map<String, dynamic>),
-      trackCount: (json['trackCount'] as num?)?.toInt(),
-      duration: json['duration'] == null
-          ? null
-          : Duration(microseconds: (json['duration'] as num).toInt()),
-      user: json['user'] == null
-          ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
-      fans: (json['fans'] as num?)?.toInt(),
-      library: json['library'] as bool?,
-      description: json['description'] as String?,
-    );
+  id: json['id'] as String?,
+  title: json['title'] as String?,
+  tracks: (json['tracks'] as List<dynamic>?)
+      ?.map((e) => Track.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  image: json['image'] == null
+      ? null
+      : ImageDetails.fromJson(json['image'] as Map<String, dynamic>),
+  trackCount: (json['trackCount'] as num?)?.toInt(),
+  duration: json['duration'] == null
+      ? null
+      : Duration(microseconds: (json['duration'] as num).toInt()),
+  user: json['user'] == null
+      ? null
+      : User.fromJson(json['user'] as Map<String, dynamic>),
+  fans: (json['fans'] as num?)?.toInt(),
+  library: json['library'] as bool?,
+  description: json['description'] as String?,
+);
 
 Map<String, dynamic> _$PlaylistToJson(Playlist instance) => <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-      'tracks': instance.tracks,
-      'image': instance.image,
-      'duration': instance.duration?.inMicroseconds,
-      'trackCount': instance.trackCount,
-      'user': instance.user,
-      'fans': instance.fans,
-      'library': instance.library,
-      'description': instance.description,
-    };
+  'id': instance.id,
+  'title': instance.title,
+  'tracks': instance.tracks,
+  'image': instance.image,
+  'duration': instance.duration?.inMicroseconds,
+  'trackCount': instance.trackCount,
+  'user': instance.user,
+  'fans': instance.fans,
+  'library': instance.library,
+  'description': instance.description,
+};
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
-      id: json['id'] as String?,
-      name: json['name'] as String?,
-      picture: json['picture'] == null
-          ? null
-          : ImageDetails.fromJson(json['picture'] as Map<String, dynamic>),
-    );
+  id: json['id'] as String?,
+  name: json['name'] as String?,
+  picture: json['picture'] == null
+      ? null
+      : ImageDetails.fromJson(json['picture'] as Map<String, dynamic>),
+);
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'picture': instance.picture,
-    };
+  'id': instance.id,
+  'name': instance.name,
+  'picture': instance.picture,
+};
 
 ImageDetails _$ImageDetailsFromJson(Map<String, dynamic> json) => ImageDetails(
-      fullUrl: json['fullUrl'] as String?,
-      thumbUrl: json['thumbUrl'] as String?,
-      type: json['type'] as String?,
-      imageHash: json['imageHash'] as String?,
-    );
+  fullUrl: json['fullUrl'] as String?,
+  thumbUrl: json['thumbUrl'] as String?,
+  type: json['type'] as String?,
+  imageHash: json['imageHash'] as String?,
+);
 
 Map<String, dynamic> _$ImageDetailsToJson(ImageDetails instance) =>
     <String, dynamic>{
@@ -247,25 +246,25 @@ Map<String, dynamic> _$ImageDetailsToJson(ImageDetails instance) =>
     };
 
 FlowImage _$FlowImageFromJson(Map<String, dynamic> json) => FlowImage(
-      fullUrl: json['fullUrl'] as String?,
-      thumbUrl: json['thumbUrl'] as String?,
-      type: json['type'] as String?,
-      imageHash: json['imageHash'] as String?,
-    );
+  fullUrl: json['fullUrl'] as String?,
+  thumbUrl: json['thumbUrl'] as String?,
+  type: json['type'] as String?,
+  imageHash: json['imageHash'] as String?,
+);
 
 Map<String, dynamic> _$FlowImageToJson(FlowImage instance) => <String, dynamic>{
-      'fullUrl': instance.fullUrl,
-      'thumbUrl': instance.thumbUrl,
-      'type': instance.type,
-      'imageHash': instance.imageHash,
-    };
+  'fullUrl': instance.fullUrl,
+  'thumbUrl': instance.thumbUrl,
+  'type': instance.type,
+  'imageHash': instance.imageHash,
+};
 
 LogoDetails _$LogoDetailsFromJson(Map<String, dynamic> json) => LogoDetails(
-      fullUrl: json['fullUrl'] as String?,
-      thumbUrl: json['thumbUrl'] as String?,
-      type: json['type'] as String?,
-      imageHash: json['imageHash'] as String?,
-    );
+  fullUrl: json['fullUrl'] as String?,
+  thumbUrl: json['thumbUrl'] as String?,
+  type: json['type'] as String?,
+  imageHash: json['imageHash'] as String?,
+);
 
 Map<String, dynamic> _$LogoDetailsToJson(LogoDetails instance) =>
     <String, dynamic>{
@@ -277,14 +276,14 @@ Map<String, dynamic> _$LogoDetailsToJson(LogoDetails instance) =>
 
 LyricsClassic _$LyricsClassicFromJson(Map<String, dynamic> json) =>
     LyricsClassic(
-      id: json['id'] as String?,
-      writers: json['writers'] as String?,
-      syncedLyrics: (json['syncedLyrics'] as List<dynamic>?)
-          ?.map((e) => SynchronizedLyric.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      errorMessage: json['errorMessage'] as String?,
-      unsyncedLyrics: json['unsyncedLyrics'] as String?,
-    )
+        id: json['id'] as String?,
+        writers: json['writers'] as String?,
+        syncedLyrics: (json['syncedLyrics'] as List<dynamic>?)
+            ?.map((e) => SynchronizedLyric.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        errorMessage: json['errorMessage'] as String?,
+        unsyncedLyrics: json['unsyncedLyrics'] as String?,
+      )
       ..isExplicit = json['isExplicit'] as bool?
       ..copyright = json['copyright'] as String?;
 
@@ -300,16 +299,16 @@ Map<String, dynamic> _$LyricsClassicToJson(LyricsClassic instance) =>
     };
 
 LyricsFull _$LyricsFullFromJson(Map<String, dynamic> json) => LyricsFull(
-      id: json['id'] as String?,
-      writers: json['writers'] as String?,
-      syncedLyrics: (json['syncedLyrics'] as List<dynamic>?)
-          ?.map((e) => SynchronizedLyric.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      errorMessage: json['errorMessage'] as String?,
-      unsyncedLyrics: json['unsyncedLyrics'] as String?,
-      isExplicit: json['isExplicit'] as bool?,
-      copyright: json['copyright'] as String?,
-    );
+  id: json['id'] as String?,
+  writers: json['writers'] as String?,
+  syncedLyrics: (json['syncedLyrics'] as List<dynamic>?)
+      ?.map((e) => SynchronizedLyric.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  errorMessage: json['errorMessage'] as String?,
+  unsyncedLyrics: json['unsyncedLyrics'] as String?,
+  isExplicit: json['isExplicit'] as bool?,
+  copyright: json['copyright'] as String?,
+);
 
 Map<String, dynamic> _$LyricsFullToJson(LyricsFull instance) =>
     <String, dynamic>{
@@ -343,10 +342,10 @@ Map<String, dynamic> _$SynchronizedLyricToJson(SynchronizedLyric instance) =>
     };
 
 QueueSource _$QueueSourceFromJson(Map<String, dynamic> json) => QueueSource(
-      id: json['id'] as String?,
-      text: json['text'] as String?,
-      source: json['source'] as String?,
-    );
+  id: json['id'] as String?,
+  text: json['text'] as String?,
+  source: json['source'] as String?,
+);
 
 Map<String, dynamic> _$QueueSourceToJson(QueueSource instance) =>
     <String, dynamic>{
@@ -384,20 +383,23 @@ Map<String, dynamic> _$SmartTrackListToJson(SmartTrackList instance) =>
     };
 
 HomePage _$HomePageFromJson(Map<String, dynamic> json) => HomePage(
-      sections: (json['sections'] as List<dynamic>?)
-              ?.map((e) => HomePageSection.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
-    );
+  sections:
+      (json['sections'] as List<dynamic>?)
+          ?.map((e) => HomePageSection.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
+);
 
 Map<String, dynamic> _$HomePageToJson(HomePage instance) => <String, dynamic>{
-      'sections': instance.sections,
-    };
+  'sections': instance.sections,
+};
 
 HomePageSection _$HomePageSectionFromJson(Map<String, dynamic> json) =>
     HomePageSection(
-      layout:
-          $enumDecodeNullable(_$HomePageSectionLayoutEnumMap, json['layout']),
+      layout: $enumDecodeNullable(
+        _$HomePageSectionLayoutEnumMap,
+        json['layout'],
+      ),
       items: HomePageSection._homePageItemFromJson(json['items']),
       title: json['title'] as String?,
       pagePath: json['pagePath'] as String?,
@@ -423,12 +425,14 @@ DeezerChannel _$DeezerChannelFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
       title: json['title'] as String?,
       backgroundColor: DeezerChannel._colorFromJson(
-          (json['backgroundColor'] as num?)?.toInt()),
+        (json['backgroundColor'] as num?)?.toInt(),
+      ),
       target: json['target'] as String?,
       backgroundImage: json['backgroundImage'] == null
           ? null
           : ImageDetails.fromJson(
-              json['backgroundImage'] as Map<String, dynamic>),
+              json['backgroundImage'] as Map<String, dynamic>,
+            ),
       logo: json['logo'] as String?,
       logoImage: json['logoImage'] == null
           ? null
@@ -447,13 +451,13 @@ Map<String, dynamic> _$DeezerChannelToJson(DeezerChannel instance) =>
     };
 
 DeezerFlow _$DeezerFlowFromJson(Map<String, dynamic> json) => DeezerFlow(
-      id: json['id'] as String?,
-      title: json['title'] as String?,
-      target: json['target'] as String?,
-      cover: json['cover'] == null
-          ? null
-          : FlowImage.fromJson(json['cover'] as Map<String, dynamic>),
-    );
+  id: json['id'] as String?,
+  title: json['title'] as String?,
+  target: json['target'] as String?,
+  cover: json['cover'] == null
+      ? null
+      : FlowImage.fromJson(json['cover'] as Map<String, dynamic>),
+);
 
 Map<String, dynamic> _$DeezerFlowToJson(DeezerFlow instance) =>
     <String, dynamic>{
@@ -464,20 +468,19 @@ Map<String, dynamic> _$DeezerFlowToJson(DeezerFlow instance) =>
     };
 
 Sorting _$SortingFromJson(Map<String, dynamic> json) => Sorting(
-      type: $enumDecodeNullable(_$SortTypeEnumMap, json['type']) ??
-          SortType.DEFAULT,
-      reverse: json['reverse'] as bool? ?? false,
-      id: json['id'] as String?,
-      sourceType:
-          $enumDecodeNullable(_$SortSourceTypesEnumMap, json['sourceType']),
-    );
+  type:
+      $enumDecodeNullable(_$SortTypeEnumMap, json['type']) ?? SortType.DEFAULT,
+  reverse: json['reverse'] as bool? ?? false,
+  id: json['id'] as String?,
+  sourceType: $enumDecodeNullable(_$SortSourceTypesEnumMap, json['sourceType']),
+);
 
 Map<String, dynamic> _$SortingToJson(Sorting instance) => <String, dynamic>{
-      'type': _$SortTypeEnumMap[instance.type]!,
-      'reverse': instance.reverse,
-      'id': instance.id,
-      'sourceType': _$SortSourceTypesEnumMap[instance.sourceType],
-    };
+  'type': _$SortTypeEnumMap[instance.type]!,
+  'reverse': instance.reverse,
+  'id': instance.id,
+  'sourceType': _$SortSourceTypesEnumMap[instance.sourceType],
+};
 
 const _$SortTypeEnumMap = {
   SortType.DEFAULT: 'DEFAULT',
@@ -501,34 +504,34 @@ const _$SortSourceTypesEnumMap = {
 };
 
 Show _$ShowFromJson(Map<String, dynamic> json) => Show(
-      name: json['name'] as String?,
-      description: json['description'] as String?,
-      art: json['art'] == null
-          ? null
-          : ImageDetails.fromJson(json['art'] as Map<String, dynamic>),
-      id: json['id'] as String?,
-    );
+  name: json['name'] as String?,
+  description: json['description'] as String?,
+  art: json['art'] == null
+      ? null
+      : ImageDetails.fromJson(json['art'] as Map<String, dynamic>),
+  id: json['id'] as String?,
+);
 
 Map<String, dynamic> _$ShowToJson(Show instance) => <String, dynamic>{
-      'name': instance.name,
-      'description': instance.description,
-      'art': instance.art,
-      'id': instance.id,
-    };
+  'name': instance.name,
+  'description': instance.description,
+  'art': instance.art,
+  'id': instance.id,
+};
 
 ShowEpisode _$ShowEpisodeFromJson(Map<String, dynamic> json) => ShowEpisode(
-      id: json['id'] as String?,
-      title: json['title'] as String?,
-      description: json['description'] as String?,
-      url: json['url'] as String?,
-      duration: json['duration'] == null
-          ? null
-          : Duration(microseconds: (json['duration'] as num).toInt()),
-      publishedDate: json['publishedDate'] as String?,
-      show: json['show'] == null
-          ? null
-          : Show.fromJson(json['show'] as Map<String, dynamic>),
-    );
+  id: json['id'] as String?,
+  title: json['title'] as String?,
+  description: json['description'] as String?,
+  url: json['url'] as String?,
+  duration: json['duration'] == null
+      ? null
+      : Duration(microseconds: (json['duration'] as num).toInt()),
+  publishedDate: json['publishedDate'] as String?,
+  show: json['show'] == null
+      ? null
+      : Show.fromJson(json['show'] as Map<String, dynamic>),
+);
 
 Map<String, dynamic> _$ShowEpisodeToJson(ShowEpisode instance) =>
     <String, dynamic>{

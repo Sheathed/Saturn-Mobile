@@ -261,7 +261,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                   WidgetState.pressed)) {
                                                 return Theme.of(context)
                                                     .primaryColor
-                                                    .withOpacity(0.3);
+                                                    .withValues(alpha: 0.3);
                                               }
                                               return null;
                                             }),
@@ -277,7 +277,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                   WidgetState.pressed)) {
                                                 return Theme.of(context)
                                                     .primaryColor
-                                                    .withOpacity(0.3);
+                                                    .withValues(alpha: 0.3);
                                               }
                                               return null;
                                             }),
@@ -377,12 +377,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     icon: const Icon(Typicons.waves, color: Colors.white),
                     onTap: () async {
                       // No channel for Flow...
-                      if (clubroom.ifclub()) {
-                        if (clubroom.ifhost()) {}
-                      } else {
-                        await GetIt.I<AudioPlayerHandler>()
-                            .playFromSmartTrackList(SmartTrackList(id: 'flow'));
-                      }
+                      await GetIt.I<AudioPlayerHandler>()
+                          .playFromSmartTrackList(SmartTrackList(id: 'flow'));
                     },
                   ),
                   SearchBrowseCard(
@@ -451,25 +447,17 @@ class _SearchScreenState extends State<SearchScreen> {
                     return TrackTile(
                       data,
                       onTap: () {
-                        if (clubroom.ifclub()) {
-                          if (clubroom.ifhost()) {
-                            GetIt.I<AudioPlayerHandler>()
-                                .insertQueueItem(-1, data.toMediaItem());
-                          }
-                        } else {
-                          List<Track> queue = cache.searchHistory!
-                              .where(
-                                  (h) => h.type == SearchHistoryItemType.TRACK)
-                              .map<Track>((t) => t.data)
-                              .toList();
-                          GetIt.I<AudioPlayerHandler>().playFromTrackList(
-                              queue,
-                              data.id,
-                              QueueSource(
-                                  text: 'Search history'.i18n,
-                                  source: 'searchhistory',
-                                  id: 'searchhistory'));
-                        }
+                        List<Track> queue = cache.searchHistory!
+                            .where((h) => h.type == SearchHistoryItemType.TRACK)
+                            .map<Track>((t) => t.data)
+                            .toList();
+                        GetIt.I<AudioPlayerHandler>().playFromTrackList(
+                            queue,
+                            data.id,
+                            QueueSource(
+                                text: 'Search history'.i18n,
+                                source: 'searchhistory',
+                                id: 'searchhistory'));
                       },
                       onHold: () {
                         MenuSheet m = MenuSheet();
@@ -666,21 +654,14 @@ class SearchResultsScreen extends StatelessWidget {
                   return TrackTile(
                     t,
                     onTap: () {
-                      if (clubroom.ifclub()) {
-                        if (clubroom.ifhost()) {
-                          GetIt.I<AudioPlayerHandler>()
-                              .insertQueueItem(-1, t.toMediaItem());
-                        }
-                      } else {
-                        cache.addToSearchHistory(t);
-                        GetIt.I<AudioPlayerHandler>().playFromTrackList(
-                            results.tracks!,
-                            t.id ?? '',
-                            QueueSource(
-                                text: 'Search'.i18n,
-                                id: query,
-                                source: 'search_page'));
-                      }
+                      cache.addToSearchHistory(t);
+                      GetIt.I<AudioPlayerHandler>().playFromTrackList(
+                          results.tracks!,
+                          t.id ?? '',
+                          QueueSource(
+                              text: 'Search'.i18n,
+                              id: query,
+                              source: 'search_page'));
                     },
                     onHold: () {
                       MenuSheet m = MenuSheet();
@@ -912,14 +893,12 @@ class SearchResultsScreen extends StatelessWidget {
                       },
                     ),
                     onTap: () async {
-                      if (!clubroom.ifclub()) {
-                        //Load entire show, then play
-                        List<ShowEpisode> episodes =
-                            await deezerAPI.allShowEpisodes(e.show!.id ?? '');
-                        await GetIt.I<AudioPlayerHandler>().playShowEpisode(
-                            e.show!, episodes,
-                            index: episodes.indexWhere((ep) => e.id == ep.id));
-                      }
+                      //Load entire show, then play
+                      List<ShowEpisode> episodes =
+                          await deezerAPI.allShowEpisodes(e.show!.id ?? '');
+                      await GetIt.I<AudioPlayerHandler>().playShowEpisode(
+                          e.show!, episodes,
+                          index: episodes.indexWhere((ep) => e.id == ep.id));
                     },
                   );
                 }),
@@ -984,15 +963,8 @@ class TrackListScreen extends StatelessWidget {
           return TrackTile(
             t,
             onTap: () {
-              if (clubroom.ifclub()) {
-                if (clubroom.ifhost()) {
-                  GetIt.I<AudioPlayerHandler>()
-                      .insertQueueItem(-1, t.toMediaItem());
-                }
-              } else {
-                GetIt.I<AudioPlayerHandler>()
-                    .playFromTrackList(tracks, t.id ?? '', queueSource);
-              }
+              GetIt.I<AudioPlayerHandler>()
+                  .playFromTrackList(tracks, t.id ?? '', queueSource);
             },
             onHold: () {
               MenuSheet m = MenuSheet();
@@ -1114,14 +1086,12 @@ class EpisodeListScreen extends StatelessWidget {
                 },
               ),
               onTap: () async {
-                if (!clubroom.ifclub()) {
-                  //Load entire show, then play
-                  List<ShowEpisode> episodes =
-                      await deezerAPI.allShowEpisodes(e.show!.id ?? '');
-                  await GetIt.I<AudioPlayerHandler>().playShowEpisode(
-                      e.show!, episodes,
-                      index: episodes.indexWhere((ep) => e.id == ep.id));
-                }
+                //Load entire show, then play
+                List<ShowEpisode> episodes =
+                    await deezerAPI.allShowEpisodes(e.show!.id ?? '');
+                await GetIt.I<AudioPlayerHandler>().playShowEpisode(
+                    e.show!, episodes,
+                    index: episodes.indexWhere((ep) => e.id == ep.id));
               },
             );
           },

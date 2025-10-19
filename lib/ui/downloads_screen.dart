@@ -23,12 +23,19 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
   StreamSubscription? _stateSubscription;
 
   //Sublists
-  List<Download> get downloading =>
-      downloads.where((d) => d.state == DownloadState.DOWNLOADING || d.state == DownloadState.POST).toList();
-  List<Download> get queued => downloads.where((d) => d.state == DownloadState.NONE).toList();
-  List<Download> get failed =>
-      downloads.where((d) => d.state == DownloadState.ERROR || d.state == DownloadState.DEEZER_ERROR).toList();
-  List<Download> get finished => downloads.where((d) => d.state == DownloadState.DONE).toList();
+  List<Download> get downloading => downloads
+      .where((d) =>
+          d.state == DownloadState.DOWNLOADING || d.state == DownloadState.POST)
+      .toList();
+  List<Download> get queued =>
+      downloads.where((d) => d.state == DownloadState.NONE).toList();
+  List<Download> get failed => downloads
+      .where((d) =>
+          d.state == DownloadState.ERROR ||
+          d.state == DownloadState.DEEZER_ERROR)
+      .toList();
+  List<Download> get finished =>
+      downloads.where((d) => d.state == DownloadState.DONE).toList();
 
   Future _load() async {
     //Load downloads
@@ -52,7 +59,9 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
       if (e['action'] == 'onProgress') {
         setState(() {
           for (Map su in e['data']) {
-            downloads.firstWhere((d) => d.id == su['id'], orElse: () => Download()).updateFromJson(su);
+            downloads
+                .firstWhere((d) => d.id == su['id'], orElse: () => Download())
+                .updateFromJson(su);
           }
         });
       }
@@ -81,7 +90,8 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
               ),
               onPressed: () async {
                 await downloadManager.removeDownloads(DownloadState.ERROR);
-                await downloadManager.removeDownloads(DownloadState.DEEZER_ERROR);
+                await downloadManager
+                    .removeDownloads(DownloadState.DEEZER_ERROR);
                 await downloadManager.removeDownloads(DownloadState.DONE);
                 await downloadManager.removeDownloads(DownloadState.NONE);
                 await _load();
@@ -90,7 +100,8 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
             IconButton(
               icon: Icon(
                 downloadManager.running ? Icons.stop : Icons.play_arrow,
-                semanticLabel: downloadManager.running ? 'Stop'.i18n : 'Start'.i18n,
+                semanticLabel:
+                    downloadManager.running ? 'Stop'.i18n : 'Start'.i18n,
               ),
               onPressed: () {
                 setState(() {
@@ -122,7 +133,8 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
               Text(
                 'Queued'.i18n,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    fontSize: 24.0, fontWeight: FontWeight.bold),
               ),
             Column(
                 children: List.generate(
@@ -146,7 +158,8 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
               Text(
                 'Failed'.i18n,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    fontSize: 24.0, fontWeight: FontWeight.bold),
               ),
             Column(
                 children: List.generate(
@@ -171,7 +184,8 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
                 leading: const Icon(Icons.delete),
                 onTap: () async {
                   await downloadManager.removeDownloads(DownloadState.ERROR);
-                  await downloadManager.removeDownloads(DownloadState.DEEZER_ERROR);
+                  await downloadManager
+                      .removeDownloads(DownloadState.DEEZER_ERROR);
                   await _load();
                 },
               ),
@@ -181,7 +195,8 @@ class _DownloadsScreenState extends State<DownloadsScreen> {
               Text(
                 'Done'.i18n,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    fontSize: 24.0, fontWeight: FontWeight.bold),
               ),
             Column(
                 children: List.generate(
@@ -212,7 +227,8 @@ class DownloadTile extends StatelessWidget {
   String subtitle() {
     String out = '';
 
-    if (download.state != DownloadState.DOWNLOADING && download.state != DownloadState.POST) {
+    if (download.state != DownloadState.DOWNLOADING &&
+        download.state != DownloadState.POST) {
       //Download type
       if (download.private ?? false) {
         out += 'Offline'.i18n;
@@ -233,8 +249,10 @@ class DownloadTile extends StatelessWidget {
 
     //Downloading show progress
     if (download.state == DownloadState.DOWNLOADING) {
-      out += ' | ${filesize(download.received, 2)} / ${filesize(download.filesize, 2)}';
-      double progress = download.received!.toDouble() / download.filesize!.toDouble();
+      out +=
+          ' | ${filesize(download.received, 2)} / ${filesize(download.filesize, 2)}';
+      double progress =
+          download.received!.toDouble() / download.filesize!.toDouble();
       out += ' ${(progress * 100.0).toStringAsFixed(2)}%';
     }
 
@@ -242,24 +260,42 @@ class DownloadTile extends StatelessWidget {
   }
 
   Future onClick(BuildContext context) async {
-    if (download.state != DownloadState.DOWNLOADING && download.state != DownloadState.POST) {
+    if (download.state != DownloadState.DOWNLOADING &&
+        download.state != DownloadState.POST) {
       showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
               title: Text('Delete'.i18n),
-              content: Text('Are you sure you want to delete this download?'.i18n),
+              content:
+                  Text('Are you sure you want to delete this download?'.i18n),
               actions: [
                 TextButton(
                   style: ButtonStyle(
-                    overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
+                    overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                        (Set<WidgetState> states) {
+                      if (states.contains(WidgetState.pressed)) {
+                        return Theme.of(context)
+                            .primaryColor
+                            .withValues(alpha: 0.3);
+                      }
+                      return null;
+                    }),
                   ),
                   child: Text('Cancel'.i18n),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
                 TextButton(
                   style: ButtonStyle(
-                    overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
+                    overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                        (Set<WidgetState> states) {
+                      if (states.contains(WidgetState.pressed)) {
+                        return Theme.of(context)
+                            .primaryColor
+                            .withValues(alpha: 0.3);
+                      }
+                      return null;
+                    }),
                   ),
                   child: Text('Delete'.i18n),
                   onPressed: () async {
@@ -306,12 +342,24 @@ class DownloadTile extends StatelessWidget {
         ListTile(
           title: Text(download.title!),
           leading: CachedImage(url: download.image!),
-          subtitle: Text(subtitle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+          subtitle:
+              Text(subtitle(), maxLines: 1, overflow: TextOverflow.ellipsis),
           trailing: trailing(),
           onTap: () => onClick(context),
         ),
-        if (download.state == DownloadState.DOWNLOADING) LinearProgressIndicator(value: download.progress, color: Theme.of(context).primaryColor, backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),),
-        if (download.state == DownloadState.POST) LinearProgressIndicator(color: Theme.of(context).primaryColor, backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),),
+        if (download.state == DownloadState.DOWNLOADING)
+          LinearProgressIndicator(
+            value: download.progress,
+            color: Theme.of(context).primaryColor,
+            backgroundColor:
+                Theme.of(context).primaryColor.withValues(alpha: 0.1),
+          ),
+        if (download.state == DownloadState.POST)
+          LinearProgressIndicator(
+            color: Theme.of(context).primaryColor,
+            backgroundColor:
+                Theme.of(context).primaryColor.withValues(alpha: 0.1),
+          ),
       ],
     );
   }
@@ -329,7 +377,8 @@ class _DownloadLogViewerState extends State<DownloadLogViewer> {
 
   //Load log from file
   Future _load() async {
-    String path = p.join((await getExternalStorageDirectory())!.path, 'download.log');
+    String path =
+        p.join((await getExternalStorageDirectory())!.path, 'download.log');
     File file = File(path);
     if (await file.exists()) {
       String d = await file.readAsString();

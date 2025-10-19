@@ -168,16 +168,14 @@ class AndroidAuto {
 
   // Load virtual mediaItem
   Future<void> playItem(String id) async {
-    if (clubRoom.ifclub()) {
-    } else {
     if (kDebugMode) {
       print(id);
     }
 
     // Play flow
     if (id == '${prefix}flow' || id == '${prefix}stlflow') {
-      await GetIt.I<AudioPlayerHandler>()
-          .playFromSmartTrackList(SmartTrackList(id: 'flow', title: 'Flow'.i18n));
+      await GetIt.I<AudioPlayerHandler>().playFromSmartTrackList(
+          SmartTrackList(id: 'flow', title: 'Flow'.i18n));
       return;
     }
     // Play library tracks
@@ -185,7 +183,8 @@ class AndroidAuto {
       // Load tracks
       Playlist? favPlaylist;
       try {
-        favPlaylist = await deezerAPI.fullPlaylist(deezerAPI.favoritesPlaylistId ?? '');
+        favPlaylist =
+            await deezerAPI.fullPlaylist(deezerAPI.favoritesPlaylistId ?? '');
       } catch (e) {
         if (kDebugMode) {
           print(e);
@@ -194,28 +193,35 @@ class AndroidAuto {
       if ((favPlaylist?.tracks?.length ?? 0) == 0) return;
 
       await GetIt.I<AudioPlayerHandler>().playFromTrackList(
-          favPlaylist!.tracks!, favPlaylist.tracks![0].id ?? '',
-          QueueSource(id: 'allTracks', text: 'All offline tracks'.i18n, source: 'offline'));
+          favPlaylist!.tracks!,
+          favPlaylist.tracks![0].id ?? '',
+          QueueSource(
+              id: 'allTracks',
+              text: 'All offline tracks'.i18n,
+              source: 'offline'));
       return;
     }
     // Play playlists
     if (id.startsWith('${prefix}playlist')) {
-      Playlist p = await deezerAPI.fullPlaylist(id.replaceFirst('${prefix}playlist', ''));
-      await GetIt.I<AudioPlayerHandler>().playFromPlaylist(p, p.tracks?[0].id ?? '');
+      Playlist p = await deezerAPI
+          .fullPlaylist(id.replaceFirst('${prefix}playlist', ''));
+      await GetIt.I<AudioPlayerHandler>()
+          .playFromPlaylist(p, p.tracks?[0].id ?? '');
       return;
     }
     // Play albums
     if (id.startsWith('${prefix}album')) {
       Album a = await deezerAPI.album(id.replaceFirst('${prefix}album', ''));
-      await GetIt.I<AudioPlayerHandler>().playFromAlbum(a, a.tracks?[0].id ?? '');
+      await GetIt.I<AudioPlayerHandler>()
+          .playFromAlbum(a, a.tracks?[0].id ?? '');
       return;
     }
     // Play smart track list
     if (id.startsWith('${prefix}stl')) {
-      SmartTrackList stl = await deezerAPI.smartTrackList(id.replaceFirst('${prefix}stl', ''));
+      SmartTrackList stl =
+          await deezerAPI.smartTrackList(id.replaceFirst('${prefix}stl', ''));
       await GetIt.I<AudioPlayerHandler>().playFromSmartTrackList(stl);
       return;
-    }
     }
   }
 

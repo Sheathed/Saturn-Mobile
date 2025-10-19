@@ -68,7 +68,10 @@ class _AlbumDetailsState extends State<AlbumDetails> {
         body: _error
             ? const ErrorScreen()
             : _loading
-                ? Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,))
+                ? Center(
+                    child: CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor,
+                  ))
                 : ListView(
                     children: <Widget>[
                       //Album art, title, artists
@@ -93,21 +96,27 @@ class _AlbumDetailsState extends State<AlbumDetails> {
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
-                              style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                  fontSize: 20.0, fontWeight: FontWeight.bold),
                             ),
                             Text(
                               album.artistString ?? '',
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
-                              style: TextStyle(fontSize: 16.0, color: Theme.of(context).primaryColor),
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Theme.of(context).primaryColor),
                             ),
                             Container(height: 4.0),
-                            if (album.releaseDate != null && album.releaseDate!.length >= 4)
+                            if (album.releaseDate != null &&
+                                album.releaseDate!.length >= 4)
                               Text(
                                 album.releaseDate!,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 12.0, color: Theme.of(context).disabledColor),
+                                style: TextStyle(
+                                    fontSize: 12.0,
+                                    color: Theme.of(context).disabledColor),
                               ),
                             Container(
                               height: 8.0,
@@ -156,7 +165,8 @@ class _AlbumDetailsState extends State<AlbumDetails> {
                           ),
                           Row(
                             children: <Widget>[
-                              Icon(Icons.people, size: 32.0, semanticLabel: 'Fans'.i18n),
+                              Icon(Icons.people,
+                                  size: 32.0, semanticLabel: 'Fans'.i18n),
                               Container(
                                 width: 8.0,
                               ),
@@ -176,11 +186,24 @@ class _AlbumDetailsState extends State<AlbumDetails> {
                         children: <Widget>[
                           TextButton(
                             style: ButtonStyle(
-                              overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
+                              overlayColor:
+                                  WidgetStateProperty.resolveWith<Color?>(
+                                      (Set<WidgetState> states) {
+                                if (states.contains(WidgetState.pressed)) {
+                                  return Theme.of(context)
+                                      .primaryColor
+                                      .withValues(alpha: 0.3);
+                                }
+                                return null;
+                              }),
                             ),
                             child: Row(
                               children: <Widget>[
-                                Icon((album.library ?? false) ? Icons.favorite : Icons.favorite_border, size: 32),
+                                Icon(
+                                    (album.library ?? false)
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                    size: 32),
                                 Container(
                                   width: 4,
                                 ),
@@ -190,7 +213,8 @@ class _AlbumDetailsState extends State<AlbumDetails> {
                             onPressed: () async {
                               //Add to library
                               if (!(album.library ?? false)) {
-                                await deezerAPI.addFavoriteAlbum(album.id ?? '');
+                                await deezerAPI
+                                    .addFavoriteAlbum(album.id ?? '');
                                 Fluttertoast.showToast(
                                     msg: 'Added to library'.i18n,
                                     toastLength: Toast.LENGTH_SHORT,
@@ -210,7 +234,16 @@ class _AlbumDetailsState extends State<AlbumDetails> {
                           MakeAlbumOffline(album: album),
                           TextButton(
                             style: ButtonStyle(
-                              overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
+                              overlayColor:
+                                  WidgetStateProperty.resolveWith<Color?>(
+                                      (Set<WidgetState> states) {
+                                if (states.contains(WidgetState.pressed)) {
+                                  return Theme.of(context)
+                                      .primaryColor
+                                      .withValues(alpha: 0.3);
+                                }
+                                return null;
+                              }),
                             ),
                             child: Row(
                               children: <Widget>[
@@ -225,7 +258,9 @@ class _AlbumDetailsState extends State<AlbumDetails> {
                               ],
                             ),
                             onPressed: () async {
-                              if (await downloadManager.addOfflineAlbum(album, private: false) != false) {
+                              if (await downloadManager.addOfflineAlbum(album,
+                                      private: false) !=
+                                  false) {
                                 MenuSheet().showDownloadStartedToast();
                               }
                             },
@@ -236,30 +271,32 @@ class _AlbumDetailsState extends State<AlbumDetails> {
                       ...List.generate(cdCount, (cdi) {
                         List<Track> tracks = [];
                         if (album.tracks != null) {
-                          tracks.addAll(album.tracks!.where((t) => (t.diskNumber ?? 1) == cdi + 1).toList());
+                          tracks.addAll(album.tracks!
+                              .where((t) => (t.diskNumber ?? 1) == cdi + 1)
+                              .toList());
                         }
                         return Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 4.0),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 4.0),
                               child: Text(
                                 'Disk'.i18n.toUpperCase() + ' ${cdi + 1}',
-                                style: const TextStyle(fontSize: 12.0, fontWeight: FontWeight.w300),
+                                style: const TextStyle(
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.w300),
                               ),
                             ),
                             ...List.generate(
                                 tracks.length,
                                 (i) => TrackTile(tracks[i], onTap: () {
-                                  if (clubroom.ifclub()) {
-                                    if (clubroom.ifhost()) {
-                                      GetIt.I<AudioPlayerHandler>().insertQueueItem(-1, tracks[i].toMediaItem());
-                                    }
-                                  } else {
-                                      GetIt.I<AudioPlayerHandler>().playFromAlbum(album, tracks[i].id ?? '');
-                                  }
+                                      GetIt.I<AudioPlayerHandler>()
+                                          .playFromAlbum(
+                                              album, tracks[i].id ?? '');
                                     }, onHold: () {
                                       MenuSheet m = MenuSheet();
-                                      m.defaultTrackMenu(tracks[i], context: context);
+                                      m.defaultTrackMenu(tracks[i],
+                                          context: context);
                                     }))
                           ],
                         );
@@ -300,7 +337,8 @@ class _MakeAlbumOfflineState extends State<MakeAlbumOffline> {
             if (v) {
               //Add to offline
               await deezerAPI.addFavoriteAlbum(widget.album?.id ?? '');
-              downloadManager.addOfflineAlbum(widget.album ?? Album(), private: true);
+              downloadManager.addOfflineAlbum(widget.album ?? Album(),
+                  private: true);
               MenuSheet().showDownloadStartedToast();
               setState(() {
                 _offline = true;
@@ -309,7 +347,9 @@ class _MakeAlbumOfflineState extends State<MakeAlbumOffline> {
             }
             downloadManager.removeOfflineAlbum(widget.album?.id ?? '');
             Fluttertoast.showToast(
-                msg: 'Removed album from offline!'.i18n, gravity: ToastGravity.BOTTOM, toastLength: Toast.LENGTH_SHORT);
+                msg: 'Removed album from offline!'.i18n,
+                gravity: ToastGravity.BOTTOM,
+                toastLength: Toast.LENGTH_SHORT);
             setState(() {
               _offline = false;
             });
@@ -366,7 +406,10 @@ class _ArtistDetailsState extends State<ArtistDetails> {
         body: _error
             ? const ErrorScreen()
             : _loading
-                ? Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,))
+                ? Center(
+                    child: CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor,
+                  ))
                 : ListView(
                     children: <Widget>[
                       Container(height: 4.0),
@@ -390,7 +433,9 @@ class _ArtistDetailsState extends State<ArtistDetails> {
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 4,
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontSize: 24.0,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 Container(
                                   height: 8.0,
@@ -445,7 +490,16 @@ class _ArtistDetailsState extends State<ArtistDetails> {
                         children: <Widget>[
                           TextButton(
                             style: ButtonStyle(
-                              overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
+                              overlayColor:
+                                  WidgetStateProperty.resolveWith<Color?>(
+                                      (Set<WidgetState> states) {
+                                if (states.contains(WidgetState.pressed)) {
+                                  return Theme.of(context)
+                                      .primaryColor
+                                      .withValues(alpha: 0.3);
+                                }
+                                return null;
+                              }),
                             ),
                             child: Row(
                               children: <Widget>[
@@ -457,7 +511,8 @@ class _ArtistDetailsState extends State<ArtistDetails> {
                               ],
                             ),
                             onPressed: () async {
-                              await deezerAPI.addFavoriteArtist(artist.id ?? '');
+                              await deezerAPI
+                                  .addFavoriteArtist(artist.id ?? '');
                               Fluttertoast.showToast(
                                   msg: 'Added to library'.i18n,
                                   toastLength: Toast.LENGTH_SHORT,
@@ -467,7 +522,16 @@ class _ArtistDetailsState extends State<ArtistDetails> {
                           if ((artist.radio ?? false))
                             TextButton(
                               style: ButtonStyle(
-                                overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
+                                overlayColor:
+                                    WidgetStateProperty.resolveWith<Color?>(
+                                        (Set<WidgetState> states) {
+                                  if (states.contains(WidgetState.pressed)) {
+                                    return Theme.of(context)
+                                        .primaryColor
+                                        .withValues(alpha: 0.3);
+                                  }
+                                  return null;
+                                }),
                               ),
                               child: Row(
                                 children: <Widget>[
@@ -479,13 +543,18 @@ class _ArtistDetailsState extends State<ArtistDetails> {
                                 ],
                               ),
                               onPressed: () async {
-                                List<Track> tracks = await deezerAPI.smartRadio(artist.id ?? '');
+                                List<Track> tracks =
+                                    await deezerAPI.smartRadio(artist.id ?? '');
                                 if (tracks.isNotEmpty) {
-                                  GetIt.I<AudioPlayerHandler>().playFromTrackList(
-                                      tracks,
-                                      tracks[0].id!,
-                                      QueueSource(
-                                          id: artist.id, text: 'Radio'.i18n + ' ${artist.name}', source: 'artist_smartradio'));
+                                  GetIt.I<AudioPlayerHandler>()
+                                      .playFromTrackList(
+                                          tracks,
+                                          tracks[0].id!,
+                                          QueueSource(
+                                              id: artist.id,
+                                              text: 'Radio'.i18n +
+                                                  ' ${artist.name}',
+                                              source: 'artist_smartradio'));
                                 }
                               },
                             )
@@ -501,19 +570,24 @@ class _ArtistDetailsState extends State<ArtistDetails> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16.0, vertical: 2.0),
                               child: Text(
                                 artist.highlight?.title ?? '',
                                 textAlign: TextAlign.left,
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20.0),
                               ),
                             ),
-                            if ((artist.highlight?.type ?? '') == ArtistHighlightType.ALBUM)
+                            if ((artist.highlight?.type ?? '') ==
+                                ArtistHighlightType.ALBUM)
                               AlbumTile(
                                 artist.highlight?.data,
                                 onTap: () {
-                                  Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (context) => AlbumDetails(artist.highlight?.data)));
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => AlbumDetails(
+                                          artist.highlight?.data)));
                                 },
                               ),
                             Container(height: 8.0)
@@ -521,11 +595,13 @@ class _ArtistDetailsState extends State<ArtistDetails> {
                         ),
                       //Top tracks
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 2.0),
                         child: Text(
                           'Top Tracks'.i18n,
                           textAlign: TextAlign.left,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20.0),
                         ),
                       ),
                       Container(height: 4.0),
@@ -540,13 +616,8 @@ class _ArtistDetailsState extends State<ArtistDetails> {
                         return TrackTile(
                           t,
                           onTap: () {
-                            if (clubroom.ifclub()) {
-                              if (clubroom.ifhost()) {
-                                GetIt.I<AudioPlayerHandler>().insertQueueItem(-1, t.toMediaItem());
-                              }
-                            } else {
-                            GetIt.I<AudioPlayerHandler>().playFromTopTracks(artist.topTracks, t.id!, artist);
-                            }
+                            GetIt.I<AudioPlayerHandler>().playFromTopTracks(
+                                artist.topTracks, t.id!, artist);
                           },
                           onHold: () {
                             MenuSheet mi = MenuSheet();
@@ -561,19 +632,26 @@ class _ArtistDetailsState extends State<ArtistDetails> {
                                 builder: (context) => TrackListScreen(
                                     artist.topTracks,
                                     QueueSource(
-                                        id: artist.id, text: 'Top'.i18n + '${artist.name}', source: 'artist_top'))));
+                                        id: artist.id,
+                                        text: 'Top'.i18n + '${artist.name}',
+                                        source: 'artist_top'))));
                           }),
                       const FreezerDivider(),
                       //Albums
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 8.0),
                         child: Text(
                           'Top Albums'.i18n,
                           textAlign: TextAlign.left,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20.0),
                         ),
                       ),
-                      ...List.generate(artist.albums.length > 10 ? 11 : artist.albums.length + 1, (i) {
+                      ...List.generate(
+                          artist.albums.length > 10
+                              ? 11
+                              : artist.albums.length + 1, (i) {
                         //Show discography
                         if (i == 10 || i == artist.albums.length) {
                           return ListTile(
@@ -590,7 +668,8 @@ class _ArtistDetailsState extends State<ArtistDetails> {
                         return AlbumTile(
                           a,
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumDetails(a)));
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => AlbumDetails(a)));
                           },
                           onHold: () {
                             MenuSheet m = MenuSheet();
@@ -615,7 +694,11 @@ class _DiscographyScreenState extends State<DiscographyScreen> {
   late Artist artist;
   bool _loading = false;
   bool _error = false;
-  final List<ScrollController> _controllers = [ScrollController(), ScrollController(), ScrollController()];
+  final List<ScrollController> _controllers = [
+    ScrollController(),
+    ScrollController(),
+    ScrollController()
+  ];
 
   Future _load() async {
     if (artist.albums.length >= (artist.albumCount ?? 0) || _loading) return;
@@ -624,7 +707,8 @@ class _DiscographyScreenState extends State<DiscographyScreen> {
     //Fetch data
     List<Album> data;
     try {
-      data = await deezerAPI.discographyPage(artist.id ?? '', start: artist.albums.length);
+      data = await deezerAPI.discographyPage(artist.id ?? '',
+          start: artist.albums.length);
     } catch (e) {
       setState(() {
         _error = true;
@@ -643,7 +727,8 @@ class _DiscographyScreenState extends State<DiscographyScreen> {
   //Get album tile
   Widget _tile(Album a) => AlbumTile(
         a,
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => AlbumDetails(a))),
+        onTap: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => AlbumDetails(a))),
         onHold: () {
           MenuSheet m = MenuSheet();
           m.defaultAlbumMenu(a, context: context);
@@ -656,7 +741,11 @@ class _DiscographyScreenState extends State<DiscographyScreen> {
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [CircularProgressIndicator(color: Theme.of(context).primaryColor,)],
+          children: [
+            CircularProgressIndicator(
+              color: Theme.of(context).primaryColor,
+            )
+          ],
         ),
       );
     }
@@ -693,8 +782,11 @@ class _DiscographyScreenState extends State<DiscographyScreen> {
           tabController.addListener(() {
             if (!tabController.indexIsChanging) {
               //Load data if empty tabs
-              int nSingles = artist.albums.where((a) => a.type == AlbumType.SINGLE).length;
-              int nFeatures = artist.albums.where((a) => a.type == AlbumType.FEATURED).length;
+              int nSingles =
+                  artist.albums.where((a) => a.type == AlbumType.SINGLE).length;
+              int nFeatures = artist.albums
+                  .where((a) => a.type == AlbumType.FEATURED)
+                  .length;
               if ((nSingles == 0 || nFeatures == 0) && !_loading) _load();
             }
           });
@@ -705,7 +797,15 @@ class _DiscographyScreenState extends State<DiscographyScreen> {
               bottom: TabBar(
                 dividerColor: Colors.transparent,
                 indicatorColor: Theme.of(context).primaryColor,
-                overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
+                overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                    (Set<WidgetState> states) {
+                  if (states.contains(WidgetState.pressed)) {
+                    return Theme.of(context)
+                        .primaryColor
+                        .withValues(alpha: 0.3);
+                  }
+                  return null;
+                }),
                 labelColor: Theme.of(context).primaryColor,
                 tabs: [
                   Tab(
@@ -713,7 +813,9 @@ class _DiscographyScreenState extends State<DiscographyScreen> {
                     Icons.album,
                     semanticLabel: 'Albums'.i18n,
                   )),
-                  Tab(icon: Icon(Icons.audiotrack, semanticLabel: 'Singles'.i18n)),
+                  Tab(
+                      icon: Icon(Icons.audiotrack,
+                          semanticLabel: 'Singles'.i18n)),
                   Tab(
                       icon: Icon(
                     Icons.recent_actors,
@@ -800,7 +902,9 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
         tracks.sort((a, b) => a.title!.compareTo(b.title!));
         break;
       case SortType.ARTIST:
-        tracks.sort((a, b) => a.artists![0].name!.toLowerCase().compareTo(b.artists![0].name!.toLowerCase()));
+        tracks.sort((a, b) => a.artists![0].name!
+            .toLowerCase()
+            .compareTo(b.artists![0].name!.toLowerCase()));
         break;
       case SortType.DATE_ADDED:
         tracks.sort((a, b) => (a.addedDate ?? 0) - (b.addedDate ?? 0));
@@ -817,7 +921,11 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
   //Load tracks from api
   void _loadTracks() async {
     // Got all tracks, return
-    if (_loading || playlist.tracks!.length >= (playlist.trackCount ?? playlist.tracks!.length)) return;
+    if (_loading ||
+        playlist.tracks!.length >=
+            (playlist.trackCount ?? playlist.tracks!.length)) {
+      return;
+    }
 
     setState(() => _loading = true);
     int pos = playlist.tracks!.length;
@@ -938,7 +1046,8 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
                         maxLines: 3,
-                        style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold),
                       ),
                       Container(height: 4.0),
                       Text(
@@ -946,7 +1055,9 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 17.0),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 17.0),
                       ),
                       Container(height: 10.0),
                       Row(
@@ -961,7 +1072,8 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
                             width: 8.0,
                           ),
                           Text(
-                            (playlist.trackCount ?? playlist.tracks!.length).toString(),
+                            (playlist.trackCount ?? playlist.tracks!.length)
+                                .toString(),
                             style: const TextStyle(fontSize: 16),
                           )
                         ],
@@ -989,7 +1101,8 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
               ],
             ),
           ),
-          if (playlist.description != null && playlist.description!.isNotEmpty) const FreezerDivider(),
+          if (playlist.description != null && playlist.description!.isNotEmpty)
+            const FreezerDivider(),
           if (playlist.description != null && playlist.description!.isNotEmpty)
             Padding(
               padding: const EdgeInsets.all(6.0),
@@ -1010,16 +1123,22 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
               if (playlist.user?.name != deezerAPI.userName)
                 IconButton(
                   icon: Icon(
-                    (playlist.library ?? false) ? Icons.favorite : Icons.favorite_outline,
+                    (playlist.library ?? false)
+                        ? Icons.favorite
+                        : Icons.favorite_outline,
                     size: 32,
-                    semanticLabel: (playlist.library ?? false) ? 'Unlove'.i18n : 'Love'.i18n,
+                    semanticLabel: (playlist.library ?? false)
+                        ? 'Unlove'.i18n
+                        : 'Love'.i18n,
                   ),
                   onPressed: () async {
                     //Add to library
                     if (!(playlist.library ?? false)) {
                       await deezerAPI.addPlaylist(playlist.id!);
                       Fluttertoast.showToast(
-                          msg: 'Added to library'.i18n, toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                          msg: 'Added to library'.i18n,
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM);
                       setState(() => playlist.library = true);
                       return;
                     }
@@ -1039,7 +1158,9 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
                   semanticLabel: 'Download'.i18n,
                 ),
                 onPressed: () async {
-                  if (await downloadManager.addOfflinePlaylist(playlist, private: false) != false) {
+                  if (await downloadManager.addOfflinePlaylist(playlist,
+                          private: false) !=
+                      false) {
                     MenuSheet().showDownloadStartedToast();
                   }
                 },
@@ -1054,7 +1175,8 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
                   setState(() => _sort.type = s);
 
                   //Save sort type to cache
-                  int? index = Sorting.index(SortSourceTypes.PLAYLIST, id: playlist.id);
+                  int? index =
+                      Sorting.index(SortSourceTypes.PLAYLIST, id: playlist.id);
                   if (index == null) {
                     cache.sorts.add(_sort);
                   } else {
@@ -1088,8 +1210,12 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
               ),
               IconButton(
                 icon: Icon(
-                  _sort.reverse ? FontAwesome5.sort_alpha_up : FontAwesome5.sort_alpha_down,
-                  semanticLabel: _sort.reverse ? 'Sort descending'.i18n : 'Sort ascending'.i18n,
+                  _sort.reverse
+                      ? FontAwesome5.sort_alpha_up
+                      : FontAwesome5.sort_alpha_down,
+                  semanticLabel: _sort.reverse
+                      ? 'Sort descending'.i18n
+                      : 'Sort ascending'.i18n,
                 ),
                 onPressed: () => _reverse(),
               ),
@@ -1100,14 +1226,9 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
           ...List.generate(playlist.tracks!.length, (i) {
             Track t = sorted[i];
             return TrackTile(t, onTap: () {
-              if (clubroom.ifclub()) {
-                if (clubroom.ifhost()) {
-                  GetIt.I<AudioPlayerHandler>().insertQueueItem(-1, t.toMediaItem());
-                }
-              } else {
-                Playlist p = Playlist(title: playlist.title, id: playlist.id, tracks: sorted);
-                GetIt.I<AudioPlayerHandler>().playFromPlaylist(p, t.id!);
-              }
+              Playlist p = Playlist(
+                  title: playlist.title, id: playlist.id, tracks: sorted);
+              GetIt.I<AudioPlayerHandler>().playFromPlaylist(p, t.id!);
             }, onHold: () {
               MenuSheet m = MenuSheet();
               m.defaultTrackMenu(t, context: context, options: [
@@ -1125,7 +1246,11 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[CircularProgressIndicator(color: Theme.of(context).primaryColor,)],
+                children: <Widget>[
+                  CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor,
+                  )
+                ],
               ),
             ),
           if (_error) const ErrorScreen()
@@ -1169,7 +1294,8 @@ class _MakePlaylistOfflineState extends State<MakePlaylistOffline> {
               if (widget.playlist.user?.id != deezerAPI.userId) {
                 await deezerAPI.addPlaylist(widget.playlist.id!);
               }
-              downloadManager.addOfflinePlaylist(widget.playlist, private: true);
+              downloadManager.addOfflinePlaylist(widget.playlist,
+                  private: true);
               MenuSheet().showDownloadStartedToast();
               setState(() {
                 _offline = true;
@@ -1275,237 +1401,260 @@ class _ShowScreenState extends State<ShowScreen> {
     super.initState();
   }
 
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: FreezerAppBar(_show.name!),
-    body: DraggableScrollbar.rrect(
-      controller: _scrollController,
-      backgroundColor: Theme.of(context).primaryColor,
-      child: ListView(
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: FreezerAppBar(_show.name!),
+      body: DraggableScrollbar.rrect(
         controller: _scrollController,
-        children: <Widget>[
-          Container(height: 4.0),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                ZoomableImage(
-                  url: _show.art?.full ?? '',
-                  rounded: true,
-                  width: MediaQuery.of(context).size.width / 2 - 16,
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 2 - 16,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(
-                        _show.name!,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
+        backgroundColor: Theme.of(context).primaryColor,
+        child: ListView(
+          controller: _scrollController,
+          children: <Widget>[
+            Container(height: 4.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  ZoomableImage(
+                    url: _show.art?.full ?? '',
+                    rounded: true,
+                    width: MediaQuery.of(context).size.width / 2 - 16,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 2 - 16,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Text(
+                          _show.name!,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      Container(height: 8.0),
-                      Text(
-                        _show.description ?? '',
-                        maxLines: 6,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 16.0),
-                      ),
+                        Container(height: 8.0),
+                        Text(
+                          _show.description ?? '',
+                          maxLines: 6,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 16.0),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const FreezerDivider(),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                FutureBuilder<bool>(
+                  future:
+                      deezerAPI.checkShowFavorite(_show), // Asynchronous call
+                  builder: (context, snapshot) {
+                    // Check the state of the future
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor,
+                      );
+                    } else if (snapshot.hasError) {
+                      return const Icon(Icons.error); // Handle errors here
+                    } else {
+                      bool isFavorited =
+                          snapshot.data ?? false; // Default to false if null
+
+                      return TextButton(
+                        style: ButtonStyle(
+                          overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                              (Set<WidgetState> states) {
+                            if (states.contains(WidgetState.pressed)) {
+                              return Theme.of(context)
+                                  .primaryColor
+                                  .withValues(alpha: 0.3);
+                            }
+                            return null;
+                          }),
+                        ),
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              isFavorited
+                                  ? Icons.favorite
+                                  : Icons.favorite_outline,
+                              size: 32,
+                              semanticLabel:
+                                  isFavorited ? 'Unlove'.i18n : 'Love'.i18n,
+                            ),
+                            Container(width: 4),
+                            Text('Library'.i18n),
+                          ],
+                        ),
+                        onPressed: () async {
+                          // Add to library
+                          if (!isFavorited) {
+                            await deezerAPI.addFavoriteShow(_show.id!);
+                            setState(() => isFavorited = true);
+                            Fluttertoast.showToast(
+                              msg: 'Added to library'.i18n,
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                            );
+                          } else {
+                            // Remove
+                            await deezerAPI.removeShow(_show.id!);
+                            setState(() => isFavorited = false);
+                            Fluttertoast.showToast(
+                              msg: 'Show removed from library!'.i18n,
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                            );
+                          }
+                        },
+                      );
+                    }
+                  },
+                ),
+                PopupMenuButton(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  onSelected: (SortType s) async {
+                    setState(() => _sort.type = s);
+                    // Save to cache
+                    int? index = Sorting.index(SortSourceTypes.SHOWS);
+                    if (index == null) {
+                      cache.sorts.add(_sort);
+                    } else {
+                      cache.sorts[index] = _sort;
+                    }
+                    await cache.save();
+                  },
+                  itemBuilder: (context) => <PopupMenuEntry<SortType>>[
+                    PopupMenuItem(
+                      value: SortType.DEFAULT,
+                      child: Text('Default'.i18n, style: popupMenuTextStyle()),
+                    ),
+                    PopupMenuItem(
+                      value: SortType.ALPHABETIC,
+                      child:
+                          Text('Alphabetic'.i18n, style: popupMenuTextStyle()),
+                    ),
+                  ],
+                  child: Row(
+                    children: [
+                      const Icon(Icons.sort, size: 32.0),
+                      const SizedBox(width: 8),
+                      Text('Sort'.i18n),
                     ],
                   ),
                 ),
+                TextButton(
+                  style: ButtonStyle(
+                    overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                        (Set<WidgetState> states) {
+                      if (states.contains(WidgetState.pressed)) {
+                        return Theme.of(context)
+                            .primaryColor
+                            .withValues(alpha: 0.3);
+                      }
+                      return null;
+                    }),
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        _sort.reverse
+                            ? FontAwesome5.sort_alpha_up
+                            : FontAwesome5.sort_alpha_down,
+                        semanticLabel: _sort.reverse
+                            ? 'Sort descending'.i18n
+                            : 'Sort ascending'.i18n,
+                      ),
+                      Container(width: 4),
+                      Text(_sort.reverse
+                          ? 'Sort descending'.i18n
+                          : 'Sort ascending'.i18n),
+                    ],
+                  ),
+                  onPressed: () => _reverse(),
+                ),
+                Container(width: 4.0),
               ],
             ),
-          ),
-          const FreezerDivider(),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              FutureBuilder<bool>(
-                future: deezerAPI.checkShowFavorite(_show), // Asynchronous call
-                builder: (context, snapshot) {
-                  // Check the state of the future
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator(color: Theme.of(context).primaryColor,);
-                  } else if (snapshot.hasError) {
-                    return Icon(Icons.error); // Handle errors here
-                  } else {
-                    bool isFavorited = snapshot.data ?? false; // Default to false if null
-
-                    return TextButton(
-                      style: ButtonStyle(
-                        overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            isFavorited ? Icons.favorite : Icons.favorite_outline,
-                            size: 32,
-                            semanticLabel: isFavorited ? 'Unlove'.i18n : 'Love'.i18n,
-                          ),
-                          Container(width: 4),
-                          Text('Library'.i18n),
-                        ],
-                      ),
-                      onPressed: () async {
-                        // Add to library
-                        if (!isFavorited) {
-                          await deezerAPI.addFavoriteShow(_show.id!);
-                          setState(() => isFavorited = true);
-                          Fluttertoast.showToast(
-                            msg: 'Added to library'.i18n,
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                          );
-                        } else {
-                          // Remove
-                          await deezerAPI.removeShow(_show.id!);
-                          setState(() => isFavorited = false);
-                          Fluttertoast.showToast(
-                            msg: 'Show removed from library!'.i18n,
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                          );
-                        }
-                      },
-                    );
-                  }
-                },
-              ),
-              PopupMenuButton(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                onSelected: (SortType s) async {
-                  setState(() => _sort.type = s);
-                  // Save to cache
-                  int? index = Sorting.index(SortSourceTypes.SHOWS);
-                  if (index == null) {
-                    cache.sorts.add(_sort);
-                  } else {
-                    cache.sorts[index] = _sort;
-                  }
-                  await cache.save();
-                },
-                itemBuilder: (context) => <PopupMenuEntry<SortType>>[
-                  PopupMenuItem(
-                    value: SortType.DEFAULT,
-                    child: Text('Default'.i18n, style: popupMenuTextStyle()),
-                  ),
-                  PopupMenuItem(
-                    value: SortType.ALPHABETIC,
-                    child: Text('Alphabetic'.i18n, style: popupMenuTextStyle()),
-                  ),
-                ],
-                child: Row(
-                  children: [
-                    const Icon(Icons.sort, size: 32.0),
-                    const SizedBox(width: 8),
-                    Text('Sort'.i18n),
-                  ],
-                ),
-              ),
-              TextButton(
-                style: ButtonStyle(
-                  overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      _sort.reverse
-                          ? FontAwesome5.sort_alpha_up
-                          : FontAwesome5.sort_alpha_down,
-                      semanticLabel: _sort.reverse
-                          ? 'Sort descending'.i18n
-                          : 'Sort ascending'.i18n,
-                    ),
-                    Container(width: 4),
-                    Text(_sort.reverse
-                        ? 'Sort descending'.i18n
-                        : 'Sort ascending'.i18n),
-                  ],
-                ),
-                onPressed: () => _reverse(),
-              ),
-              Container(width: 4.0),
-            ],
-          ),
-          const FreezerDivider(),
-          // Search
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              cursorColor: Theme.of(context).primaryColor,
-              onChanged: (String s) => setState(() => _filter = s),
-              decoration: InputDecoration(
-                labelText: 'Search'.i18n,
-                fillColor: Theme.of(context).bottomAppBarTheme.color,
-                filled: true,
-                focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey)),
-                enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey)),
-                floatingLabelStyle: TextStyle(color: Theme.of(context).primaryColor),
-              ),
-            ),
-          ),
-          const FreezerDivider(),
-
-          // Error
-          if (_error) const ErrorScreen(),
-
-          // Loading
-          if (_loading)
+            const FreezerDivider(),
+            // Search
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ],
+              child: TextField(
+                cursorColor: Theme.of(context).primaryColor,
+                onChanged: (String s) => setState(() => _filter = s),
+                decoration: InputDecoration(
+                  labelText: 'Search'.i18n,
+                  fillColor: Theme.of(context).bottomAppBarTheme.color,
+                  filled: true,
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey)),
+                  enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey)),
+                  floatingLabelStyle:
+                      TextStyle(color: Theme.of(context).primaryColor),
+                ),
               ),
             ),
+            const FreezerDivider(),
 
-          // Data
-          if (!_loading && !_error)
-            ...List.generate(_sorted.length, (int i) {
-              ShowEpisode e = _sorted[i];
-              return ShowEpisodeTile(
-                e,
-                trailing: IconButton(
-                  icon: Icon(
-                    Icons.more_vert,
-                    semanticLabel: 'Options'.i18n,
-                  ),
-                  onPressed: () {
-                    MenuSheet m = MenuSheet();
-                    m.defaultShowEpisodeMenu(_show, e, context: context);
-                  },
+            // Error
+            if (_error) const ErrorScreen(),
+
+            // Loading
+            if (_loading)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ],
                 ),
-                onTap: () async {
-                  if (!clubroom.ifclub()) {
+              ),
+
+            // Data
+            if (!_loading && !_error)
+              ...List.generate(_sorted.length, (int i) {
+                ShowEpisode e = _sorted[i];
+                return ShowEpisodeTile(
+                  e,
+                  trailing: IconButton(
+                    icon: Icon(
+                      Icons.more_vert,
+                      semanticLabel: 'Options'.i18n,
+                    ),
+                    onPressed: () {
+                      MenuSheet m = MenuSheet();
+                      m.defaultShowEpisodeMenu(_show, e, context: context);
+                    },
+                  ),
+                  onTap: () async {
                     await GetIt.I<AudioPlayerHandler>().playShowEpisode(
                       _show,
                       _episodes,
                       index: i,
                     );
-                  }
-                },
-              );
-            }),
-        ],
+                  },
+                );
+              }),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

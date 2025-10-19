@@ -72,26 +72,23 @@ class _SpotifyImporterV1State extends State<SpotifyImporterV1> {
         children: <Widget>[
           ListTile(
             title: Text(
-                'Currently supporting only Spotify, with 100 tracks limit'
-                    .i18n),
-            subtitle: Text('Due to API limitations'.i18n),
-            leading: const Icon(
-              Icons.warning,
-              color: Colors.deepOrangeAccent,
+              'Currently supporting only Spotify, with 100 tracks limit'.i18n,
             ),
+            subtitle: Text('Due to API limitations'.i18n),
+            leading: const Icon(Icons.warning, color: Colors.deepOrangeAccent),
           ),
           const FreezerDivider(),
-          Container(
-            height: 16.0,
-          ),
+          Container(height: 16.0),
           Text(
             'Enter your playlist link below'.i18n,
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 20.0),
           ),
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 8.0,
+            ),
             child: Row(
               children: <Widget>[
                 Expanded(
@@ -105,18 +102,13 @@ class _SpotifyImporterV1State extends State<SpotifyImporterV1> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(
-                    Icons.search,
-                    semanticLabel: 'Search'.i18n,
-                  ),
+                  icon: Icon(Icons.search, semanticLabel: 'Search'.i18n),
                   onPressed: () => _load(),
-                )
+                ),
               ],
             ),
           ),
-          Container(
-            height: 8.0,
-          ),
+          Container(height: 8.0),
 
           if (_data == null && _loading)
             const Row(
@@ -126,37 +118,44 @@ class _SpotifyImporterV1State extends State<SpotifyImporterV1> {
           if (_error)
             ListTile(
               title: Text('Error loading URL!'.i18n),
-              leading: const Icon(
-                Icons.error,
-                color: Colors.red,
-              ),
+              leading: const Icon(Icons.error, color: Colors.red),
             ),
           //Playlist
           if (_data != null) ...[
             const FreezerDivider(),
             ListTile(
-                title: Text(_data!.name!),
-                subtitle: Text((_data!.description ?? '') == ''
+              title: Text(_data!.name!),
+              subtitle: Text(
+                (_data!.description ?? '') == ''
                     ? '${_data!.tracks?.length} tracks'
-                    : _data!.description!),
-                leading: Image.network(_data!.image ??
-                    'http://cdn-images.deezer.com/images/cover//256x256-000000-80-0-0.jpg')),
+                    : _data!.description!,
+              ),
+              leading: Image.network(
+                _data!.image ??
+                    'http://cdn-images.deezer.com/images/cover//256x256-000000-80-0-0.jpg',
+              ),
+            ),
             const ImporterSettings(),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(
+                vertical: 4.0,
+                horizontal: 16.0,
+              ),
               child: ElevatedButton(
                 child: Text('Start import'.i18n),
                 onPressed: () async {
                   await _start();
                   if (context.mounted) {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const ImporterStatusScreen()));
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const ImporterStatusScreen(),
+                      ),
+                    );
                   }
                 },
               ),
             ),
-          ]
+          ],
         ],
       ),
     );
@@ -251,45 +250,30 @@ class _ImporterStatusScreenState extends State<ImporterStatusScreen> {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const Icon(
-                    Icons.import_export,
-                    size: 24.0,
-                  ),
-                  Container(
-                    width: 4.0,
-                  ),
+                  const Icon(Icons.import_export, size: 24.0),
+                  Container(width: 4.0),
                   Text(
                     '${importer.ok + importer.error}/${importer.tracks.length}',
                     style: const TextStyle(fontSize: 24.0),
-                  )
+                  ),
                 ],
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const Icon(
-                    Icons.done,
-                    size: 24.0,
-                  ),
-                  Container(
-                    width: 4.0,
-                  ),
+                  const Icon(Icons.done, size: 24.0),
+                  Container(width: 4.0),
                   Text(
                     '${importer.ok}',
                     style: const TextStyle(fontSize: 24.0),
-                  )
+                  ),
                 ],
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const Icon(
-                    Icons.error,
-                    size: 24.0,
-                  ),
-                  Container(
-                    width: 4.0,
-                  ),
+                  const Icon(Icons.error, size: 24.0),
+                  Container(width: 4.0),
                   Text(
                     '${importer.error}',
                     style: const TextStyle(fontSize: 24.0),
@@ -301,14 +285,23 @@ class _ImporterStatusScreenState extends State<ImporterStatusScreen> {
               if (_done)
                 TextButton(
                   style: ButtonStyle(
-                    overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {if (states.contains(WidgetState.pressed)) {return Theme.of(context).primaryColor.withOpacity(0.3);}return null;}),
+                    overlayColor: WidgetStateProperty.resolveWith<Color?>((
+                      Set<WidgetState> states,
+                    ) {
+                      if (states.contains(WidgetState.pressed)) {
+                        return Theme.of(
+                          context,
+                        ).primaryColor.withValues(alpha: 0.3);
+                      }
+                      return null;
+                    }),
                   ),
                   child: Text('Playlist menu'.i18n),
                   onPressed: () {
                     MenuSheet m = MenuSheet();
                     m.defaultPlaylistMenu(importer.playlist!, context: context);
                   },
-                )
+                ),
             ],
           ),
           Container(height: 8.0),
@@ -320,12 +313,9 @@ class _ImporterStatusScreenState extends State<ImporterStatusScreen> {
             return ListTile(
               leading: t.state.icon,
               title: Text(t.title),
-              subtitle: Text(
-                t.artists.join(', '),
-                maxLines: 1,
-              ),
+              subtitle: Text(t.artists.join(', '), maxLines: 1),
             );
-          })
+          }),
         ],
       ),
     );
@@ -357,8 +347,9 @@ class _SpotifyImporterV2State extends State<SpotifyImporterV2> {
     setState(() => _authorizing = false);
     //Redirect
     if (mounted) {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => SpotifyImporterV2Main(spotify)));
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => SpotifyImporterV2Main(spotify)),
+      );
     }
   }
 
@@ -372,8 +363,11 @@ class _SpotifyImporterV2State extends State<SpotifyImporterV2> {
     spotify.trySaved().then((r) {
       if (r) {
         if (mounted) {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => SpotifyImporterV2Main(spotify)));
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => SpotifyImporterV2Main(spotify),
+            ),
+          );
         }
       }
     });
@@ -396,30 +390,31 @@ class _SpotifyImporterV2State extends State<SpotifyImporterV2> {
       body: ListView(
         children: [
           Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(
+              vertical: 12.0,
+              horizontal: 8.0,
+            ),
             child: Text(
               'This importer requires Spotify Client ID and Client Secret. To obtain them:'
                   .i18n,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18.0,
-              ),
+              style: const TextStyle(fontSize: 18.0),
             ),
           ),
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                '1. Go to: developer.spotify.com/dashboard and create an app.'
-                    .i18n,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                ),
-              )),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Text(
+              '1. Go to: developer.spotify.com/dashboard and create an app.'
+                  .i18n,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16.0),
+            ),
+          ),
           Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(
+              vertical: 4.0,
+              horizontal: 16.0,
+            ),
             child: ElevatedButton(
               child: Text('Open in Browser'.i18n),
               onPressed: () {
@@ -429,34 +424,39 @@ class _SpotifyImporterV2State extends State<SpotifyImporterV2> {
           ),
           Container(height: 16.0),
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                '2. In the app you just created go to settings, and set the Redirect URL to: '
-                        .i18n +
-                    'http://localhost:42069',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                ),
-              )),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Text(
+              '2. In the app you just created go to settings, and set the Redirect URL to: '
+                      .i18n +
+                  'http://localhost:42069',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16.0),
+            ),
+          ),
           Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(
+              vertical: 4.0,
+              horizontal: 16.0,
+            ),
             child: ElevatedButton(
               child: Text('Copy the Redirect URL'.i18n),
               onPressed: () async {
                 await Clipboard.setData(
-                    const ClipboardData(text: 'http://localhost:42069'));
+                  const ClipboardData(text: 'http://localhost:42069'),
+                );
                 Fluttertoast.showToast(
-                    msg: 'Copied'.i18n,
-                    gravity: ToastGravity.BOTTOM,
-                    toastLength: Toast.LENGTH_SHORT);
+                  msg: 'Copied'.i18n,
+                  gravity: ToastGravity.BOTTOM,
+                  toastLength: Toast.LENGTH_SHORT,
+                );
               },
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 16.0,
+            ),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -472,8 +472,9 @@ class _SpotifyImporterV2State extends State<SpotifyImporterV2> {
                   child: TextField(
                     controller: TextEditingController(text: _clientSecret),
                     obscureText: true,
-                    decoration:
-                        InputDecoration(labelText: 'Client Secret'.i18n),
+                    decoration: InputDecoration(
+                      labelText: 'Client Secret'.i18n,
+                    ),
                     onChanged: (v) => setState(() => _clientSecret = v),
                   ),
                 ),
@@ -481,11 +482,14 @@ class _SpotifyImporterV2State extends State<SpotifyImporterV2> {
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(
+              vertical: 4.0,
+              horizontal: 16.0,
+            ),
             child: ElevatedButton(
-                onPressed: (!_authorizing) ? () => _authorize() : null,
-                child: Text('Authorize'.i18n)),
+              onPressed: (!_authorizing) ? () => _authorize() : null,
+              child: Text('Authorize'.i18n),
+            ),
           ),
           if (_authorizing)
             const Padding(
@@ -494,7 +498,7 @@ class _SpotifyImporterV2State extends State<SpotifyImporterV2> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [CircularProgressIndicator()],
               ),
-            )
+            ),
         ],
       ),
     );
@@ -524,8 +528,9 @@ class _SpotifyImporterV2MainState extends State<SpotifyImporterV2Main> {
 
   //Load playlists
   Future _loadPlaylists() async {
-    var pages =
-        widget.spotify.spotify.users.playlists(widget.spotify.me.id ?? '');
+    var pages = widget.spotify.spotify.users.playlists(
+      widget.spotify.me.id ?? '',
+    );
     _playlists = List.from(await pages.all());
     setState(() => _playlistsLoading = false);
   }
@@ -540,17 +545,19 @@ class _SpotifyImporterV2MainState extends State<SpotifyImporterV2Main> {
         throw Exception();
       }
       //Get playlist
-      spotify.Playlist playlist =
-          await widget.spotify.spotify.playlists.get(uri.split(':')[2]);
+      spotify.Playlist playlist = await widget.spotify.spotify.playlists.get(
+        uri.split(':')[2],
+      );
       setState(() {
         _urlLoading = false;
         _urlPlaylist = playlist;
       });
     } catch (e) {
       Fluttertoast.showToast(
-          msg: 'Invalid/Unsupported URL'.i18n,
-          gravity: ToastGravity.BOTTOM,
-          toastLength: Toast.LENGTH_SHORT);
+        msg: 'Invalid/Unsupported URL'.i18n,
+        gravity: ToastGravity.BOTTOM,
+        toastLength: Toast.LENGTH_SHORT,
+      );
       setState(() => _urlLoading = false);
       return;
     }
@@ -559,16 +566,19 @@ class _SpotifyImporterV2MainState extends State<SpotifyImporterV2Main> {
   Future _startImport(String title, String description, String id) async {
     //Show loading dialog
     showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => PopScope(
-            canPop: false,
-            child: AlertDialog(
-                title: Text('Please wait...'.i18n),
-                content: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [CircularProgressIndicator()],
-                ))));
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => PopScope(
+        canPop: false,
+        child: AlertDialog(
+          title: Text('Please wait...'.i18n),
+          content: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [CircularProgressIndicator()],
+          ),
+        ),
+      ),
+    );
 
     try {
       //Fetch entire playlist
@@ -576,22 +586,28 @@ class _SpotifyImporterV2MainState extends State<SpotifyImporterV2Main> {
       var all = await pages.all();
       //Map to importer track
       List<ImporterTrack> tracks = all
-          .map((t) => ImporterTrack(
-              t.name!, t.artists!.map((a) => a.name!).toList(),
-              isrc: t.externalIds!.isrc))
+          .map(
+            (t) => ImporterTrack(
+              t.name!,
+              t.artists!.map((a) => a.name!).toList(),
+              isrc: t.externalIds!.isrc,
+            ),
+          )
           .toList();
       await importer.start(title, description, tracks);
       //Route
       if (mounted) {
         Navigator.of(context).pop();
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => const ImporterStatusScreen()));
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const ImporterStatusScreen()),
+        );
       }
     } catch (e) {
       Fluttertoast.showToast(
-          msg: e.toString(),
-          gravity: ToastGravity.BOTTOM,
-          toastLength: Toast.LENGTH_SHORT);
+        msg: e.toString(),
+        gravity: ToastGravity.BOTTOM,
+        toastLength: Toast.LENGTH_SHORT,
+      );
       if (mounted) Navigator.of(context).pop();
       return;
     }
@@ -600,114 +616,131 @@ class _SpotifyImporterV2MainState extends State<SpotifyImporterV2Main> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: FreezerAppBar('Spotify Importer v2'.i18n),
-        body: ListView(
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: Text(
-                  'Logged in as: '.i18n + widget.spotify.me.displayName!,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontSize: 18.0, fontWeight: FontWeight.bold)),
+      appBar: FreezerAppBar('Spotify Importer v2'.i18n),
+      body: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 8.0,
+              horizontal: 16.0,
             ),
-            const FreezerDivider(),
-            Container(height: 4.0),
-            Text(
-              'Options'.i18n,
+            child: Text(
+              'Logged in as: '.i18n + widget.spotify.me.displayName!,
+              maxLines: 1,
               textAlign: TextAlign.center,
-              style:
-                  const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            const ImporterSettings(),
-            const FreezerDivider(),
-            Container(height: 4.0),
-            Text(
-              'Import playlists by URL'.i18n,
-              textAlign: TextAlign.center,
-              style:
-                  const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                          decoration: InputDecoration(hintText: 'URL'.i18n),
-                          onChanged: (v) => setState(() => _url = v)),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.search),
-                      onPressed: () => _loadUrl(),
-                    )
-                  ],
-                )),
-            if (_urlLoading)
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4.0),
-                    child: CircularProgressIndicator(),
-                  )
-                ],
+              style: const TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
               ),
-            if (_urlPlaylist != null)
-              ListTile(
-                  title: Text(_urlPlaylist!.name!),
-                  subtitle: Text(_urlPlaylist!.description ?? ''),
-                  leading: Image.network(_urlPlaylist!.images?.first.url ??
-                      'http://cdn-images.deezer.com/images/cover//256x256-000000-80-0-0.jpg')),
-            if (_urlPlaylist != null)
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: ElevatedButton(
-                      child: Text('Import'.i18n),
-                      onPressed: () {
-                        _startImport(_urlPlaylist!.name!,
-                            _urlPlaylist!.description!, _urlPlaylist!.id!);
-                      })),
+            ),
+          ),
+          const FreezerDivider(),
+          Container(height: 4.0),
+          Text(
+            'Options'.i18n,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+          ),
+          const ImporterSettings(),
+          const FreezerDivider(),
+          Container(height: 4.0),
+          Text(
+            'Import playlists by URL'.i18n,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 8.0,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(hintText: 'URL'.i18n),
+                    onChanged: (v) => setState(() => _url = v),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () => _loadUrl(),
+                ),
+              ],
+            ),
+          ),
+          if (_urlLoading)
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 4.0),
+                  child: CircularProgressIndicator(),
+                ),
+              ],
+            ),
+          if (_urlPlaylist != null)
+            ListTile(
+              title: Text(_urlPlaylist!.name!),
+              subtitle: Text(_urlPlaylist!.description ?? ''),
+              leading: Image.network(
+                _urlPlaylist!.images?.first.url ??
+                    'http://cdn-images.deezer.com/images/cover//256x256-000000-80-0-0.jpg',
+              ),
+            ),
+          if (_urlPlaylist != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: ElevatedButton(
+                child: Text('Import'.i18n),
+                onPressed: () {
+                  _startImport(
+                    _urlPlaylist!.name!,
+                    _urlPlaylist!.description!,
+                    _urlPlaylist!.id!,
+                  );
+                },
+              ),
+            ),
 
-            // Playlists
-            const FreezerDivider(),
-            Container(height: 4.0),
-            Text('Playlists'.i18n,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                    fontSize: 18.0, fontWeight: FontWeight.bold)),
-            Container(height: 4.0),
-            if (_playlistsLoading)
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4.0),
-                    child: CircularProgressIndicator(),
-                  )
-                ],
-              ),
-            if (!_playlistsLoading)
-              ...List.generate(_playlists.length, (i) {
-                spotify.PlaylistSimple p = _playlists[i];
-                String imageUrl =
-                    'http://cdn-images.deezer.com/images/cover//256x256-000000-80-0-0.jpg';
-                if (p.images?.isNotEmpty ?? false) {
-                  imageUrl = p.images!.first.url ?? imageUrl;
-                }
-                return ListTile(
-                  title: Text(p.name!, maxLines: 1),
-                  subtitle: Text(p.owner!.displayName!, maxLines: 1),
-                  leading: Image.network(imageUrl),
-                  onTap: () {
-                    _startImport(p.name!, '', p.id!);
-                  },
-                );
-              })
-          ],
-        ));
+          // Playlists
+          const FreezerDivider(),
+          Container(height: 4.0),
+          Text(
+            'Playlists'.i18n,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+          ),
+          Container(height: 4.0),
+          if (_playlistsLoading)
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 4.0),
+                  child: CircularProgressIndicator(),
+                ),
+              ],
+            ),
+          if (!_playlistsLoading)
+            ...List.generate(_playlists.length, (i) {
+              spotify.PlaylistSimple p = _playlists[i];
+              String imageUrl =
+                  'http://cdn-images.deezer.com/images/cover//256x256-000000-80-0-0.jpg';
+              if (p.images?.isNotEmpty ?? false) {
+                imageUrl = p.images!.first.url ?? imageUrl;
+              }
+              return ListTile(
+                title: Text(p.name!, maxLines: 1),
+                subtitle: Text(p.owner!.displayName!, maxLines: 1),
+                leading: Image.network(imageUrl),
+                onTap: () {
+                  _startImport(p.name!, '', p.id!);
+                },
+              );
+            }),
+        ],
+      ),
+    );
   }
 }
