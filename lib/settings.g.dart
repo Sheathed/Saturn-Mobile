@@ -6,26 +6,27 @@ part of 'settings.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Settings _$SettingsFromJson(Map<String, dynamic> json) => Settings(
-      downloadPath: json['downloadPath'] as String?,
-      arl: json['arl'] as String?,
-    )
+Settings _$SettingsFromJson(Map<String, dynamic> json) =>
+    Settings(
+        downloadPath: json['downloadPath'] as String?,
+        arl: json['arl'] as String?,
+      )
       ..language = json['language'] as String?
       ..ignoreInterruptions = json['ignoreInterruptions'] as bool? ?? false
       ..enableEqualizer = json['enableEqualizer'] as bool? ?? false
       ..eastereggsDisabled = json['eastereggsDisabled'] as bool? ?? false
       ..wifiQuality =
           $enumDecodeNullable(_$AudioQualityEnumMap, json['wifiQuality']) ??
-              AudioQuality.MP3_320
+          AudioQuality.MP3_320
       ..mobileQuality =
           $enumDecodeNullable(_$AudioQualityEnumMap, json['mobileQuality']) ??
-              AudioQuality.MP3_128
+          AudioQuality.MP3_128
       ..offlineQuality =
           $enumDecodeNullable(_$AudioQualityEnumMap, json['offlineQuality']) ??
-              AudioQuality.FLAC
+          AudioQuality.FLAC
       ..downloadQuality =
           $enumDecodeNullable(_$AudioQualityEnumMap, json['downloadQuality']) ??
-              AudioQuality.FLAC
+          AudioQuality.FLAC
       ..downloadFilename =
           json['downloadFilename'] as String? ?? '%artist% - %title%'
       ..albumFolder = json['albumFolder'] as bool? ?? true
@@ -45,24 +46,24 @@ Settings _$SettingsFromJson(Map<String, dynamic> json) => Settings(
           (json['albumArtResolution'] as num?)?.toInt() ?? 1400
       ..tags =
           (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
-              [
-                'title',
-                'album',
-                'artist',
-                'track',
-                'disc',
-                'albumArtist',
-                'date',
-                'label',
-                'isrc',
-                'upc',
-                'trackTotal',
-                'bpm',
-                'lyrics',
-                'genre',
-                'contributors',
-                'art'
-              ]
+          [
+            'title',
+            'album',
+            'artist',
+            'track',
+            'disc',
+            'albumArtist',
+            'date',
+            'label',
+            'isrc',
+            'upc',
+            'trackTotal',
+            'bpm',
+            'lyrics',
+            'genre',
+            'contributors',
+            'art',
+          ]
       ..theme =
           $enumDecodeNullable(_$ThemesEnumMap, json['theme']) ?? Themes.Dark
       ..useSystemTheme = json['useSystemTheme'] as bool? ?? false
@@ -73,8 +74,9 @@ Settings _$SettingsFromJson(Map<String, dynamic> json) => Settings(
       ..font = json['font'] as String? ?? 'Deezer'
       ..lyricsVisualizer = json['lyricsVisualizer'] as bool? ?? false
       ..displayMode = (json['displayMode'] as num?)?.toInt()
-      ..primaryColor =
-          Settings._colorFromJson((json['primaryColor'] as num?)?.toInt())
+      ..primaryColor = Settings._colorFromJson(
+        (json['primaryColor'] as num?)?.toInt(),
+      )
       ..useArtColor = json['useArtColor'] as bool? ?? false
       ..deezerLanguage = json['deezerLanguage'] as String? ?? 'en'
       ..deezerCountry = json['deezerCountry'] as String? ?? 'US'
@@ -89,56 +91,57 @@ Settings _$SettingsFromJson(Map<String, dynamic> json) => Settings(
       ..spotifyCredentials = json['spotifyCredentials'] == null
           ? null
           : SpotifyCredentialsSave.fromJson(
-              json['spotifyCredentials'] as Map<String, dynamic>);
+              json['spotifyCredentials'] as Map<String, dynamic>,
+            );
 
 Map<String, dynamic> _$SettingsToJson(Settings instance) => <String, dynamic>{
-      'language': instance.language,
-      'ignoreInterruptions': instance.ignoreInterruptions,
-      'enableEqualizer': instance.enableEqualizer,
-      'eastereggsDisabled': instance.eastereggsDisabled,
-      'arl': instance.arl,
-      'wifiQuality': _$AudioQualityEnumMap[instance.wifiQuality]!,
-      'mobileQuality': _$AudioQualityEnumMap[instance.mobileQuality]!,
-      'offlineQuality': _$AudioQualityEnumMap[instance.offlineQuality]!,
-      'downloadQuality': _$AudioQualityEnumMap[instance.downloadQuality]!,
-      'downloadPath': instance.downloadPath,
-      'downloadFilename': instance.downloadFilename,
-      'albumFolder': instance.albumFolder,
-      'artistFolder': instance.artistFolder,
-      'albumDiscFolder': instance.albumDiscFolder,
-      'overwriteDownload': instance.overwriteDownload,
-      'downloadThreads': instance.downloadThreads,
-      'playlistFolder': instance.playlistFolder,
-      'downloadLyrics': instance.downloadLyrics,
-      'trackCover': instance.trackCover,
-      'albumCover': instance.albumCover,
-      'nomediaFiles': instance.nomediaFiles,
-      'artistSeparator': instance.artistSeparator,
-      'singletonFilename': instance.singletonFilename,
-      'albumArtResolution': instance.albumArtResolution,
-      'tags': instance.tags,
-      'theme': _$ThemesEnumMap[instance.theme]!,
-      'useSystemTheme': instance.useSystemTheme,
-      'colorGradientBackground': instance.colorGradientBackground,
-      'blurPlayerBackground': instance.blurPlayerBackground,
-      'themeAdditonalItems': instance.themeAdditonalItems,
-      'font': instance.font,
-      'lyricsVisualizer': instance.lyricsVisualizer,
-      'displayMode': instance.displayMode,
-      'primaryColor': Settings._colorToJson(instance.primaryColor),
-      'useArtColor': instance.useArtColor,
-      'deezerLanguage': instance.deezerLanguage,
-      'deezerCountry': instance.deezerCountry,
-      'logListen': instance.logListen,
-      'proxyAddress': instance.proxyAddress,
-      'lastFMUsername': instance.lastFMUsername,
-      'lastFMPassword': instance.lastFMPassword,
-      'lastFMAPIKey': instance.lastFMAPIKey,
-      'lastFMAPISecret': instance.lastFMAPISecret,
-      'spotifyClientId': instance.spotifyClientId,
-      'spotifyClientSecret': instance.spotifyClientSecret,
-      'spotifyCredentials': instance.spotifyCredentials,
-    };
+  'language': instance.language,
+  'ignoreInterruptions': instance.ignoreInterruptions,
+  'enableEqualizer': instance.enableEqualizer,
+  'eastereggsDisabled': instance.eastereggsDisabled,
+  'arl': instance.arl,
+  'wifiQuality': _$AudioQualityEnumMap[instance.wifiQuality]!,
+  'mobileQuality': _$AudioQualityEnumMap[instance.mobileQuality]!,
+  'offlineQuality': _$AudioQualityEnumMap[instance.offlineQuality]!,
+  'downloadQuality': _$AudioQualityEnumMap[instance.downloadQuality]!,
+  'downloadPath': instance.downloadPath,
+  'downloadFilename': instance.downloadFilename,
+  'albumFolder': instance.albumFolder,
+  'artistFolder': instance.artistFolder,
+  'albumDiscFolder': instance.albumDiscFolder,
+  'overwriteDownload': instance.overwriteDownload,
+  'downloadThreads': instance.downloadThreads,
+  'playlistFolder': instance.playlistFolder,
+  'downloadLyrics': instance.downloadLyrics,
+  'trackCover': instance.trackCover,
+  'albumCover': instance.albumCover,
+  'nomediaFiles': instance.nomediaFiles,
+  'artistSeparator': instance.artistSeparator,
+  'singletonFilename': instance.singletonFilename,
+  'albumArtResolution': instance.albumArtResolution,
+  'tags': instance.tags,
+  'theme': _$ThemesEnumMap[instance.theme]!,
+  'useSystemTheme': instance.useSystemTheme,
+  'colorGradientBackground': instance.colorGradientBackground,
+  'blurPlayerBackground': instance.blurPlayerBackground,
+  'themeAdditonalItems': instance.themeAdditonalItems,
+  'font': instance.font,
+  'lyricsVisualizer': instance.lyricsVisualizer,
+  'displayMode': instance.displayMode,
+  'primaryColor': Settings._colorToJson(instance.primaryColor),
+  'useArtColor': instance.useArtColor,
+  'deezerLanguage': instance.deezerLanguage,
+  'deezerCountry': instance.deezerCountry,
+  'logListen': instance.logListen,
+  'proxyAddress': instance.proxyAddress,
+  'lastFMUsername': instance.lastFMUsername,
+  'lastFMPassword': instance.lastFMPassword,
+  'lastFMAPIKey': instance.lastFMAPIKey,
+  'lastFMAPISecret': instance.lastFMAPISecret,
+  'spotifyClientId': instance.spotifyClientId,
+  'spotifyClientSecret': instance.spotifyClientSecret,
+  'spotifyCredentials': instance.spotifyCredentials,
+};
 
 const _$AudioQualityEnumMap = {
   AudioQuality.MP3_128: 'MP3_128',
@@ -155,22 +158,21 @@ const _$ThemesEnumMap = {
 };
 
 SpotifyCredentialsSave _$SpotifyCredentialsSaveFromJson(
-        Map<String, dynamic> json) =>
-    SpotifyCredentialsSave(
-      accessToken: json['accessToken'] as String?,
-      refreshToken: json['refreshToken'] as String?,
-      scopes:
-          (json['scopes'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      expiration: json['expiration'] == null
-          ? null
-          : DateTime.parse(json['expiration'] as String),
-    );
+  Map<String, dynamic> json,
+) => SpotifyCredentialsSave(
+  accessToken: json['accessToken'] as String?,
+  refreshToken: json['refreshToken'] as String?,
+  scopes: (json['scopes'] as List<dynamic>?)?.map((e) => e as String).toList(),
+  expiration: json['expiration'] == null
+      ? null
+      : DateTime.parse(json['expiration'] as String),
+);
 
 Map<String, dynamic> _$SpotifyCredentialsSaveToJson(
-        SpotifyCredentialsSave instance) =>
-    <String, dynamic>{
-      'accessToken': instance.accessToken,
-      'refreshToken': instance.refreshToken,
-      'scopes': instance.scopes,
-      'expiration': instance.expiration?.toIso8601String(),
-    };
+  SpotifyCredentialsSave instance,
+) => <String, dynamic>{
+  'accessToken': instance.accessToken,
+  'refreshToken': instance.refreshToken,
+  'scopes': instance.scopes,
+  'expiration': instance.expiration?.toIso8601String(),
+};

@@ -15,12 +15,11 @@ class LeadingIcon extends StatelessWidget {
     return Container(
       width: 42.0,
       height: 42.0,
-      decoration:
-          BoxDecoration(color: (color ?? Theme.of(context).primaryColor).withOpacity(1.0), shape: BoxShape.circle),
-      child: Icon(
-        icon,
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: (color ?? Theme.of(context).primaryColor).withValues(alpha: 1.0),
+        shape: BoxShape.circle,
       ),
+      child: Icon(icon, color: Colors.white),
     );
   }
 }
@@ -51,7 +50,7 @@ class FreezerAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.bottom,
     this.height = 56.0,
     this.enableBlur = false, // Defaults to no blur
-    this.opacity = 0,      // Defaults to fully opaque
+    this.opacity = 0, // Defaults to fully opaque
     this.blurStrength = 0, // Defaults to a standard blur level
   });
 
@@ -65,22 +64,31 @@ class FreezerAppBar extends StatelessWidget implements PreferredSizeWidget {
         if (enableBlur)
           ClipRect(
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: blurStrength, sigmaY: blurStrength),
+              filter: ImageFilter.blur(
+                sigmaX: blurStrength,
+                sigmaY: blurStrength,
+              ),
               child: Container(
-                color: Theme.of(context).scaffoldBackgroundColor.withOpacity(opacity),
+                color: Theme.of(
+                  context,
+                ).scaffoldBackgroundColor.withValues(alpha: opacity),
               ),
             ),
           ),
         AppBar(
-          systemOverlayStyle: SystemUiOverlayStyle(statusBarBrightness: Theme.of(context).brightness),
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarBrightness: Theme.of(context).brightness,
+          ),
           elevation: 0.0,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(opacity),
-          foregroundColor: (Theme.of(context).brightness == Brightness.light) ? Colors.black : Colors.white,
+          backgroundColor: Theme.of(
+            context,
+          ).scaffoldBackgroundColor.withValues(alpha: opacity),
+          foregroundColor: (Theme.of(context).brightness == Brightness.light)
+              ? Colors.black
+              : Colors.white,
           title: Text(
             title,
-            style: const TextStyle(
-              fontWeight: FontWeight.w900,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.w900),
           ),
           actions: actions,
           bottom: bottom as PreferredSizeWidget?,
@@ -95,11 +103,7 @@ class FreezerDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Divider(
-      thickness: 1.5,
-      indent: 16.0,
-      endIndent: 16.0,
-    );
+    return const Divider(thickness: 1.5, indent: 16.0, endIndent: 16.0);
   }
 }
 

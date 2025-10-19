@@ -35,12 +35,12 @@ List<Language> languages = [
   Language('fil', 'PH', 'Filipino'),
   Language('ast', 'ES', 'Asturian'),
   Language('bul', 'BG', 'Bulgarian'),
-  Language('uwu', 'UWU', 'Furry')
+  Language('uwu', 'UWU', 'Furry'),
 ];
 List<Locale> get supportedLocales => languages.map((l) => l.getLocale).toList();
 
 extension Localization on String {
-  static final _t = Translations.byLocale('en_US') + language_en_us + crowdin;
+  static final _t = Translations.byLocale('en-US') + language_en_us + crowdin;
 
   String get i18n => localize(this, _t);
 }

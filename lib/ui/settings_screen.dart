@@ -409,9 +409,10 @@ class _FontSelectorState extends State<FontSelector> {
               actions: [
                 TextButton(
                   style: ButtonStyle(
-                    overlayColor: material.MaterialStateProperty.resolveWith<Color?>(
-                        (Set<material.MaterialState> states) {
-                      if (states.contains(material.MaterialState.pressed)) {
+                    overlayColor:
+                        material.WidgetStateProperty.resolveWith<Color?>(
+                            (Set<material.WidgetState> states) {
+                      if (states.contains(material.WidgetState.pressed)) {
                         return Theme.of(context)
                             .primaryColor
                             .withValues(alpha: 0.3);
@@ -573,34 +574,30 @@ class _QualityPickerState extends State<QualityPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        RadioListTile<AudioQuality>(
-          title: const Text('MP3 128kbps'),
-          value: AudioQuality.MP3_128,
-          groupValue: _quality,
-          onChanged: (q) => _updateQuality(q!),
-        ),
-        RadioListTile<AudioQuality>(
-          title: const Text('MP3 320kbps'),
-          value: AudioQuality.MP3_320,
-          groupValue: _quality,
-          onChanged: (q) => _updateQuality(q!),
-        ),
-        RadioListTile<AudioQuality>(
-          title: const Text('FLAC'),
-          value: AudioQuality.FLAC,
-          groupValue: _quality,
-          onChanged: (q) => _updateQuality(q!),
-        ),
-        if (widget.field == 'download')
-          RadioListTile<AudioQuality>(
-            title: Text('Ask before downloading'.i18n),
-            value: AudioQuality.ASK,
-            groupValue: _quality,
-            onChanged: (q) => _updateQuality(q!),
-          )
-      ],
+    return RadioGroup<AudioQuality>(
+      groupValue: _quality,
+      onChanged: (q) => _updateQuality(q!),
+      child: Column(
+        children: <Widget>[
+          const RadioListTile<AudioQuality>(
+            title: Text('MP3 128kbps'),
+            value: AudioQuality.MP3_128,
+          ),
+          const RadioListTile<AudioQuality>(
+            title: Text('MP3 320kbps'),
+            value: AudioQuality.MP3_320,
+          ),
+          const RadioListTile<AudioQuality>(
+            title: Text('FLAC'),
+            value: AudioQuality.FLAC,
+          ),
+          if (widget.field == 'download')
+            RadioListTile<AudioQuality>(
+              title: Text('Ask before downloading'.i18n),
+              value: AudioQuality.ASK,
+            )
+        ],
+      ),
     );
   }
 }
@@ -610,7 +607,7 @@ class ContentLanguage {
   final String name;
   const ContentLanguage(this.code, this.name);
 
-  static List<ContentLanguage> all = [
+  static List<ContentLanguage> all = const [
     ContentLanguage('de', 'Deutsch'),
     ContentLanguage('en', 'English'),
     ContentLanguage('us', 'English (us)'),
@@ -846,9 +843,9 @@ class _FilenameTemplateDialogState extends State<FilenameTemplateDialog> {
       actions: [
         TextButton(
           style: ButtonStyle(
-            overlayColor: material.MaterialStateProperty.resolveWith<Color?>(
-                (Set<material.MaterialState> states) {
-              if (states.contains(material.MaterialState.pressed)) {
+            overlayColor: material.WidgetStateProperty.resolveWith<Color?>(
+                (Set<material.WidgetState> states) {
+              if (states.contains(material.WidgetState.pressed)) {
                 return Theme.of(context).primaryColor.withValues(alpha: 0.3);
               }
               return null;
@@ -859,9 +856,9 @@ class _FilenameTemplateDialogState extends State<FilenameTemplateDialog> {
         ),
         TextButton(
           style: ButtonStyle(
-            overlayColor: material.MaterialStateProperty.resolveWith<Color?>(
-                (Set<material.MaterialState> states) {
-              if (states.contains(material.MaterialState.pressed)) {
+            overlayColor: material.WidgetStateProperty.resolveWith<Color?>(
+                (Set<material.WidgetState> states) {
+              if (states.contains(material.WidgetState.pressed)) {
                 return Theme.of(context).primaryColor.withValues(alpha: 0.3);
               }
               return null;
@@ -876,9 +873,9 @@ class _FilenameTemplateDialogState extends State<FilenameTemplateDialog> {
         ),
         TextButton(
           style: ButtonStyle(
-            overlayColor: material.MaterialStateProperty.resolveWith<Color?>(
-                (Set<material.MaterialState> states) {
-              if (states.contains(material.MaterialState.pressed)) {
+            overlayColor: material.WidgetStateProperty.resolveWith<Color?>(
+                (Set<material.WidgetState> states) {
+              if (states.contains(material.WidgetState.pressed)) {
                 return Theme.of(context).primaryColor.withValues(alpha: 0.3);
               }
               return null;
@@ -889,9 +886,9 @@ class _FilenameTemplateDialogState extends State<FilenameTemplateDialog> {
         ),
         TextButton(
           style: ButtonStyle(
-            overlayColor: material.MaterialStateProperty.resolveWith<Color?>(
-                (Set<material.MaterialState> states) {
-              if (states.contains(material.MaterialState.pressed)) {
+            overlayColor: material.WidgetStateProperty.resolveWith<Color?>(
+                (Set<material.WidgetState> states) {
+              if (states.contains(material.WidgetState.pressed)) {
                 return Theme.of(context).primaryColor.withValues(alpha: 0.3);
               }
               return null;
@@ -1025,10 +1022,11 @@ class _DownloadsSettingsState extends State<DownloadsSettings> {
                           actions: [
                             TextButton(
                               style: ButtonStyle(
-                                overlayColor:
-                                    material.MaterialStateProperty.resolveWith<Color?>(
-                                        (Set<material.MaterialState> states) {
-                                  if (states.contains(material.MaterialState.pressed)) {
+                                overlayColor: material.WidgetStateProperty
+                                    .resolveWith<Color?>(
+                                        (Set<material.WidgetState> states) {
+                                  if (states
+                                      .contains(material.WidgetState.pressed)) {
                                     return Theme.of(context)
                                         .primaryColor
                                         .withValues(alpha: 0.3);
@@ -1474,10 +1472,11 @@ class _GeneralSettingsState extends State<GeneralSettings> {
                         actions: <Widget>[
                           TextButton(
                             style: ButtonStyle(
-                              overlayColor:
-                                  material.MaterialStateProperty.resolveWith<Color?>(
-                                      (Set<material.MaterialState> states) {
-                                if (states.contains(material.MaterialState.pressed)) {
+                              overlayColor: material.WidgetStateProperty
+                                  .resolveWith<Color?>(
+                                      (Set<material.WidgetState> states) {
+                                if (states
+                                    .contains(material.WidgetState.pressed)) {
                                   return Theme.of(context)
                                       .primaryColor
                                       .withValues(alpha: 0.3);
@@ -1490,10 +1489,11 @@ class _GeneralSettingsState extends State<GeneralSettings> {
                           ),
                           TextButton(
                             style: ButtonStyle(
-                              overlayColor:
-                                  material.MaterialStateProperty.resolveWith<Color?>(
-                                      (Set<material.MaterialState> states) {
-                                if (states.contains(material.MaterialState.pressed)) {
+                              overlayColor: material.WidgetStateProperty
+                                  .resolveWith<Color?>(
+                                      (Set<material.WidgetState> states) {
+                                if (states
+                                    .contains(material.WidgetState.pressed)) {
                                   return Theme.of(context)
                                       .primaryColor
                                       .withValues(alpha: 0.3);
@@ -1583,9 +1583,9 @@ class _LastFMLoginState extends State<LastFMLogin> {
       actions: [
         TextButton(
           style: ButtonStyle(
-            overlayColor: material.MaterialStateProperty.resolveWith<Color?>(
-                (Set<material.MaterialState> states) {
-              if (states.contains(material.MaterialState.pressed)) {
+            overlayColor: material.WidgetStateProperty.resolveWith<Color?>(
+                (Set<material.WidgetState> states) {
+              if (states.contains(material.WidgetState.pressed)) {
                 return Theme.of(context).primaryColor.withValues(alpha: 0.3);
               }
               return null;
@@ -1596,9 +1596,9 @@ class _LastFMLoginState extends State<LastFMLogin> {
         ),
         TextButton(
           style: ButtonStyle(
-            overlayColor: material.MaterialStateProperty.resolveWith<Color?>(
-                (Set<material.MaterialState> states) {
-              if (states.contains(material.MaterialState.pressed)) {
+            overlayColor: material.WidgetStateProperty.resolveWith<Color?>(
+                (Set<material.WidgetState> states) {
+              if (states.contains(material.WidgetState.pressed)) {
                 return Theme.of(context).primaryColor.withValues(alpha: 0.3);
               }
               return null;

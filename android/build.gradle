@@ -12,7 +12,7 @@ subprojects {
 
     // This will make sure all the sub projects have an android namespace,
     // if not it will read it from AndroidManifest.xml
-    // Also sets the compileSdk to 34 and the target javaVersion to 17 
+    // Also sets the compileSdk to 35 and the target javaVersion to 19
     // (needs to be changed manually to the latest in the future)
     afterEvaluate {
         // check if android block is available
@@ -25,9 +25,9 @@ subprojects {
                 android.namespace = packageName
             }
 
-            def javaVersion = JavaVersion.VERSION_17
+            def javaVersion = JavaVersion.VERSION_19
             android {
-                def androidApiVersion = 34
+                def androidApiVersion = 35
                 compileSdk androidApiVersion
                 defaultConfig {
                     targetSdk androidApiVersion
