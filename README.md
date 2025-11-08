@@ -1,3 +1,5 @@
+# ⚠️⚠️⚠️ Deprecated, visit [the new repo](https://github.com/Sheathed/Saturn) for more information
+
 # Saturn Mobile
 ## Freezer Reborn
 ### Your go-to **ToS Compliant** Custom Deezer Client
